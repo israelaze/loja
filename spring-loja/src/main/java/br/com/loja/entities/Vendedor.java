@@ -1,12 +1,15 @@
 package br.com.loja.entities;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -33,7 +36,7 @@ public class Vendedor implements Serializable{
 	@Column(length = 50)
 	private String apelido;
 	
-	//@OneToMany(mappedBy = "vendedor")
-	//private Set<Pedido> pedidos = new HashSet<>();
+	@OneToMany(mappedBy = "vendedor")
+	private Set<Pedido> pedidos = new HashSet<>();
 
 }
