@@ -1,4 +1,4 @@
-package br.com.loja.dtos.configs;
+package br.com.loja.configs;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
