@@ -20,7 +20,6 @@ import br.com.loja.dtos.vendedor.VendedorPutDTO;
 import br.com.loja.exceptions.ServiceException;
 import br.com.loja.services.VendedorService;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -37,7 +36,6 @@ public class VendedoresController {
 
 	@PostMapping
 	@Operation(summary = "Cadastrar vendedores")
-	@ApiResponse(ref = "hhhhhhhhhhhh", responseCode = "ffffffffffffff")
 	public ResponseEntity<VendedorGetDTO> cadastrar(@Valid @RequestBody VendedorPostDTO dto) {
 
 		try {
