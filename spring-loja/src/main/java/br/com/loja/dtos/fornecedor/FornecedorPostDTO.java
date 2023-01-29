@@ -14,6 +14,8 @@ public class FornecedorPostDTO {
 	@NotBlank(message = "{nome.not.blank}")
 	private String nomeFornecedor;
 	
+	//@CNPJ - só aceita documento válido
+	//@CPF - só aceita documento válido
 	@NotBlank(message = "{cpf.not.blank}")
 	@Size(min= 11, max = 14, message = "{cpfCnpj.size}")
 	@Pattern(regexp = "^\\d+$", message = "{number.pattern}")
@@ -28,7 +30,6 @@ public class FornecedorPostDTO {
 	
 	@Email(message = "{email.email}")
 	private String email;
-	
 	
 	private String logradouro;
 	private String numero;

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,9 +23,11 @@ import br.com.loja.services.FornecedorService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 
 @CrossOrigin
+@Validated
 @RestController
 @AllArgsConstructor
 @Tag(name = "Fornecedores")
@@ -35,7 +38,7 @@ public class FornecedoresController {
 
 	@PostMapping
 	@Operation(summary = "Cadastrar fornecedor")
-	public ResponseEntity<FornecedorGetDTO> cadastrar(@Valid @RequestBody FornecedorPostDTO dto) {
+	public ResponseEntity<FornecedorGetDTO> cadastrar(@RequestBody @Valid @NotNull FornecedorPostDTO dto) {
 
 		try {
 			FornecedorGetDTO getDto = service.cadastrar(dto);
