@@ -14,8 +14,10 @@ import br.com.loja.entities.Fornecedor;
 import br.com.loja.entities.ItemPedido;
 import br.com.loja.entities.Pedido;
 import br.com.loja.entities.Produto;
+import br.com.loja.entities.Usuario;
 import br.com.loja.entities.Vendedor;
 import br.com.loja.enums.Estado;
+import br.com.loja.enums.Perfil;
 import br.com.loja.enums.SituacaoPedido;
 import br.com.loja.repositories.ClienteRepository;
 import br.com.loja.repositories.EnderecoRepository;
@@ -23,6 +25,7 @@ import br.com.loja.repositories.FornecedorRepository;
 import br.com.loja.repositories.ItemPedidoRepository;
 import br.com.loja.repositories.PedidoRepository;
 import br.com.loja.repositories.ProdutoRepository;
+import br.com.loja.repositories.UsuarioRepository;
 import br.com.loja.repositories.VendedorRepository;
 import br.com.loja.utils.DateUtils;
 import br.com.loja.utils.RandomUtils;
@@ -33,6 +36,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class PopularBanco implements CommandLineRunner{
 	
+	private final UsuarioRepository usuarioRepository;
 	private final EnderecoRepository enderecoRepository;
 	private final ClienteRepository clienteRepository;
 	private final FornecedorRepository fornecedorRepository;
@@ -43,6 +47,13 @@ public class PopularBanco implements CommandLineRunner{
 	
 	@Override
 	public void run(String... args) throws Exception {
+		
+		// CADASTRANDO USUÁRIOS
+		Usuario usu1 = new Usuario(null, "Teste", "Admin", "t1@gmail.com", "1234", Perfil.ADMIN);
+		usuarioRepository.saveAll(Arrays.asList(usu1));
+		
+		Usuario usu2 = new Usuario(null, "Teste2", "", "t2@gmail.com", "1234", Perfil.USER);
+		usuarioRepository.saveAll(Arrays.asList(usu2));
 		
 		// CADASTRANDO ENDEREÇOS
 		Endereco endCliente1 = new Endereco("Rua Albert", "99", null, null, "Bnh", "Mesquita", Estado.RJ, "33333-666"); 
