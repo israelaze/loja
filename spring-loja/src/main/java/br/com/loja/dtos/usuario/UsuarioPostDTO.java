@@ -1,6 +1,5 @@
 package br.com.loja.dtos.usuario;
 
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 
@@ -13,10 +12,10 @@ public class UsuarioPostDTO {
 	private String sobreNome;
 	
 	@NotBlank(message = "{email.not.blank}")
-	@Email(message = "{email.email}")
+//	@Email(message = "{email.email}")
 	private String email;
 	
 	@NotBlank(message = "{senha.not.blank}")
 	private String senha;
-
+	
 }

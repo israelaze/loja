@@ -5,12 +5,14 @@ import java.util.List;
 import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import br.com.loja.dtos.usuario.UsuarioGetDTO;
 import br.com.loja.dtos.usuario.UsuarioPostDTO;
 import br.com.loja.dtos.usuario.UsuarioPutDTO;
 import br.com.loja.entities.Usuario;
+import br.com.loja.enums.Perfil;
 import br.com.loja.exceptions.BadRequestException;
 import br.com.loja.exceptions.EntityNotFoundException;
 import br.com.loja.repositories.UsuarioRepository;
@@ -24,6 +26,7 @@ public class UsuarioService {
 
 	private final UsuarioRepository repository;
 	private final ModelMapper mapper;
+	private final PasswordEncoder passwordEncoder;
 
 	public UsuarioGetDTO cadastrar(UsuarioPostDTO dto) {
 
@@ -33,10 +36,17 @@ public class UsuarioService {
 		if (result.isPresent()) {
 			throw new BadRequestException("Erro: Email já cadastrado!");
 		}
-
+		
 		// inserindo os dados do Usuário
 		Usuario usuario = mapper.map(dto, Usuario.class);
-
+		
+		// criptografar senha
+        String senhaCriptografada =  passwordEncoder.encode(dto.getSenha());
+        usuario.setSenha(senhaCriptografada);
+        
+        // Inserindo perfil de usuário
+        usuario.setPerfil(Perfil.USER);
+        
 		// salvando
 		repository.save(usuario);
 
@@ -89,6 +99,10 @@ public class UsuarioService {
 		// alterando os dados do Usuário encontrado
 		Usuario usuario = result.get();
 		mapper.map(dto, usuario);
+		
+		// criptografar senha
+        String senhaCriptografada =  passwordEncoder.encode(dto.getSenha());
+        usuario.setSenha(senhaCriptografada);
 
 		repository.save(usuario);
 

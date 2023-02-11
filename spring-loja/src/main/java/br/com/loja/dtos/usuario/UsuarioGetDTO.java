@@ -11,5 +11,6 @@ public class UsuarioGetDTO {
 	private String nome;
 	private String sobreNome;
 	private String email;
+	private String perfil;
 
 }

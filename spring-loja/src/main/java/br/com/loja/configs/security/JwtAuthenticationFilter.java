@@ -19,41 +19,56 @@ import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
-public class JwtAuthenticationFilter extends OncePerRequestFilter{
-	
+public class JwtAuthenticationFilter extends OncePerRequestFilter {
+
 	private final JwtService jwtService;
 	private final UserDetailsService userDetailsService;
-	
+
+	/*
+	 * verificar se a requisição contém um JSON Web Token (JWT) válido no cabeçalho "Authorization"
+	 */
 	@Override
-	  protected void doFilterInternal(
-	      @NonNull HttpServletRequest request,
-	      @NonNull HttpServletResponse response,
-	      @NonNull FilterChain filterChain
-	  ) throws ServletException, IOException {
-	    final String authHeader = request.getHeader("Authorization");
-	    final String jwt;
-	    final String userEmail;
-	    if (authHeader == null ||!authHeader.startsWith("Bearer ")) {
-	      filterChain.doFilter(request, response);
-	      return;
-	    }
-	    jwt = authHeader.substring(7);
-	    userEmail = jwtService.extractUsername(jwt);
-	    if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-	      UserDetails userDetails = this.userDetailsService.loadUserByUsername(userEmail);
-	      if (jwtService.isTokenValid(jwt, userDetails)) {
-	        UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-	            userDetails,
-	            null,
-	            userDetails.getAuthorities()
-	        );
-	        authToken.setDetails(
-	            new WebAuthenticationDetailsSource().buildDetails(request)
-	        );
-	        SecurityContextHolder.getContext().setAuthentication(authToken);
-	      }
-	    }
-	    filterChain.doFilter(request, response);
-	  }
+	protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response,
+			@NonNull FilterChain filterChain) throws ServletException, IOException {
+
+		final String authHeader = request.getHeader("Authorization");
+		final String jwt;
+		final String userEmail;
+
+		//verifica se o cabeçalho está presente e começa com a string "Bearer"
+		if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+			filterChain.doFilter(request, response);
+			return;
+		}
+		
+		//extrai a string token JWT do cabeçalho 
+		jwt = authHeader.substring(7);
+		
+		//recupera o e-mail do usuário
+		userEmail = jwtService.extractUsername(jwt);
+		
+		//verifica se existem informações de autenticação para a solicitação atual.
+		if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+			
+			//busca os detalhes do usuário
+			UserDetails userDetails = this.userDetailsService.loadUserByUsername(userEmail);
+			
+			//verifica se o token JWT é válido
+			if (jwtService.isTokenValid(jwt, userDetails)) {
+				
+				// cria um token de autenticação para o usuário que detém o token JWT.
+				UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
+						userDetails, null, userDetails.getAuthorities());
+				
+				//adiciona os detalhes da solicitação
+				authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+				
+				// armazena o token de autenticação no contexto de segurança,
+				SecurityContextHolder.getContext().setAuthentication(authToken);
+			}
+		}
+		
+		filterChain.doFilter(request, response);
+	}
 
 }

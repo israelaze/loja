@@ -27,7 +27,7 @@ public class AuthController {
 
 	@PostMapping
 	@Operation(summary = "autenticar")
-	public ResponseEntity<AuthGetDTO> autenticar(@Valid @RequestBody AuthPostDTO dto) {
+	public ResponseEntity<AuthGetDTO> autenticar(@RequestBody @Valid AuthPostDTO dto) {
 
 		try {
 			AuthGetDTO getDto = service.autenticar(dto);

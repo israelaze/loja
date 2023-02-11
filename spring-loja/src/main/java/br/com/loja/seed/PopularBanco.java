@@ -7,6 +7,7 @@ import java.util.Date;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import br.com.loja.entities.Cliente;
 import br.com.loja.entities.Endereco;
@@ -45,14 +46,17 @@ public class PopularBanco implements CommandLineRunner{
 	private final ItemPedidoRepository itemPedidoRepository;
 	private final VendedorRepository vendedorRepository;
 	
+	private final PasswordEncoder passwordEncoder;
+
+	
 	@Override
 	public void run(String... args) throws Exception {
 		
 		// CADASTRANDO USUÁRIOS
-		Usuario usu1 = new Usuario(null, "Teste", "Admin", "t1@gmail.com", "1234", Perfil.ADMIN);
+		Usuario usu1 = new Usuario(null, "Edy", "Mota", "t1@gmail.com", passwordEncoder.encode("1234"), Perfil.ADMIN);
 		usuarioRepository.saveAll(Arrays.asList(usu1));
 		
-		Usuario usu2 = new Usuario(null, "Teste2", "", "t2@gmail.com", "1234", Perfil.USER);
+		Usuario usu2 = new Usuario(null, "Ana", "", "t2@gmail.com", passwordEncoder.encode("1234"), Perfil.USER);
 		usuarioRepository.saveAll(Arrays.asList(usu2));
 		
 		// CADASTRANDO ENDEREÇOS

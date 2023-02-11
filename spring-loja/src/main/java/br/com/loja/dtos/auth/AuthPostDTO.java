@@ -1,6 +1,5 @@
 package br.com.loja.dtos.auth;
 
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 
@@ -12,6 +11,6 @@ public class AuthPostDTO {
 	private String email;
 	
 	@NotBlank(message = "{senha.not.blank}")
-	 String senha;
+	private String senha;
 
 }

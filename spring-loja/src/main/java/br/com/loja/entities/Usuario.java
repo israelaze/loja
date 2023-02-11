@@ -49,6 +49,7 @@ public class Usuario implements UserDetails {
 	private String senha;
 
 	@Enumerated(EnumType.STRING)
+	@Column(nullable = false)
 	private Perfil perfil;
 
 	@Override
