@@ -1,0 +1,50 @@
+.container {
+    height: 100%;
+   // background: linear-gradient(180deg, rgb(16, 79, 205) 0%, rgb(13, 234, 38) 0%, rgb(36, 211, 217) 100%);
+   // background-image: "assets/imagens/comercio.png";
+    background-image: url("/assets/imagens/comercio.png");
+    min-height: fit-content;
+    //background-size: cover;
+   // background-repeat: no-repeat;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+ }
+
+ .form {
+    width: 20rem;
+    margin: auto;
+    margin-top: auto;
+    background-color: rgb(235, 235, 235);
+    padding: 3rem 1rem;
+    border-radius: 1rem;
+ }
+
+ h1 {
+    width: 100%;
+    text-align: center;
+
+ }
+
+ img {
+    height: 5rem;
+    width: 30%;
+    margin: -9.5rem auto -0.5rem auto;
+ }
+
+ .full-width {
+    width: 100%;
+ }
+
+ button {
+    margin-top: 1.5rem;
+ }
+
+ mat-icon {
+    opacity: .6;
+ }
+
+ .min-width{
+  min-width: 100%;
+
+ }
