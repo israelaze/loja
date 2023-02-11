@@ -13,7 +13,7 @@ import { UsuariosService } from '../../services/usuarios.service';
 export class UsuariosListComponent implements OnInit {
 
   dataSource = new MatTableDataSource<Usuario>;
-  displayedColumns: string[] = ['idUsuario', 'nome', 'email'];
+  displayedColumns: string[] = ['idUsuario', 'nome', 'email', 'perfil'];
   usuarios: Usuario[] = [];
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
