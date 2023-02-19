@@ -58,11 +58,6 @@ public class ClienteService {
 			endereco = enderecoService.cadastrar(enderecoDTO);
 		}
 		
-		// caso a data esteja vazia
-		if (dto.getDataNascimento().isBlank()) {
-			dto.setDataNascimento(null);
-		}
-
 		// cadastrando novo Cliente com ou sem endereço
 		Cliente cliente = mapper.map(dto, Cliente.class);
 		if (endereco.getIdEndereco() != null) {
@@ -115,11 +110,6 @@ public class ClienteService {
 		// verificando se existem campos preenchidos em enderecoDto
 		EnderecoReflection endReflection = new EnderecoReflection();
 		boolean result2 = endReflection.reflection(enderecoDto);
-		
-		// caso a data esteja vazia
-		if (dto.getDataNascimento().isBlank()) {
-			dto.setDataNascimento(null);
-		}
 		
 		// atualizando os dados do cliente
 		Cliente cliente = result.get();

@@ -1,18 +1,17 @@
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { ClientePost } from './../../models/cliente-post';
-import { Estados } from '../../../util/models/estados';
-import { Cliente } from './../../models/cliente';
-import {  Router } from '@angular/router';
+import { BreakpointObserver } from '@angular/cdk/layout';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, PatternValidator, Validators } from '@angular/forms';
-import { ClientesService } from '../../services/clientes.service';
-import { Location } from '@angular/common';
+import { FormBuilder, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { StepperOrientation } from '@angular/material/stepper';
+import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { AlertService } from 'src/app/util/services/alert.service';
 import { EstadosService } from 'src/app/util/services/estados.service';
-import { StepperOrientation } from '@angular/material/stepper';
-import { BreakpointObserver } from '@angular/cdk/layout';
-import { map } from 'rxjs/operators';
-import { Observable } from 'rxjs';
+import { Estados } from '../../../util/models/estados';
+import { ClientesService } from '../../services/clientes.service';
+import { Cliente } from './../../models/cliente';
+import { ClientePost } from './../../models/cliente-post';
 
 @Component({
   selector: 'app-clientes-cad',
@@ -35,7 +34,6 @@ export class ClientesCadComponent implements OnInit {
     private clienteService: ClientesService,
     private alertService: AlertService,
     private router: Router,
-    private location: Location,
     private estadoService: EstadosService,
     private snackBar: MatSnackBar,
     private breakpointObserver: BreakpointObserver)
@@ -45,50 +43,50 @@ export class ClientesCadComponent implements OnInit {
   }
 
   dados = this._formBuilder.group({
-    nome: ['',
+    nome: ['Teste teste',
       //torna o campo obrigatório
       [Validators.required,
       //Regex para duas strings, separadas com espaço e com no mínimo 3 caracteres cada. Aceita acentuação e rejeita números.
       Validators.pattern(/\b[A-Za-zÀ-ú][A-Za-zÀ-ú]+,?\s[A-Za-zÀ-ú][A-Za-zÀ-ú]{2,19}\b/),
       ]
     ],
-    cpf: ['',
+    cpf: ['12341233302',
       [Validators.required,
       Validators.pattern('^[0-9]{3}\.?[0-9]{3}\.?[0-9]{3}\-?[0-9]{2}$')
       ]
     ],
-    dataNascimento: ['',[]], /*IMPORTANTE: NECESSÁRIO VALIDAR A DATA  */
+    dataNascimento: [null,[]]
   });
 
   contatos  = this._formBuilder.group({
-    telefone1: ['',
+    telefone1: ['26977022',
       [Validators.required,
       Validators.pattern (/^[0-9]{8,11}$/)
      // Validators.pattern (/^\(?\d{2}\)?[\s-]?\d{5}-?\d{4}$/),
 
       ]
     ],
-    telefone2: ['', [Validators.pattern (/^[0-9]{8,11}$/)]],
-    email: ['',
+    telefone2: [null, [Validators.pattern (/^[0-9]{8,11}$/)]],
+    email: [null,
       [Validators.email,
         Validators.pattern(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{3,3})+$/)]
-    ],
+    ]
   });
 
   endereco  = this._formBuilder.group({
-    logradouro: ['', [Validators.pattern(/^([a-zA-Z]{0,1}[a-zA-Z]{1,}'?-?[a-zA-Z]\s?([a-zA-Z]{1,})?)/)]],
-    numero: ['', [Validators.pattern('^[0-9]{1,6}')]],
-    complemento: ['', [Validators.pattern(/^([a-zA-Z]{1,}[a-zA-Z]{1,}'?-?[a-zA-Z]\s?([a-zA-Z]{1,})?)/)]],
-    condominio: ['', [Validators.pattern(/^([a-zA-Z]{1,}[a-zA-Z]{1,}'?-?[a-zA-Z]\s?([a-zA-Z]{1,})?)/)]],
-    bairro: ['', [Validators.pattern(/^([a-zA-Z]{1,}[a-zA-Z]{1,}'?-?[a-zA-Z]\s?([a-zA-Z]{1,})?)/)]],
-    municipio: ['', [Validators.pattern(/^([a-zA-Z]{1,}[a-zA-Z]{1,}'?-?[a-zA-Z]\s?([a-zA-Z]{1,})?)/)]],
-    estado: [''],
-    cep: ['', [Validators.pattern(/^(\d{5}|\d{5}\-?\d{3})$/)] // aceita traço
-  ],
+    logradouro: [null, [Validators.pattern(/^([a-zA-Z]{0,1}[a-zA-Z]{1,}'?-?[a-zA-Z]\s?([a-zA-Z]{1,})?)/)]],
+    numero: [null, [Validators.pattern('^[0-9]{1,6}')]],
+    complemento: [ null, [Validators.pattern(/^([a-zA-Z]{1,}[a-zA-Z]{1,}'?-?[a-zA-Z]\s?([a-zA-Z]{1,})?)/)]],
+    condominio: [null, [Validators.pattern(/^([a-zA-Z]{1,}[a-zA-Z]{1,}'?-?[a-zA-Z]\s?([a-zA-Z]{1,})?)/)]],
+    bairro: [null, [Validators.pattern(/^([a-zA-Z]{1,}[a-zA-Z]{1,}'?-?[a-zA-Z]\s?([a-zA-Z]{1,})?)/)]],
+    municipio: [null, [Validators.pattern(/^([a-zA-Z]{1,}[a-zA-Z]{1,}'?-?[a-zA-Z]\s?([a-zA-Z]{1,})?)/)]],
+    estado: [null],
+    // aceita traço
+    cep: [null, [Validators.pattern(/^(\d{5}|\d{5}\-?\d{3})$/)]]
   });
 
   observacoes  = this._formBuilder.group({
-    observacao: [''],
+    observacao: [null],
   });
 
   ngOnInit(): void {
@@ -147,17 +145,12 @@ export class ClientesCadComponent implements OnInit {
   private onSuccess(result: Cliente) {
     this.alertService.success('Cliente ' + result.nome+ ' cadastrado(a) com sucesso');
     this.router.navigate(['clientes/cliente-detalhes/'+ result.idCliente]);
-    //this.router.navigate(['cadastrar-cliente']);
   }
 
   private onError(e: any) {
     this.alertService.error(e.error.message);
     this.router.navigate(['cadastrar-cliente']);
   }
-
-  // onCancel() {
-  //   this.location.back();
-  // }
 
   getErrorMessage(fieldName: string) {
     console.log(fieldName);
