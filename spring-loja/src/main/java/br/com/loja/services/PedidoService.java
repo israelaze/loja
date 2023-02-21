@@ -89,6 +89,24 @@ public class PedidoService {
 		return new PedidoGetDTO(pedido);
 	}
 
+	public List<PedidoGetDTO> buscarPedidosByCliente(Integer idCliente) {
+
+		List<Pedido> lista = pedidoRepository.buscarPedidosByCliente(idCliente);
+		List<PedidoGetDTO> listaGetDto = null;
+		
+		if (lista != null) {
+			listaGetDto = new ArrayList<PedidoGetDTO>();
+
+			for (Pedido pedido : lista) {
+				PedidoGetDTO getDto = new PedidoGetDTO(pedido);
+				
+				listaGetDto.add(getDto);
+			}	
+		}
+		
+		return listaGetDto;
+	}
+	
 	public List<PedidoGetDTO> buscarPedidos() {
 
 		List<Pedido> lista = pedidoRepository.findAll();
@@ -106,7 +124,6 @@ public class PedidoService {
 		
 		return listaGetDto;
 	}
-	
 	public PedidoGetDTO buscarId(Integer idPedido) {
 
 		Optional<Pedido> result = pedidoRepository.findById(idPedido);

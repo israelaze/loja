@@ -61,6 +61,20 @@ public class PedidosController {
 			return ResponseEntity.internalServerError().build();
 		}
 	}
+	
+	@GetMapping("/cliente/{idCliente}")
+	@Operation(summary = "Buscar pedidos cadastrados por Cliente")
+	public ResponseEntity<List<PedidoGetDTO>> buscarPedidosByCliente(@PathVariable("idCliente")Integer idCliente) {
+
+		try {
+			List<PedidoGetDTO> lista = service.buscarPedidosByCliente(idCliente);
+			return ResponseEntity.status(HttpStatus.OK).body(lista);
+
+		} catch (ServiceException e) {
+			log.error("ERRO:", e);
+			return ResponseEntity.internalServerError().build();
+		}
+	}
 
 	@GetMapping("/{idPedido}")
 	@Operation(summary = "Buscar pedido pelo Id")

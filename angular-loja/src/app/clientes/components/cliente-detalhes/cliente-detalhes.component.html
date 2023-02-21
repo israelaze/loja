@@ -1,1 +1,245 @@
-<p>cliente-detalhes works!</p>
+
+<div class="container">
+
+  <h1>{{cliente.nome}}</h1>
+
+  <mat-card>
+
+    <!-- INÍCIO DO CONTEÚDO -->
+    <mat-card-content>
+
+      <img matCardImage
+        src="https://prints.ultracoloringpages.com/32ac51e38ff37505869d05f536911310.png"
+        width="150" height="212"
+      >
+
+      <h2>Dados pessoais</h2>
+
+      <div>
+        Nome:
+        {{cliente.nome}}
+      </div>
+      <div>
+        CPf:
+        {{cliente.cpf}}
+      </div>
+      <div>
+        Data de nascimento:
+        {{cliente.dataNascimento}}
+      </div>
+      <div>
+        Telefone principal:
+        {{cliente.telefone1}}
+      </div>
+      <div>
+        Telefone reserva:
+        {{cliente.telefone2}}
+      </div>
+      <div>
+        Email:
+        {{cliente.email}}
+      </div>
+      <div>
+        Observação:
+        {{cliente.observacao}}
+      </div>
+
+      <h2>Endereço</h2>
+
+      <div>
+        Logradouro:
+        {{cliente.endereco.logradouro}}
+      </div>
+      <div>
+        Número:
+        {{cliente.endereco.numero}}
+      </div>
+      <div>
+        Complemento:
+        {{cliente.endereco.complemento}}
+      </div>
+      <div>
+        Condomínio:
+        {{cliente.endereco.condominio}}
+      </div>
+      <div>
+        Bairro:
+        {{cliente.endereco.bairro}}
+      </div>
+      <div>
+        Município:
+        {{cliente.endereco.municipio}}
+      </div>
+      <div>
+        Estado:
+        {{cliente.endereco.estado}}
+      </div>
+      <div>
+        Cep:
+        {{cliente.endereco.cep}}
+      </div>
+
+      <h2>Histórico de pedidos</h2>
+
+      <!-- Não há pedidos -->
+      <div *ngIf="listaPedidos.length == 0">
+        <p style="color: lightcoral;">Sem pedidos registrados para este cliente.</p>
+      </div>
+
+      <!-- INÍCIO DA LISTA DE PEDIDOS -->
+      <div *ngIf="listaPedidos.length != 0">
+
+        <!-- Filtro -->
+        <mat-form-field class="filter">
+          <mat-label class="filter">Filtro</mat-label>
+          <input matInput (keyup)="applyFilter($event)" placeholder="pesquisar" #input>
+        </mat-form-field>
+
+        <!-- Tabela -->
+        <table mat-table [dataSource]="dataSource" multiTemplateDataRows matSort (matSortChange)="announceSortChange($event)" class="mat-elevation-z8">
+
+          <!-- NúmeroPedido -->
+          <ng-container matColumnDef="numeroPedido">
+            <th mat-header-cell *matHeaderCellDef> Nº pedido</th>
+            <td mat-cell *matCellDef="let pedido"> {{pedido.numeroPedido}} </td>
+          </ng-container>
+
+          <!-- Data -->
+          <ng-container matColumnDef="dataPedido">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Data </th>
+              <td mat-cell *matCellDef="let pedido"> {{pedido.dataPedido | data}} </td>
+          </ng-container>
+
+          <!-- Total -->
+          <ng-container matColumnDef="total">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Total </th>
+              <td mat-cell *matCellDef="let pedido"> {{pedido.total}} </td>
+          </ng-container>
+
+          <!-- Situação -->
+          <ng-container matColumnDef="situacao">
+              <th mat-header-cell *matHeaderCellDef> Situação </th>
+              <td mat-cell *matCellDef="let pedido"> {{pedido.situacao}} </td>
+          </ng-container>
+
+          <!-- Expandir elementos-->
+          <ng-container matColumnDef="expand">
+              <th mat-header-cell *matHeaderCellDef aria-label="row actions">&nbsp;</th>
+              <td mat-cell *matCellDef="let element">
+                  <button mat-icon-button aria-label="expand row"
+                      (click)="(expandedElement = expandedElement === element ? null : element); $event.stopPropagation()">
+                      <mat-icon *ngIf="expandedElement !== element">keyboard_arrow_down</mat-icon>
+                      <mat-icon *ngIf="expandedElement === element">keyboard_arrow_up</mat-icon>
+                  </button>
+              </td>
+          </ng-container>
+
+          <!-- Conteúdo estendido - Detalhes do pedido -->
+          <ng-container matColumnDef="expandedDetail">
+              <td mat-cell *matCellDef="let pedido" [attr.colspan]="columnsToDisplayWithExpand.length">
+                  <div class="example-element-detail" [@detailExpand]="pedido == expandedElement ? 'expanded' : 'collapsed'">
+
+                      <div class="example-element-description">
+                          <div>
+                              Vendedor(a):
+                              <span class="example-element-description-attribution"> </span>
+                          </div>
+                          <div>
+                              Data da entrega:
+                              <span class="example-element-description-attribution"> </span>
+                          </div>
+                          <div>
+                              Desconto aplicado:
+                              <span class="example-element-description-attribution"> </span>
+                          </div>
+                          <br>
+                          <div>
+                              Ítens do pedido:
+                              <span class="example-element"> </span>
+                          </div>
+                      </div>
+                      <div class="example-element-description">
+                          <div> {{pedido.vendedor.nome}} </div>
+                          <div>
+                              <div *ngIf="pedido.dataEntrega">
+                                  {{pedido.dataEntrega | data}}
+                              </div>
+                              <div *ngIf="!pedido.dataEntrega">
+                                  <span> <i>Não informada</i> </span>
+                              </div>
+                          </div>
+                          <div> {{pedido.desconto}} </div>
+                          <br>
+                          <div >
+
+                              <div *ngFor="let item of pedido.itens">
+                                {{item.produto.nomeProduto}},
+                                {{item.produto.codigo}},
+                                {{item.produto.descricao}},
+                                {{item.produto.peso}},
+                                {{item.quantidade}},
+                                {{item.preco}},
+                                {{item.subTotal}},
+                              </div>
+
+                          </div>
+                      </div>
+
+                  </div>
+              </td>
+          </ng-container>
+
+          <!-- Mensagem exibida quando não há dados correspondentes na filtragem -->
+          <tr class="mat-row" *matNoDataRow>
+            <td class="mat-cell" colspan="4">Não encontrado: "{{input.value}}"</td>
+          </tr>
+
+          <!-- Definição das colunas e linhas -->
+          <tr mat-header-row *matHeaderRowDef="columnsToDisplayWithExpand"></tr>
+          <tr mat-row *matRowDef="let element; columns: columnsToDisplayWithExpand;" class="example-element-row"
+              [class.example-expanded-row]="expandedElement === element"
+              (click)="expandedElement = expandedElement === element ? null : element">
+          </tr>
+          <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+        </table>
+        <br>
+
+        <mat-paginator
+          [pageSizeOptions]="[5, 10, 15, 25]"
+          showFirstLastButtons
+          aria-label="Selecionar página">
+        </mat-paginator>
+      </div>
+      <!-- FIM DA LISTA DE PEDIDOS -->
+    </mat-card-content>
+    <!-- FIM DO CONTEÚDO -->
+    
+    <mat-card-actions>
+      <a href="clientes/clientes-lista" mat-raised-button style="color:darkblue">Voltar</a>
+    </mat-card-actions>
+    <br>
+
+  </mat-card>
+
+  <mat-card-footer>
+    <br>
+  </mat-card-footer>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -115,8 +115,11 @@ public class PopularBanco implements CommandLineRunner{
 		Pedido ped3 = new Pedido(RandomUtils.gerarNumeroPedidoAleatorio(),DateUtils.toDate("1999-05-02"), SituacaoPedido.PAGO, 50.0, cli3, vend2);
 		Pedido ped4 = new Pedido(RandomUtils.gerarNumeroPedidoAleatorio(),DateUtils.toDate("1999-05-02"), SituacaoPedido.PAGO, 10.0, cli1, vend2);
 		Pedido ped5 = new Pedido(null, RandomUtils.gerarNumeroPedidoAleatorio(), DateUtils.toDate("2022-11-09"), DateUtils.toDate("2022-11-11"), SituacaoPedido.PAGO, 5.0, null, cli6, null, vend2);
+		Pedido ped6 = new Pedido(RandomUtils.gerarNumeroPedidoAleatorio(),DateUtils.toDate("2099-09-02"), SituacaoPedido.PAGO, 0.0, cli2, vend1);
+
 		
-		pedidoRepository.saveAll(Arrays.asList(ped1, ped2, ped3, ped4, ped5));
+		
+		pedidoRepository.saveAll(Arrays.asList(ped1, ped2, ped3, ped4, ped5, ped6));
 
 		// CADASTRANDO ITEM DE PEDIDO
 		ItemPedido item1 = new ItemPedido(ped1, prod1, 1, prod1.getValorVenda());
@@ -126,8 +129,10 @@ public class PopularBanco implements CommandLineRunner{
 		ItemPedido item5 = new ItemPedido(ped3, prod2, 3, prod2.getValorVenda());
 		ItemPedido item6 = new ItemPedido(ped4, prod4,10, prod4.getValorVenda());
 		ItemPedido item7 = new ItemPedido(ped5, prod4,10, prod4.getValorVenda());
+		ItemPedido item8 = new ItemPedido(ped6, prod1, 2, prod1.getValorVenda());
+
 	
-		itemPedidoRepository.saveAll(Arrays.asList(item1, item2,item3, item4, item5, item6, item7));
+		itemPedidoRepository.saveAll(Arrays.asList(item1, item2,item3, item4, item5, item6, item7, item8));
 	
 	}
 

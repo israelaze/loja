@@ -1,0 +1,42 @@
+.container {
+  width: 95%;
+  margin: auto;
+}
+
+button {
+  width: 100%;
+}
+
+h1 {
+  width: 100%;
+  text-align: center;
+ // margin-bottom: 1rem;
+  font-weight: 500;
+}
+
+h2 {
+  font-weight: 430;
+
+}
+
+.mat-table {
+  overflow: auto;
+  max-height: 600px;
+}
+
+.example-element-row{
+  border-bottom-width: 0;
+}
+
+.example-element-detail {
+  overflow: hidden;
+  display: flex;
+}
+
+.example-element-description {
+  padding: 16px;
+}
+
+.example-element-description-attribution {
+  opacity: 0.5;
+}

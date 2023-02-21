@@ -8,14 +8,19 @@ import { Pedido } from '../models/pedido';
 })
 export class PedidosService {
 
-   // URL API WEB
-   endpoint = environment.baseUrl + 'pedidos';
+  // URL API WEB
+  endpoint = environment.baseUrl + 'pedidos';
 
-   // INJEÇÃO DE DEPENDÊNCIA
-   constructor(private httpClient: HttpClient) { }
- 
-    // BUSCAR TODOS
-    buscarTodos() {
-     return this.httpClient.get<Pedido[]>(this.endpoint);
-   }
+  // INJEÇÃO DE DEPENDÊNCIA
+  constructor(private httpClient: HttpClient) { }
+
+  // BUSCAR TODOS
+  buscarTodos() {
+    return this.httpClient.get<Pedido[]>(this.endpoint);
+  }
+
+  // BUSCAR PEDIDOS POR CLIENTE
+  buscarPedidosByCliente(idCliente: number) {
+    return this.httpClient.get<Pedido[]>(this.endpoint + "/cliente/" + idCliente);
+  }
 }

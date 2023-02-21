@@ -13,9 +13,6 @@ export class AuthService {
   // URL API WEB
   private endpoint = environment.baseUrl + "auth";
 
-  /* FLAG PARA TESTES. DETERMINA SE A APLICAÇÃO DEVE UTILIZAR O TEMPO DE DURAÇÃO DO TOKEN */
-  private expira = false;
-
   // INJEÇÃO DE DEPENDÊNCIA
   constructor(private httpClient: HttpClient) { }
 
@@ -63,14 +60,7 @@ export class AuthService {
       return false;
     }
 
-    if(this.expira){
-      return (date.valueOf() > new Date().valueOf());
-    }else{
-      console.log("TOKEN NÃO EXPIRA");
-      return false;
-    }
-
-
+    return !(date.valueOf() > new Date().valueOf());
   }
 
   // Captura a data de expiração do token
