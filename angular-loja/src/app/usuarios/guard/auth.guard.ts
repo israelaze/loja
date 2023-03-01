@@ -23,7 +23,7 @@ export class AuthGuard implements CanActivate {
     // verificando se existe um token, porém expirado
     if(accessToken != null && this.authService.isTokenExpired){
 
-      alert("Acesso expirado. Necessário refazer o login.");
+      alert("Acesso expirado. Necessário refazer o login para continuar.");
       this.router.navigate(['login']);
 
       return false;

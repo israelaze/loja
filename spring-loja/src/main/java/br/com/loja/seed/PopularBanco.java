@@ -54,10 +54,9 @@ public class PopularBanco implements CommandLineRunner{
 		
 		// CADASTRANDO USUÁRIOS
 		Usuario usu1 = new Usuario(null, "Edy", "Mota", "t1@gmail.com", passwordEncoder.encode("1234"), Perfil.ADMIN);
-		usuarioRepository.saveAll(Arrays.asList(usu1));
-		
 		Usuario usu2 = new Usuario(null, "Ana", "", "t2@gmail.com", passwordEncoder.encode("1234"), Perfil.USER);
-		usuarioRepository.saveAll(Arrays.asList(usu2));
+		
+		usuarioRepository.saveAll(Arrays.asList(usu1, usu2));
 		
 		// CADASTRANDO ENDEREÇOS
 		Endereco endCliente1 = new Endereco("Rua Albert", "99", null, null, "Bnh", "Mesquita", Estado.RJ, "33333-666"); 
@@ -68,7 +67,7 @@ public class PopularBanco implements CommandLineRunner{
 		enderecoRepository.saveAll(Arrays.asList(endCliente1, endCliente2, endFornecedor1, endFornecedor2));
 		
 		// CADASTRANDO CLIENTES
-		Cliente cli1 = new Cliente("Bia Souza", "111111111-11", DateUtils.toDate("1999-05-02"), "999999999", "3333-3333", "bia@bol.com", "Cliente chata a bessa kk", endCliente1);
+		Cliente cli1 = new Cliente("Bia Souza", "111111111-11", DateUtils.toDate("1999-05-02"), "999999999", "33333333", "bia@bol.com", "Cliente chata a bessa kk", endCliente1);
 		Cliente cli2 = new Cliente("Edy Silva", "222222222-22", DateUtils.toDate("2002-08-10"), "888888888", null, "edy@bol.com", null, endCliente2);
 		Cliente cli3 = new Cliente("Tom Melo", "333333333-33", DateUtils.toDate("1995-01-15"), "777777777", null, "tom@bol.com", "Sem endereço", endCliente1);
 		Cliente cli4 = new Cliente("Ana Silva", "444444444-44", null, "666666666", null, "ana@bol.com", null, endCliente1);
@@ -110,15 +109,13 @@ public class PopularBanco implements CommandLineRunner{
 		vendedorRepository.saveAll(Arrays.asList(vend1, vend2));
 		
 		// CADASTRANDO PEDIDOS	
-		Pedido ped1 = new Pedido(RandomUtils.gerarNumeroPedidoAleatorio(),DateUtils.toDate("2005-05-02"), SituacaoPedido.AGUARDANDO_PAGAMENTO, 20.0, cli4, vend1);
-		Pedido ped2 = new Pedido(RandomUtils.gerarNumeroPedidoAleatorio(),DateUtils.toDate("1999-05-02"), SituacaoPedido.PAGO, 12.5, cli2, vend1);
+		Pedido ped1 = new Pedido(null, RandomUtils.gerarNumeroPedidoAleatorio(), DateUtils.toDate("2023-01-09"), DateUtils.toDate("2023-01-10"), SituacaoPedido.PAGO, 0.0 , null, cli4, null, vend2);
+		Pedido ped2 = new Pedido(RandomUtils.gerarNumeroPedidoAleatorio(),DateUtils.toDate("2022-12-02"), SituacaoPedido.PAGO, 12.5, cli2, vend1);
 		Pedido ped3 = new Pedido(RandomUtils.gerarNumeroPedidoAleatorio(),DateUtils.toDate("1999-05-02"), SituacaoPedido.PAGO, 50.0, cli3, vend2);
 		Pedido ped4 = new Pedido(RandomUtils.gerarNumeroPedidoAleatorio(),DateUtils.toDate("1999-05-02"), SituacaoPedido.PAGO, 10.0, cli1, vend2);
 		Pedido ped5 = new Pedido(null, RandomUtils.gerarNumeroPedidoAleatorio(), DateUtils.toDate("2022-11-09"), DateUtils.toDate("2022-11-11"), SituacaoPedido.PAGO, 5.0, null, cli6, null, vend2);
-		Pedido ped6 = new Pedido(RandomUtils.gerarNumeroPedidoAleatorio(),DateUtils.toDate("2099-09-02"), SituacaoPedido.PAGO, 0.0, cli2, vend1);
+		Pedido ped6 = new Pedido(RandomUtils.gerarNumeroPedidoAleatorio(),DateUtils.toDate("2019-09-02"), SituacaoPedido.PAGO, 0.0, cli2, vend1);
 
-		
-		
 		pedidoRepository.saveAll(Arrays.asList(ped1, ped2, ped3, ped4, ped5, ped6));
 
 		// CADASTRANDO ITEM DE PEDIDO
@@ -131,7 +128,6 @@ public class PopularBanco implements CommandLineRunner{
 		ItemPedido item7 = new ItemPedido(ped5, prod4,10, prod4.getValorVenda());
 		ItemPedido item8 = new ItemPedido(ped6, prod1, 2, prod1.getValorVenda());
 
-	
 		itemPedidoRepository.saveAll(Arrays.asList(item1, item2,item3, item4, item5, item6, item7, item8));
 	
 	}

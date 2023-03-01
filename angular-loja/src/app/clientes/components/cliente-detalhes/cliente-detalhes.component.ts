@@ -26,12 +26,16 @@ import { PedidosService } from './../../../pedidos/services/pedidos.service';
 export class ClienteDetalhesComponent implements OnInit{
 
   dataSource = new MatTableDataSource<Pedido>;
-  columnsToDisplay = ['numeroPedido', 'dataPedido', 'total', 'situacao'];
+  columnsToDisplay = ['numeroPedido', 'vendedor', 'dataPedido', 'dataEntrega', 'desconto', 'total', 'situacao'];
   columnsToDisplayWithExpand = [...this.columnsToDisplay, 'expand'];
   expandedElement: Pedido | null;
 
+  displayedColumns: string[] = ['codigo', 'produto', 'descricao', 'peso', 'quantidade', 'preco', 'subtotal'];
+
   cliente: Cliente = new Cliente;
   listaPedidos: Pedido[] = [];
+
+  foto = '';
 
   //atributo para guardar o parâmetro recebido na rota
   parametro = this.route.snapshot.paramMap.get('id');
@@ -69,6 +73,37 @@ export class ClienteDetalhesComponent implements OnInit{
     this.clientesService.buscarId(idCliente).subscribe({
       next: cliente => {
         this.cliente = cliente;
+
+
+        //------PROVISÓRIO -------//
+
+        const idCliente = cliente.idCliente;
+        switch (idCliente) {
+          case 1:
+            this.foto = "assets/imagens/Bia.jpg";
+            break;
+          case 2:
+            this.foto = "assets/imagens/Edy.jpg";
+            break;
+          case 3:
+            this.foto = "assets/imagens/Tom.jpg";
+            break;
+          case 4:
+            this.foto = "assets/imagens/Ana.jpeg";
+            break;
+          case 5:
+            this.foto = "assets/imagens/Tiao.jpg";
+            break;
+          case 6:
+            this.foto = "assets/imagens/Caio.jpg";
+            break;
+          default:
+            break;
+        }
+
+        // if(cliente.idCliente == 1){
+        //   this.foto = "assets/imagens/Bia.jpg";
+        // }
       },
       error: e => {
         console.log(e.error);

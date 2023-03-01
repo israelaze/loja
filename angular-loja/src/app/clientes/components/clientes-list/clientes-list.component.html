@@ -22,7 +22,7 @@
       </mat-form-field>
 
       <!-- Tabela -->
-      <mat-table [dataSource]="dataSource" matSort (matSortChange)="announceSortChange($event)" class="mat-elevation-z8">
+      <table mat-table [dataSource]="dataSource" matSort (matSortChange)="announceSortChange($event)" class="mat-elevation-z8">
 
         <!-- Nome -->
         <ng-container matColumnDef="nome">
@@ -87,17 +87,17 @@
           <td class="mat-cell" colspan="4">Não encontrado: "{{input.value}}"</td>
         </tr>
 
-      </mat-table>
+      </table>
+      <br>
+
+      <!-- Paginação -->
+      <mat-paginator
+        [pageSizeOptions]="[10, 15, 25]"
+        showFirstLastButtons
+        aria-label="Selecionar página">
+      </mat-paginator>
     </section>
 
   </app-card-listar>
-  <br>
-
-  <!-- Paginação -->
-  <mat-paginator
-    [pageSizeOptions]="[5, 10, 15, 25]"
-    showFirstLastButtons
-    aria-label="Selecionar página">
-  </mat-paginator>
 
 </div>

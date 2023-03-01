@@ -1,14 +1,14 @@
-<mat-drawer-container class="container" autosize>
+<mat-drawer-container class="container">
 
-  <!--Lado expandível do menu-->
+  <!--Lado expansível do menu-->
   <mat-drawer #drawer opened="true" class="sidenav" mode="side">
 
     <!--Início da Listagem do Menu-->
     <img src="assets/imagens/loja.png" alt="Imagem de navegação">
-    <mat-nav-list class="nav-list">
+    <mat-nav-list>
 
       <a mat-list-item routerLink="home">
-        <i class="material-icons">home</i>
+        <i class="material-icons"  >home</i>
         Home
       </a>
       <br />
@@ -61,14 +61,23 @@
   </mat-drawer>
 
   <!--Lado direito da tela-->
-  <div class="sidenav-content">
-    <!--Inserção do Header-->
-    <app-header></app-header>
-    <button class="menu mat-elevation-z8" (click)="drawer.toggle()" mat-icon-button>
-        <mat-icon title="Menu Principal">menu</mat-icon>
-    </button>
-    <!--Roteando os SubMenus-->
-    <router-outlet></router-outlet>
-  </div>
+  <mat-drawer-content>
 
+    <!--Inserção do cabeçalho (HEADER)-->
+    <app-header></app-header>
+
+    <!-- Inserção do botão Exibir/ocultar o NAV-->
+    <button class="menu mat-elevation-z8" (click)="drawer.toggle()" mat-icon-button>
+      <mat-icon title="Menu Principal">menu</mat-icon>
+    </button>
+
+    <!--Roteando os SubMenus. Exibe os componentes-->
+    <main class="sidenav-content">
+      <router-outlet></router-outlet>
+    </main>
+
+    <!--Inserção do rodapé (FOOTER)-->
+    <app-footer></app-footer>
+
+  </mat-drawer-content>
 </mat-drawer-container>

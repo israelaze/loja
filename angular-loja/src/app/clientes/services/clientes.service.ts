@@ -18,16 +18,9 @@ export class ClientesService {
   // INJEÇÃO DE DEPENDÊNCIA
   constructor(private httpClient: HttpClient) { }
 
-  //  // BUSCAR TODOS
-  //  buscarTodos() {
-  //   return this.httpClient.get<Cliente[]>(this.endpoint);
-  // }
-
-  buscarTodos() {
-    return this.httpClient.get<Cliente[]>(this.endpoint)
-      .pipe(
-        first()
-      );
+   // BUSCAR TODOS
+   buscarTodos() {
+    return this.httpClient.get<Cliente[]>(this.endpoint);
   }
 
   // CADASTRAR
