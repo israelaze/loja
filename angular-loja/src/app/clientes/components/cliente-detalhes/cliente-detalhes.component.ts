@@ -5,11 +5,14 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
+import { Observable } from 'rxjs';
 import { Cliente } from 'src/app/clientes/models/cliente';
 import { ClientesService } from 'src/app/clientes/services/clientes.service';
 import { Pedido } from 'src/app/pedidos/models/pedido';
 import { PedidosService } from './../../../pedidos/services/pedidos.service';
+
 
 @Component({
   selector: 'app-cliente-detalhes',
@@ -25,27 +28,29 @@ import { PedidosService } from './../../../pedidos/services/pedidos.service';
 })
 export class ClienteDetalhesComponent implements OnInit{
 
+  // tabela PEDIDOS
   dataSource = new MatTableDataSource<Pedido>;
   columnsToDisplay = ['numeroPedido', 'vendedor', 'dataPedido', 'dataEntrega', 'desconto', 'total', 'situacao'];
   columnsToDisplayWithExpand = [...this.columnsToDisplay, 'expand'];
   expandedElement: Pedido | null;
 
+  // tabela ÍTENS DO PEDIDO
   displayedColumns: string[] = ['codigo', 'produto', 'descricao', 'peso', 'quantidade', 'preco', 'subtotal'];
 
   cliente: Cliente = new Cliente;
   listaPedidos: Pedido[] = [];
 
-  foto = '';
-
   //atributo para guardar o parâmetro recebido na rota
   parametro = this.route.snapshot.paramMap.get('id');
+
+  foto: any;
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(private clientesService: ClientesService, private pedidosService: PedidosService,
     private _liveAnnouncer: LiveAnnouncer, private snackBar: MatSnackBar, private ref: ChangeDetectorRef,
-    private route: ActivatedRoute,
+    private route: ActivatedRoute, private sanitizer: DomSanitizer
   ){}
 
   // EXECUTA QUANDO O COMPONENTE É CARREGADO
@@ -53,7 +58,6 @@ export class ClienteDetalhesComponent implements OnInit{
     //converter STRING => NUMBER.
     this.converterStringToNumber(this.parametro);
 
-    //Busca automática ao iniciar o componente
     this.buscarId(this.cliente.idCliente);
     this.buscarPedidosByCliente(this.cliente.idCliente);
 
@@ -72,11 +76,14 @@ export class ClienteDetalhesComponent implements OnInit{
   buscarId(idCliente: number): void {
     this.clientesService.buscarId(idCliente).subscribe({
       next: cliente => {
+
         this.cliente = cliente;
 
+        if(this.cliente.foto){
+          this.foto = 'data:image/png;base64,' + this.cliente.foto;
+        }else{
 
-        //------PROVISÓRIO -------//
-
+          //------PROVISÓRIO -------//
         const idCliente = cliente.idCliente;
         switch (idCliente) {
           case 1:
@@ -101,9 +108,10 @@ export class ClienteDetalhesComponent implements OnInit{
             break;
         }
 
-        // if(cliente.idCliente == 1){
-        //   this.foto = "assets/imagens/Bia.jpg";
-        // }
+        }
+
+
+
       },
       error: e => {
         console.log(e.error);

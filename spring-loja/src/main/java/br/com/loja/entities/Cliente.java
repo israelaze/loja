@@ -12,6 +12,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
@@ -66,8 +67,13 @@ public class Cliente implements Serializable{
 	@OneToMany(mappedBy = "cliente")
 	private Set<Pedido> pedidos = new HashSet<>();
 	
+//	@OneToOne
+//	@JoinColumn(name = "idImagem", unique = true)
+	@Lob
+	private byte[] foto;
+	
 	public Cliente(String nome, String cpf, Date dataNascimento, String telefone1, String telefone2, String email,
-			String observacao, Endereco endereco) {
+			String observacao, Endereco endereco, byte [] foto) {
 		this.nome = nome;
 		this.cpf = cpf;
 		this.dataNascimento = dataNascimento;
@@ -76,6 +82,7 @@ public class Cliente implements Serializable{
 		this.email = email;
 		this.observacao = observacao;
 		this.endereco = endereco;
+		this.foto = foto;
 	}
 
 	@Override

@@ -1,8 +1,10 @@
 package br.com.loja.controllers;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -12,7 +14,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import br.com.loja.dtos.cliente.ClienteGetDTO;
 import br.com.loja.dtos.cliente.ClientePostDTO;
@@ -32,16 +38,27 @@ import lombok.AllArgsConstructor;
 public class ClientesController {
 
 	private final ClienteService service;
+    private final ObjectMapper mapper = new ObjectMapper();
 
-	@PostMapping
+    @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
 	@Operation(summary = "Cadastrar cliente")
-	public ResponseEntity<ClienteGetDTO> cadastrar(@Valid @RequestBody ClientePostDTO dto) {
+	public ResponseEntity<ClienteGetDTO> cadastrar(@Valid @RequestParam String dadosCliente, @RequestParam(value="file", required= false) MultipartFile file) {
 
 		try {
+			
+			// convertendo os dadosdo cliente(String) em dto
+			ClientePostDTO dto = mapper.readValue(dadosCliente, ClientePostDTO.class);
+			
+			// setando a foto no dto
+			if(file != null) {
+				dto.setFoto(file.getInputStream().readAllBytes());
+				//dto.setFoto(ImagemUtils.compressImage(file.getBytes()));
+			}
+			
 			ClienteGetDTO getDto = service.cadastrar(dto);
 			return ResponseEntity.status(HttpStatus.CREATED).body(getDto);
 
-		} catch (ServiceException | IllegalArgumentException | IllegalAccessException e) {
+		} catch (ServiceException | IllegalArgumentException | IllegalAccessException | IOException e) {
 			return ResponseEntity.internalServerError().build();
 		}
 	}

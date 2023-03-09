@@ -6,12 +6,10 @@
   <!-- Imagem -->
   <section style="position: relative; left: 2em;">
     <div *ngIf="foto">
-      <img matCardImage
-      src= {{foto}}
-      width="150" height="212"
+      <img matCardImage class="foto"
+      [src]="foto"
     >
     </div>
-
   </section>
 
   <section >

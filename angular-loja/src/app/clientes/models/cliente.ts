@@ -9,5 +9,6 @@ export class Cliente{
   telefone2: string;
   email: string;
   observacao: string;
+  foto: string;
   endereco: Endereco = new Endereco;
 }

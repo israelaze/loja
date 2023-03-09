@@ -32,8 +32,9 @@ public class ClientePostDTO {
 	private String email;
 	
 	private String observacao;
-	private String logradouro;
+	private byte[] foto;
 	
+	private String logradouro;
 	private String numero;
 	private String complemento;
 	private String condominio;

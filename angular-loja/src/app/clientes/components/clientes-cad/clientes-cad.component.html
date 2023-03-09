@@ -1,12 +1,23 @@
 <app-card-form tituloFormulario="Cadastro de Clientes">
   <!--Tag section que passa um nome de class e com isso é selecionada lá no card-crud-->
   <section class="card-form-content">
+
       <mat-stepper  [orientation]="(stepperOrientation | async)!" [linear]="isLinear" #stepper>
 
         <!-- DADOS PRINCIPAIS -->
         <mat-step [stepControl]="dados" #step1 >
           <ng-template matStepLabel>Dados Principais</ng-template>
           <form [formGroup]="dados" class="min-width">
+
+            <mat-form-field class="fullWidth" appearance="fill">
+              <mat-label class="label">Foto:</mat-label>
+              <input matInput readonly/>
+
+              <!-- Passando para o componente PAI,
+              o evento customizado disparado pelo componente FILHO  -->
+              <app-upload-file (evento)="onUpload($event)"> </app-upload-file>
+
+            </mat-form-field>
 
             <mat-form-field class="fullWidth" appearance="fill">
               <mat-label class="label">Nome Completo:</mat-label>
@@ -40,7 +51,7 @@
             <br>
             <mat-card-actions>
               <button mat-button (click)="step1.reset()">Limpar</button>
-              <button [disabled]="!dados.valid" mat-button  matStepperNext>Avançar</button>
+              <button [disabled]="!dados.valid " mat-button  matStepperNext>Avançar</button>
             </mat-card-actions>
           </form>
         </mat-step>
@@ -211,4 +222,6 @@
 
       </mat-stepper>
   </section>
+
+
 </app-card-form>

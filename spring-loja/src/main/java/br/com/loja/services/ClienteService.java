@@ -63,6 +63,7 @@ public class ClienteService {
 		if (endereco.getIdEndereco() != null) {
 			cliente.setEndereco(endereco);
 		}
+		
 		clienteRepository.save(cliente);
 
 		// convertendo o cliente em dto e retornando ao cotroller

@@ -1,0 +1,13 @@
+<div>
+  <img [src]="preview" class="preview" />
+</div>
+
+<div class="erro">
+  <input type="file" accept="image/*" (change)="selectFile($event)" />
+</div>
+
+<div *ngIf="message" class="erro">
+  <span>Erro:</span>
+  {{ message }}
+</div>
+

@@ -32,6 +32,8 @@ public class ClientePutDTO {
 	private String email;
 	
 	private String observacao;
+	private byte[] foto;
+	
 	private String logradouro;
 	private String numero;
 	private String complemento;

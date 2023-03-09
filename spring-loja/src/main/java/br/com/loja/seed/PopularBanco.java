@@ -67,12 +67,12 @@ public class PopularBanco implements CommandLineRunner{
 		enderecoRepository.saveAll(Arrays.asList(endCliente1, endCliente2, endFornecedor1, endFornecedor2));
 		
 		// CADASTRANDO CLIENTES
-		Cliente cli1 = new Cliente("Bia Souza", "111111111-11", DateUtils.toDate("1999-05-02"), "999999999", "33333333", "bia@bol.com", "Cliente chata a bessa kk", endCliente1);
-		Cliente cli2 = new Cliente("Edy Silva", "222222222-22", DateUtils.toDate("2002-08-10"), "888888888", null, "edy@bol.com", null, endCliente2);
-		Cliente cli3 = new Cliente("Tom Melo", "333333333-33", DateUtils.toDate("1995-01-15"), "777777777", null, "tom@bol.com", "Sem endereço", endCliente1);
-		Cliente cli4 = new Cliente("Ana Silva", "444444444-44", null, "666666666", null, "ana@bol.com", null, endCliente1);
-		Cliente cli5 = new Cliente("Tião Silva", "55555555-55", DateUtils.toDate("1989-09-02"), "555555555", null, "tiao@bol.com", null, endCliente2);
-		Cliente cli6 = new Cliente("Caio Silva", "66666666-66", DateUtils.toDate("1989-09-02"), "444444444", null, "caio@bol.com", null, null);
+		Cliente cli1 = new Cliente("Bia Souza", "111111111-11", DateUtils.toDate("1999-05-02"), "999999999", "33333333", "bia@bol.com", "Cliente chata a bessa kk", endCliente1, null);
+		Cliente cli2 = new Cliente("Edy Silva", "222222222-22", DateUtils.toDate("2002-08-10"), "888888888", null, "edy@bol.com", null, endCliente2, null);
+		Cliente cli3 = new Cliente("Tom Melo", "333333333-33", DateUtils.toDate("1995-01-15"), "777777777", null, "tom@bol.com", "O cara parece o Jaspion kkk", endCliente1, null);
+		Cliente cli4 = new Cliente("Ana Silva", "444444444-44", null, "666666666", null, "ana@bol.com", null, endCliente1, null);
+		Cliente cli5 = new Cliente("Tião Silva", "55555555-55", DateUtils.toDate("1989-09-02"), "555555555", null, "tiao@bol.com", null, endCliente2, null);
+		Cliente cli6 = new Cliente("Caio Silva", "66666666-66", DateUtils.toDate("1989-09-02"), "444444444", null, "caio@bol.com", null, null, null);
 				
 		clienteRepository.saveAll(Arrays.asList(cli1, cli2, cli3, cli4, cli5, cli6));
 		

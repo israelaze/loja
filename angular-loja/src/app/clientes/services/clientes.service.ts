@@ -1,10 +1,9 @@
-import { ClientePut } from './../models/cliente-put';
-import { ClientePost } from './../models/cliente-post';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { Cliente } from '../models/cliente';
-import { delay, first, tap } from 'rxjs/operators';
+import { ClientePost } from './../models/cliente-post';
+import { ClientePut } from './../models/cliente-put';
 
 
 @Injectable({
@@ -24,10 +23,14 @@ export class ClientesService {
   }
 
   // CADASTRAR
-  cadastrar(cliente: ClientePost) {
-    console.log(cliente);
+  cadastrar(dados: string, file: File) {
 
-    return this.httpClient.post<Cliente>(this.endpoint, cliente);
+    const formData: FormData = new FormData();
+
+    formData.append('file', file);
+    formData.append('dadosCliente', dados)
+
+    return this.httpClient.post<Cliente>(this.endpoint, formData);
   }
 
   // BUSCAR ID

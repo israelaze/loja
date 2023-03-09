@@ -1,8 +1,8 @@
 import { BreakpointObserver } from '@angular/cdk/layout';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { StepperOrientation } from '@angular/material/stepper';
+import { MatStep, StepperOrientation } from '@angular/material/stepper';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -29,6 +29,10 @@ export class ClientesCadComponent implements OnInit {
 
   maxBirthday = new Date();
 
+  foto: File;
+
+  @ViewChild('step1') step: MatStep;
+
   constructor(
     private _formBuilder: FormBuilder,
     private clienteService: ClientesService,
@@ -43,6 +47,7 @@ export class ClientesCadComponent implements OnInit {
   }
 
   dados = this._formBuilder.group({
+
     nome: ['Teste teste',
       //torna o campo obrigatório
       [Validators.required,
@@ -91,6 +96,7 @@ export class ClientesCadComponent implements OnInit {
 
   ngOnInit(): void {
     this.buscarEstados();
+
   }
 
   buscarEstados(): void{
@@ -104,11 +110,41 @@ export class ClientesCadComponent implements OnInit {
     })
   }
 
+   //Recebendo um evento/valor do componente FILHO
+   onUpload(evento){
+
+    this.step.stepControl.status = "VALID";
+
+    if(evento == 'cancelar' ){
+
+      console.log(this.step.stepControl.status);
+      console.log("Cancelar");
+
+    }else if(evento == 'erro'){
+
+      this.step.stepControl.status = "INVALID";
+      console.log("Erro");
+
+      console.log(this.step.stepControl.status);
+
+    }else{
+
+      this.foto = evento;
+      this.step.stepControl.status = "VALID";
+
+      console.log('Arquivo recebido:', this.foto, typeof evento);
+    }
+  }
+
   cadastrar() {
 
+    // converte os dados do formulário em um CLientePost(JSON)
     this.formPost(this.dados.value, this.contatos.value, this.endereco.value, this.observacoes.value);
 
-    this.clienteService.cadastrar(this.clientePost).subscribe({
+    // converte o clientePost(JSON) em uma String
+    var dadosCliente = JSON.stringify(this.clientePost);
+
+    this.clienteService.cadastrar(dadosCliente, this.foto).subscribe({
       next: result => {
         this.onSuccess(result)
       },

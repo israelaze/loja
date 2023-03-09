@@ -21,8 +21,8 @@ public class ClienteGetDTO {
 	private String telefone2;
 	private String email;
 	private String observacao;
+	private byte[] foto;
 	private EnderecoDTO endereco;
-	
 	
 	// Convertendo um cliente em Dto via construtor
 	public ClienteGetDTO(Cliente cliente) {
@@ -39,7 +39,9 @@ public class ClienteGetDTO {
 		this.telefone2 = cliente.getTelefone2();
 		this.email = cliente.getEmail();
 		this.observacao = cliente.getObservacao();
-		
+		this.foto = cliente.getFoto();
+		//this.foto = ImagemUtils.decompressImage(cliente.getFoto());
+
 		if(cliente.getEndereco() != null) {
 			this.endereco = new EnderecoDTO(cliente.getEndereco());
 		}
