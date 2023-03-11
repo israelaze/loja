@@ -4,11 +4,9 @@
   <h1>{{cliente.nome}}</h1>
 
   <!-- Imagem -->
-  <section style="position: relative; left: 2em;">
+  <section>
     <div *ngIf="foto">
-      <img matCardImage class="foto"
-      [src]="foto"
-    >
+      <img matCardImage class="foto" [src]="foto" alt="sem foto">
     </div>
   </section>
 
@@ -20,7 +18,7 @@
       {{cliente.nome}}
     </div>
     <div>
-      CPf:
+      CPF:
       {{cliente.cpf}}
     </div>
     <div>
@@ -51,7 +49,7 @@
 
     <!-- Não há endereço -->
     <div *ngIf="cliente.endereco == null">
-      <p style="color: lightcoral;">Sem dados de endereço registrados para este cliente.</p>
+      <p class="semDados">Sem dados de endereço registrados para este cliente.</p>
     </div>
 
     <div *ngIf="cliente.endereco != null">
@@ -95,7 +93,7 @@
 
     <!-- Não há pedidos -->
     <div *ngIf="listaPedidos.length == 0">
-      <p style="color: lightcoral;">Sem pedidos registrados para este cliente.</p>
+      <p class="semDados">Sem pedidos registrados para este cliente.</p>
     </div>
 
     <!-- INÍCIO DA LISTA DE PEDIDOS -->
@@ -140,13 +138,13 @@
         <!-- Desconto -->
         <ng-container matColumnDef="desconto">
           <th mat-header-cell *matHeaderCellDef> Desconto </th>
-          <td mat-cell *matCellDef="let pedido"> {{pedido.desconto}} </td>
+          <td class="centro" mat-cell *matCellDef="let pedido"> {{pedido.desconto}} </td>
         </ng-container>
 
         <!-- Total -->
         <ng-container matColumnDef="total">
-          <th style="color:rgb(255, 0, 0)" mat-header-cell *matHeaderCellDef mat-sort-header> Total </th>
-          <td  style="color: rgb(244, 8, 8); font-style: oblique; font-weight: 550;" mat-cell *matCellDef="let pedido"> R$ {{pedido.total}} </td>
+          <th class="colunaTotal" mat-header-cell *matHeaderCellDef mat-sort-header> Total </th>
+          <td  class="valor" mat-cell *matCellDef="let pedido"> R$ {{pedido.total}}  </td>
         </ng-container>
 
         <!-- Situação -->
@@ -174,7 +172,7 @@
             <div class="example-element-detail" [@detailExpand]="pedido == expandedElement ? 'expanded' : 'collapsed'">
               <div class="example-element-description">
 
-                <p style="color: darkgoldenrod;">
+                <p class="itens">
                   <i>Ítens do pedido</i>
                 </p>
 
@@ -207,7 +205,7 @@
                   <!-- Quantidade -->
                   <ng-container matColumnDef="quantidade">
                     <th mat-header-cell *matHeaderCellDef> Quantidade </th>
-                    <td style="text-align: center;" mat-cell *matCellDef="let element"> {{element.quantidade}} </td>
+                    <td class="centro" mat-cell *matCellDef="let element"> {{element.quantidade}} </td>
                   </ng-container>
 
                   <!-- Preço -->
@@ -218,8 +216,8 @@
 
                   <!-- Subtotal -->
                   <ng-container matColumnDef="subtotal">
-                    <th style="color: rgb(245, 0, 0);" mat-header-cell *matHeaderCellDef> Subtotal </th>
-                    <td style="color: rgb(244, 8, 8); font-style: oblique; font-weight: 550;" mat-cell *matCellDef="let element"> R$ {{element.subTotal}} </td>
+                    <th class="colunaTotal" mat-header-cell *matHeaderCellDef> Subtotal </th>
+                    <td class="valor" mat-cell *matCellDef="let element"> R$ {{element.subTotal}} </td>
                   </ng-container>
 
                   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
@@ -258,7 +256,10 @@
   <!-- FIM DA LISTA DE PEDIDOS -->
 
   <mat-card-actions>
-    <a href="clientes/clientes-lista" mat-raised-button style="color:darkblue">Voltar</a>
+    <button>
+      <a class="voltar" href="clientes/clientes-lista" mat-raised-button>Voltar</a>
+    </button>
+    <!-- <a class="voltar" href="clientes/clientes-lista" mat-raised-button>Voltar</a> -->
   </mat-card-actions>
   <br><br>
 </div>

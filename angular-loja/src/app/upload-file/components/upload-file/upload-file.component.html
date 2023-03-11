@@ -1,12 +1,13 @@
 <div>
-  <img [src]="preview" class="preview" />
+  <img [src]="preview" class="preview"/>
 </div>
 
-<div class="erro">
-  <input type="file" accept="image/*" (change)="selectFile($event)" />
+<div>
+  <input id="getFile" type="file" style="display: none;" accept="image/*" (change)="selectFile($event)" />
+  <button onclick="document.getElementById('getFile').click()">Escolher arquivo</button>
 </div>
 
-<div *ngIf="message" class="erro">
+<div *ngIf="message" class="mensagemErro">
   <span>Erro:</span>
   {{ message }}
 </div>

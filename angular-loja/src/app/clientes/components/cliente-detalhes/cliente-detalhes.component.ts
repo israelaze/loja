@@ -80,7 +80,7 @@ export class ClienteDetalhesComponent implements OnInit{
         this.cliente = cliente;
 
         if(this.cliente.foto){
-          this.foto = 'data:image/png;base64,' + this.cliente.foto;
+          this.foto = 'data:image/jpeg;base64,' + this.cliente.foto;
         }else{
 
           //------PROVISÓRIO -------//

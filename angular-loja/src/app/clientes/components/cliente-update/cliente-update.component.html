@@ -8,6 +8,19 @@
           <ng-template matStepLabel>Dados Principais</ng-template>
           <form [formGroup]="dados" class="min-width">
 
+            <section>
+              <mat-label class="label">Foto:</mat-label>
+              <!-- <input matInput style="display: none;"/> -->
+
+                <!-- exibindo a imagem do cliente -->
+                <div *ngIf="!foto">
+                  <img matCardImage class="foto" [src]="imagem" >
+                </div>
+
+              <!-- Passando para o componente PAI, o evento customizado disparado pelo componente FILHO  -->
+              <app-upload-file (evento)="onUpload($event)"> </app-upload-file>
+            </section>
+
             <mat-form-field class="fullWidth" appearance="fill">
               <mat-label class="label">Nome Completo:</mat-label>
               <input matInput [(ngModel)]="cliente.nome" placeholder="Informe o nome e sobrenome..."
@@ -89,7 +102,7 @@
 
             <mat-form-field class="fullWidth" appearance="fill">
               <mat-label>Logradouro:</mat-label>
-              <input matInput [(ngModel)]="cliente.endereco.logradouro" type="text"
+              <input matInput [(ngModel)]="enderecoGet.logradouro" type="text"
                 formControlName="logradouro" placeholder="Insira nome da rua, avenida, etc..."
                 maxlength="50"
               >
@@ -100,7 +113,7 @@
 
             <mat-form-field class="fullWidth" appearance="fill">
               <mat-label>Número:</mat-label>
-              <input matInput [(ngModel)]="cliente.endereco.numero" type="text"
+              <input matInput [(ngModel)]="enderecoGet.numero" type="text"
                 formControlName ="numero" placeholder="Numero da casa, prédio..."
                 maxlength="5"
               >
@@ -111,7 +124,7 @@
 
             <mat-form-field class="fullWidth" appearance="fill">
               <mat-label>CEP:</mat-label>
-              <input matInput [(ngModel)]="cliente.endereco.cep" type="text"
+              <input matInput [(ngModel)]="enderecoGet.cep" type="text"
                 formControlName="cep" placeholder="Cep local..."
                 maxlength="8"
               >
@@ -122,7 +135,7 @@
 
             <mat-form-field class="fullWidth" appearance="fill">
               <mat-label>Complemento:</mat-label>
-              <input matInput [(ngModel)]="cliente.endereco.complemento" type="text"
+              <input matInput [(ngModel)]="enderecoGet.complemento" type="text"
                 formControlName="complemento" placeholder="Bloco/Apto, fundos..."
               >
               <mat-error *ngIf="endereco.get('complemento')?.invalid">{{
@@ -132,7 +145,7 @@
 
             <mat-form-field class="fullWidth" appearance="fill">
               <mat-label class="label">Nome do Condomínio:</mat-label>
-              <input matInput type="text" [(ngModel)]="cliente.endereco.condominio"
+              <input matInput type="text" [(ngModel)]="enderecoGet.condominio"
                 formControlName="condominio" placeholder="Caso seja Condomínio informe o nome..."
               >
               <mat-error *ngIf="endereco.get('condominio')?.invalid">{{
@@ -142,7 +155,7 @@
 
             <mat-form-field class="fullWidth" appearance="fill">
               <mat-label>Bairro:</mat-label>
-              <input matInput [(ngModel)]="cliente.endereco.bairro" type="text"
+              <input matInput [(ngModel)]="enderecoGet.bairro" type="text"
                 formControlName="bairro" placeholder="Insira o bairro..."
               />
               <mat-error *ngIf="endereco.get('bairro')?.invalid">{{
@@ -152,7 +165,7 @@
 
             <mat-form-field class="fullWidth" appearance="fill">
               <mat-label>Município:</mat-label>
-              <input matInput [(ngModel)]="cliente.endereco.municipio" type="text"
+              <input matInput [(ngModel)]="enderecoGet.municipio" type="text"
                 formControlName="municipio" placeholder="Insira o município..."
                 maxlength="60"
               />
@@ -163,7 +176,7 @@
 
             <mat-form-field class="fullWidth" appearance="fill">
               <mat-label>Estado(UF):</mat-label>
-              <mat-select formControlName="estado" [(ngModel)]="cliente.endereco.estado" >
+              <mat-select formControlName="estado" [(ngModel)]="enderecoGet.estado" >
                 <mat-option value="">Selecione o Estado</mat-option>
                 <mat-option *ngFor="let estado of estados" [value]="estado.sigla">
                   {{ estado.nome }}

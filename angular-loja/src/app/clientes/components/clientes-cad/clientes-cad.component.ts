@@ -110,8 +110,8 @@ export class ClientesCadComponent implements OnInit {
     })
   }
 
-   //Recebendo um evento/valor do componente FILHO
-   onUpload(evento){
+  //Recebendo um evento/valor do componente FILHO
+  onUpload(evento){
 
     this.step.stepControl.status = "VALID";
 
@@ -185,7 +185,6 @@ export class ClientesCadComponent implements OnInit {
 
   private onError(e: any) {
     this.alertService.error(e.error.message);
-    this.router.navigate(['cadastrar-cliente']);
   }
 
   getErrorMessage(fieldName: string) {

@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -89,15 +88,25 @@ public class ClientesController {
 		}
 	}
 
-	@PutMapping
+	@PutMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
 	@Operation(summary = "Atualizar cliente")
-	public ResponseEntity<ClienteGetDTO> atualizar(@Valid @RequestBody ClientePutDTO dto) {
+	public ResponseEntity<ClienteGetDTO> atualizar(@Valid @RequestParam String dadosCliente, @RequestParam(value="file", required= false) MultipartFile file) {
 
 		try {
+			
+			// convertendo os dadosdo cliente(String) em dto
+			ClientePutDTO dto = mapper.readValue(dadosCliente, ClientePutDTO.class);
+			
+			// setando a foto no dto
+			if(file != null) {
+				dto.setFoto(file.getInputStream().readAllBytes());
+				//dto.setFoto(ImagemUtils.compressImage(file.getBytes()));
+			}
+			
 			ClienteGetDTO getDto = service.atualizar(dto);
 			return ResponseEntity.ok(getDto);
 
-		} catch (ServiceException e) {
+		} catch (ServiceException | IOException e) {
 			return ResponseEntity.internalServerError().build();
 		}
 	}

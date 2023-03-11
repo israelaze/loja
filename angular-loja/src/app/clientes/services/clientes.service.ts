@@ -39,10 +39,13 @@ export class ClientesService {
   }
 
   // ATUALIZAR
-  atualizar(cliente: ClientePut) {
-    console.log(cliente);
+  atualizar(dados: string, file: File) {
+    const formData: FormData = new FormData();
 
-    return this.httpClient.put<Cliente>(this.endpoint, cliente);
+    formData.append('file', file);
+    formData.append('dadosCliente', dados)
+
+    return this.httpClient.put<Cliente>(this.endpoint, formData);
   }
 
   //EXCLUIR

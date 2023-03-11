@@ -1,13 +1,14 @@
 import { BreakpointObserver } from '@angular/cdk/layout';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { StepperOrientation } from '@angular/material/stepper';
+import { MatStep, StepperOrientation } from '@angular/material/stepper';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Cliente } from 'src/app/clientes/models/cliente';
 import { ClientesService } from 'src/app/clientes/services/clientes.service';
+import { Endereco } from 'src/app/shared/models/endereco';
 import { AlertService } from 'src/app/util/services/alert.service';
 import { EstadosService } from 'src/app/util/services/estados.service';
 import { Estados } from '../../../util/models/estados';
@@ -21,19 +22,26 @@ import { ClientePut } from './../../models/cliente-put';
 })
 export class ClienteUpdateComponent implements OnInit {
 
+  // VARIÁVEIS
   opcional = true;
   isLinear = true;
   stepperOrientation: Observable<StepperOrientation>;
-
   cliente: Cliente = new Cliente;
-  clienteGet: Cliente = new Cliente;
+  enderecoGet: Endereco = new Endereco;
   clientePut: ClientePut = new ClientePut;
   estados: Estados[];
-
   maxBirthday = new Date();
 
+  // recebe a foto do cliente para exibição
+  imagem: string = '';
 
-  //atributo para guardar o parâmetro recebido na rota
+  // recebe um novo arquivo para atualizar o cliente
+  foto: File;
+
+  // manipulando o MatStep
+  @ViewChild('step1') step: MatStep;
+
+  // atributo para guardar o parâmetro recebido na rota
   parametro = this.route.snapshot.paramMap.get('id');
 
   // INJEÇÃO DE DEPENDÊNCIA
@@ -96,10 +104,10 @@ export class ClienteUpdateComponent implements OnInit {
 
   // EXECUTA QUANDO O COMPONENTE É CARREGADO
   ngOnInit(): void {
-    //converter STRING => NUMBER.
+    // converter STRING => NUMBER.
     this.converterStringToNumber(this.parametro);
 
-    //Busca automática ao iniciar o componente
+    // busca automática ao iniciar o componente
     this.buscarId(this.cliente.idCliente);
     this.buscarEstados();
   }
@@ -108,8 +116,9 @@ export class ClienteUpdateComponent implements OnInit {
   converterStringToNumber(parametro: string): void {
     console.log(typeof parametro);
 
-    // Cliente recebe o id já convertido em NUMBER
+    // cliente recebe o id já convertido em NUMBER
     this.cliente.idCliente = +parametro;
+
     console.log(typeof this.cliente.idCliente);
   }
 
@@ -118,6 +127,14 @@ export class ClienteUpdateComponent implements OnInit {
     this.clientesService.buscarId(idCliente).subscribe({
       next: cliente => {
         this.cliente = cliente;
+
+        if(this.cliente.foto){
+          this.imagem = 'data:image/jpeg;base64,' + this.cliente.foto;
+        }
+
+        if(this.cliente.endereco != null){
+          this.enderecoGet = this.cliente.endereco;
+        }
       },
       error: e => {
         console.log(e.error);
@@ -127,11 +144,41 @@ export class ClienteUpdateComponent implements OnInit {
     })
   }
 
+  //Recebendo um evento/valor do componente FILHO para Atualizar
+  onUpload(evento) {
+
+    this.step.stepControl.status = "VALID";
+
+    if (evento == 'cancelar') {
+
+      console.log(this.step.stepControl.status);
+      console.log("Cancelar");
+
+    } else if (evento == 'erro') {
+
+      this.step.stepControl.status = "INVALID";
+      console.log("Erro");
+
+      console.log(this.step.stepControl.status);
+
+    } else {
+
+      this.foto = evento;
+      this.step.stepControl.status = "VALID";
+
+      console.log('Arquivo recebido:', this.foto, typeof evento);
+    }
+  }
+
   // ATUALIZAR
   atualizar(): void {
 
     this.formPut(this.dados.value, this.contatos.value, this.endereco.value, this.observacoes.value);
-    this.clientesService.atualizar(this.clientePut).subscribe({
+
+    // converte o clientePut(JSON) em uma String
+    var dadosCliente = JSON.stringify(this.clientePut);
+
+    this.clientesService.atualizar(dadosCliente, this.foto).subscribe({
       next: result => {
         this.onSuccess(result)
       },
@@ -179,7 +226,7 @@ export class ClienteUpdateComponent implements OnInit {
 
   private onSuccess(result: Cliente) {
     this.alertService.success('Cliente ' + result.nome+ ' atualizado(a) com sucesso');
-    this.router.navigate(['clientes/clientes-lista']);
+    this.router.navigate(['clientes/cliente-detalhes/'+ result.idCliente]);
   }
 
   private onError(e: any) {

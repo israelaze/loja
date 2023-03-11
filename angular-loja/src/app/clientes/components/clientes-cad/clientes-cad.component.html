@@ -9,15 +9,12 @@
           <ng-template matStepLabel>Dados Principais</ng-template>
           <form [formGroup]="dados" class="min-width">
 
-            <mat-form-field class="fullWidth" appearance="fill">
+            <section>
               <mat-label class="label">Foto:</mat-label>
-              <input matInput readonly/>
 
-              <!-- Passando para o componente PAI,
-              o evento customizado disparado pelo componente FILHO  -->
+              <!-- Passando para o componente PAI, o evento customizado disparado pelo componente FILHO  -->
               <app-upload-file (evento)="onUpload($event)"> </app-upload-file>
-
-            </mat-form-field>
+            </section>
 
             <mat-form-field class="fullWidth" appearance="fill">
               <mat-label class="label">Nome Completo:</mat-label>

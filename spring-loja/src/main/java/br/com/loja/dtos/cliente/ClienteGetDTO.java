@@ -40,8 +40,11 @@ public class ClienteGetDTO {
 		this.email = cliente.getEmail();
 		this.observacao = cliente.getObservacao();
 		this.foto = cliente.getFoto();
-		//this.foto = ImagemUtils.decompressImage(cliente.getFoto());
-
+		
+//		if(cliente.getFoto() != null) {
+//			this.foto = ImagemUtils.decompressImage(cliente.getFoto());
+//		}
+		
 		if(cliente.getEndereco() != null) {
 			this.endereco = new EnderecoDTO(cliente.getEndereco());
 		}
