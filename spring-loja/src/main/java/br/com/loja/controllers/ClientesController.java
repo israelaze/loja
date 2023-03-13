@@ -24,6 +24,7 @@ import br.com.loja.dtos.cliente.ClientePostDTO;
 import br.com.loja.dtos.cliente.ClientePutDTO;
 import br.com.loja.exceptions.ServiceException;
 import br.com.loja.services.ClienteService;
+import br.com.loja.utils.ImagemUtils;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -48,10 +49,11 @@ public class ClientesController {
 			// convertendo os dadosdo cliente(String) em dto
 			ClientePostDTO dto = mapper.readValue(dadosCliente, ClientePostDTO.class);
 			
-			// setando a foto no dto
+			// Redimensionando e setando a foto no dto
 			if(file != null) {
-				dto.setFoto(file.getInputStream().readAllBytes());
+				dto.setFoto(ImagemUtils.resizeMultipartFileToByteArray(file));
 				//dto.setFoto(ImagemUtils.compressImage(file.getBytes()));
+
 			}
 			
 			ClienteGetDTO getDto = service.cadastrar(dto);
@@ -97,10 +99,12 @@ public class ClientesController {
 			// convertendo os dadosdo cliente(String) em dto
 			ClientePutDTO dto = mapper.readValue(dadosCliente, ClientePutDTO.class);
 			
-			// setando a foto no dto
+			// Redimensionando e setando a foto no dto
 			if(file != null) {
-				dto.setFoto(file.getInputStream().readAllBytes());
+				dto.setFoto(ImagemUtils.resizeMultipartFileToByteArray(file));
 				//dto.setFoto(ImagemUtils.compressImage(file.getBytes()));
+
+
 			}
 			
 			ClienteGetDTO getDto = service.atualizar(dto);

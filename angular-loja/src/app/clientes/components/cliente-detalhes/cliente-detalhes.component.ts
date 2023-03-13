@@ -6,8 +6,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { DomSanitizer } from '@angular/platform-browser';
-import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Cliente } from 'src/app/clientes/models/cliente';
 import { ClientesService } from 'src/app/clientes/services/clientes.service';
 import { Pedido } from 'src/app/pedidos/models/pedido';
@@ -50,7 +49,7 @@ export class ClienteDetalhesComponent implements OnInit{
 
   constructor(private clientesService: ClientesService, private pedidosService: PedidosService,
     private _liveAnnouncer: LiveAnnouncer, private snackBar: MatSnackBar, private ref: ChangeDetectorRef,
-    private route: ActivatedRoute, private sanitizer: DomSanitizer
+    private route: ActivatedRoute, private sanitizer: DomSanitizer, private router: Router
   ){}
 
   // EXECUTA QUANDO O COMPONENTE É CARREGADO
@@ -110,12 +109,12 @@ export class ClienteDetalhesComponent implements OnInit{
 
         }
 
-
-
       },
       error: e => {
-        console.log(e.error);
-        const msg: string = "Erro obtendo o cliente.";
+        console.log(e.error.message);
+        this.router.navigate(['clientes/clientes-lista']);
+
+        const msg: string = e.error.message;
         this.snackBar.open(msg, "Erro", { duration: 5000 });
       }
     })

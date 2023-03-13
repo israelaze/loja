@@ -137,8 +137,10 @@ export class ClienteUpdateComponent implements OnInit {
         }
       },
       error: e => {
-        console.log(e.error);
-        const msg: string = "Erro obtendo o cliente.";
+        console.log(e.error.message);
+
+        this.router.navigate(['clientes/clientes-lista']);
+        const msg: string = e.error.message;
         this.snackBar.open(msg, "Erro", { duration: 5000 });
       }
     })
