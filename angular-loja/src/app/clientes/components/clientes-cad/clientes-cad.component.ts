@@ -79,12 +79,12 @@ export class ClientesCadComponent implements OnInit {
   });
 
   endereco  = this._formBuilder.group({
-    logradouro: [null, [Validators.pattern(/^([a-zA-Z]{0,1}[a-zA-Z]{1,}'?-?[a-zA-Z]\s?([a-zA-Z]{1,})?)/)]],
+    logradouro: ['São josé', [Validators.pattern(/^([a-zA-Z]{0,1})/)]],
     numero: [null, [Validators.pattern('^[0-9]{1,6}')]],
-    complemento: [ null, [Validators.pattern(/^([a-zA-Z]{1,}[a-zA-Z]{1,}'?-?[a-zA-Z]\s?([a-zA-Z]{1,})?)/)]],
-    condominio: [null, [Validators.pattern(/^([a-zA-Z]{1,}[a-zA-Z]{1,}'?-?[a-zA-Z]\s?([a-zA-Z]{1,})?)/)]],
-    bairro: [null, [Validators.pattern(/^([a-zA-Z]{1,}[a-zA-Z]{1,}'?-?[a-zA-Z]\s?([a-zA-Z]{1,})?)/)]],
-    municipio: [null, [Validators.pattern(/^([a-zA-Z]{1,}[a-zA-Z]{1,}'?-?[a-zA-Z]\s?([a-zA-Z]{1,})?)/)]],
+    complemento: [ null, [Validators.pattern(/^([a-zA-Z]{0,1})/)]],
+    condominio: [null, [Validators.pattern(/^([a-zA-Z]{0,1})/)]],
+    bairro: [null, [Validators.pattern(/^([a-zA-Z]{0,1})/)]],
+    municipio: [null, [Validators.pattern(/^([a-zA-Z]{0,1})/)]],
     estado: [null],
     // aceita traço
     cep: [null, [Validators.pattern(/^(\d{5}|\d{5}\-?\d{3})$/)]]

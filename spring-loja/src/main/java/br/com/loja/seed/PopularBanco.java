@@ -59,10 +59,10 @@ public class PopularBanco implements CommandLineRunner{
 		usuarioRepository.saveAll(Arrays.asList(usu1, usu2));
 		
 		// CADASTRANDO ENDEREÇOS
-		Endereco endCliente1 = new Endereco("Rua Albert", "99", null, null, "Bnh", "Mesquita", Estado.RJ, "33333-666"); 
-		Endereco endCliente2 = new Endereco("Rua Alves", "40", null, null, "Barra Funda", "São Paulo", Estado.SP, "11111-111");
-		Endereco endFornecedor1 = new Endereco("Rua Kennedy", "10", null, null, "Pampulha", "Belo Horizonte", Estado.MG, "22222-222");
-		Endereco endFornecedor2 = new Endereco("Rua Rufino", "23", "Edificio Solar, Sala 99", "Palmeiras", "Abranches", "Curitiba", Estado.PR, "33333-333");
+		Endereco endCliente1 = new Endereco("Rua Albert", "99", null, null, "Bnh", "Mesquita", Estado.RJ, "33333666"); 
+		Endereco endCliente2 = new Endereco("Rua Alves", "40", null, null, "Barra Funda", "São Paulo", Estado.SP, "11111111");
+		Endereco endFornecedor1 = new Endereco("Rua Kennedy", "10", null, null, "Pampulha", "Belo Horizonte", Estado.MG, "22222222");
+		Endereco endFornecedor2 = new Endereco("Rua Rufino", "23", "Edificio Solar, Sala 99", "Palmeiras", "Abranches", "Curitiba", Estado.PR, "33333333");
 		
 		enderecoRepository.saveAll(Arrays.asList(endCliente1, endCliente2, endFornecedor1, endFornecedor2));
 		

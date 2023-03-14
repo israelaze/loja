@@ -31,6 +31,7 @@ export class ClienteUpdateComponent implements OnInit {
   clientePut: ClientePut = new ClientePut;
   estados: Estados[];
   maxBirthday = new Date();
+  dataNascimento: Date;
 
   // recebe a foto do cliente para exibição
   imagem: string = '';
@@ -87,12 +88,12 @@ export class ClienteUpdateComponent implements OnInit {
   });
 
   endereco  = this._formBuilder.group({
-    logradouro: ['', [Validators.pattern(/^([a-zA-Z]{0,1}[a-zA-Z]{1,}'?-?[a-zA-Z]\s?([a-zA-Z]{1,})?)/)]],
+    logradouro: ['', [Validators.pattern(/^([a-zA-Z]{0,1})/)]],
     numero: ['', [Validators.pattern('^[0-9]{1,6}')]],
-    complemento: ['', [Validators.pattern(/^([a-zA-Z]{1,}[a-zA-Z]{1,}'?-?[a-zA-Z]\s?([a-zA-Z]{1,})?)/)]],
-    condominio: ['', [Validators.pattern(/^([a-zA-Z]{1,}[a-zA-Z]{1,}'?-?[a-zA-Z]\s?([a-zA-Z]{1,})?)/)]],
-    bairro: ['', [Validators.pattern(/^([a-zA-Z]{1,}[a-zA-Z]{1,}'?-?[a-zA-Z]\s?([a-zA-Z]{1,})?)/)]],
-    municipio: ['', [Validators.pattern(/^([a-zA-Z]{1,}[a-zA-Z]{1,}'?-?[a-zA-Z]\s?([a-zA-Z]{1,})?)/)]],
+    complemento: ['', [Validators.pattern(/^([a-zA-Z]{0,1})/)]],
+    condominio: ['', [Validators.pattern(/^([a-zA-Z]{0,1})/)]],
+    bairro: ['', [Validators.pattern(/^([a-zA-Z]{0,1})/)]],
+    municipio: ['', [Validators.pattern(/^([a-zA-Z]{0,1})/)]],
     estado: [''],
     cep: ['', [Validators.pattern(/^(\d{5}|\d{5}\-?\d{3})$/)] // aceita traço
   ],
@@ -130,6 +131,16 @@ export class ClienteUpdateComponent implements OnInit {
 
         if(this.cliente.foto){
           this.imagem = 'data:image/jpeg;base64,' + this.cliente.foto;
+        }
+
+        // GAMBIARRA provisória para corrigir a exibição da data
+        if(this.cliente.dataNascimento){
+
+          var dataString = this.cliente.dataNascimento.replaceAll('-', '/');
+          console.log(dataString);
+
+          this.dataNascimento = new Date(dataString);
+
         }
 
         if(this.cliente.endereco != null){
@@ -237,7 +248,7 @@ export class ClienteUpdateComponent implements OnInit {
   }
 
   getErrorMessage(fieldName: string) {
-    console.log(fieldName);
+    //console.log(fieldName);
 
     const dados = this.dados.get(fieldName);
     const contatos = this.contatos.get(fieldName);
@@ -274,7 +285,7 @@ export class ClienteUpdateComponent implements OnInit {
       if(fieldName == 'logradouro' || fieldName == 'numero'
         || fieldName == 'cep' || fieldName == 'complemento'
         || fieldName == 'condominio' || fieldName == 'bairro' || fieldName == 'municipio'){
-        console.log(fieldName);
+        //console.log(fieldName);
         return 'Não pode conter espaços vazios';
       }
 

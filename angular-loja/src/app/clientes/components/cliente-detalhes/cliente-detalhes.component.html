@@ -23,7 +23,7 @@
     </div>
     <div>
       Data de nascimento:
-      {{cliente.dataNascimento}}
+      {{cliente.dataNascimento | data}}
     </div>
     <div>
       Telefone principal:
@@ -256,10 +256,9 @@
   <!-- FIM DA LISTA DE PEDIDOS -->
 
   <mat-card-actions>
-    <button>
-      <a class="voltar" href="clientes/clientes-lista" mat-raised-button>Voltar</a>
-    </button>
-    <!-- <a class="voltar" href="clientes/clientes-lista" mat-raised-button>Voltar</a> -->
+    <a mat-icon-button href="clientes/clientes-lista" color="primary">
+      <button mat-raised-button color="primary">Voltar</button>
+    </a>
   </mat-card-actions>
   <br><br>
 </div>

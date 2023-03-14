@@ -17,6 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
+            "allowedCommonJsDependencies": ["moment", "sweetalert2"],
             "outputPath": "dist/minha-loja",
             "index": "src/index.html",
             "main": "src/main.ts",
