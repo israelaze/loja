@@ -1,1 +1,119 @@
-<p>pedidos-cad works!</p>
+<!-- <div class="container" >
+
+  <h1>Novo Pedido</h1>
+  <br>
+
+
+  <mat-card *ngFor="let produto of produtos" class="back">
+    <mat-card-title>{{produto.nomeProduto}}</mat-card-title>
+    <mat-card-content >
+      <p> cód: {{produto.codigo}}</p>
+      <p>descrição: {{produto.descricao}}</p>
+      <p>peso: {{produto.peso}}</p>
+      <p>preço: {{produto.valorVenda}}</p>
+    </mat-card-content>
+    <mat-card-actions >
+      <button mat-button class="botao" >
+        <a (click)="adicionarItem(produto)" >
+          <mat-icon>shopping_cart</mat-icon>
+          Adicionar ao pedido
+        </a>
+      </button>
+    </mat-card-actions>
+    </mat-card>
+</div> -->
+
+
+<!-- <header class="header">
+  <nav class="navbar navbar-main navbar-fixed-top bg-primary">
+    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#mainNav">
+      <span class="navbar-toggler-icon"></span>
+      <span class="badge badge-pill badge-danger circle count-items-cart">quantidade de itens{{items()}}</span>
+    </button>
+    <a class="navbar-brand logo" href="#">
+      <img src="/assets/imagens/cart.svg" class="img-responsive" alt="">
+    </a>
+    <div class="navbar-collapse collapse" id="mainNav">
+      <app-carrinho></app-carrinho>
+
+    </div>
+  </nav>
+</header>
+<br>
+
+<section class="container-fluid" id="content">
+  <div class="row row-eq-height" id="row-content">
+  <div *ngFor="let produto of produtos" class="col-12 col-sm-12 col-md-4 mb-4">
+    <div class="card">
+      <div class="row card-block">
+        <div class="col-8 col-sm-8 col-md-8 col-lg-8 col-xl-3 img-product-show">
+          <img class="img-fluid" src="/assets/imagens/computer.png" style="width: 200px;"
+          #mainImg alt="">
+        </div>
+        <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-8">
+          <h5 class="product-title">{{produto.nomeProduto}} <i class="fa fa-heart-o"></i></h5>
+          <span class="badge badge-primary">MELHOR PREÇO</span>
+          <div class="price">
+            <div class="row">
+              <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-6">
+                <h5>
+                 <span class="text-success">{{produto.valorVenda | currency: 'BRL': true}}</span>
+                </h5>
+              </div>
+              <div class="col-12 col-sm-12 col-md-12 col-lg-12col-xl-6">
+                <button type="button" class="btn btn-success btn-sm btn-add" (click)="adicionarItem(produto)">
+                  Adicionar ao carrinho
+                  <i class="fa fa-chevron-right"></i>
+                </button>
+              </div>
+              <div class="clear-fix divider"></div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</section> -->
+
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th scope="col">Nome</th>
+      <th scope="col">Descrição</th>
+      <th scope="col">Preço</th>
+      <th scope="col">Situação</th>
+      <th scope="col"></th>
+    </tr>
+  </thead>
+  <tbody>
+
+    <ng-container *ngFor="let produto of produtos">
+      <tr>
+        <!-- <td><img [src]="beer.image" [alt]="beer.name"></td> -->
+        <td>{{produto.nomeProduto}}</td>
+        <td>{{produto.descricao}}</td>
+        <td>{{produto.valorVenda | currency:'BRL': true}}</td>
+        <td>{{produto.ativo}}</td>
+        <td>
+          <div class="input-group input-group-sm mb-3">
+            <button type="button" class="btn btn-light btn-sm" (click)="downQuantity(produto)">-</button>
+            <!-- <input  id="getQuantidade" style="display: none;" type="number"  name="getQuantidade" min="0"/> -->
+            <!-- <input type="number" style="width: 4em;"  [(ngModel)]="itemPedidoPost.quantidade" (focusout)="verificarQuantidade(itemPedidoPost, produto)" min="0"/> -->
+            <button type="button" class="btn btn-light btn-sm" (click)="upQuantity(produto)" >+</button>
+          </div>
+        </td>
+      </tr>
+
+    </ng-container>
+
+
+  </tbody>
+
+</table>
+
+<app-carrinho></app-carrinho>
+
+

@@ -1,3 +1,4 @@
+import { Cliente } from 'src/app/clientes/models/cliente';
 import { ItemPedido } from "./itemPedido";
 
 export class Pedido{
@@ -6,8 +7,9 @@ export class Pedido{
 	dataPedido: string;
 	dataEntrega: string;
 	situacao: string;
-	desconto: string;
-	total: string;
+	desconto: number;
+	total: number;
   itens: ItemPedido[] = [];
+  cliente: Cliente = new Cliente;
 
 }

@@ -1,0 +1,53 @@
+<!-- <ul class="navbar-nav cart-items" *ngIf="itens().length">
+	<li class="nav-item" *ngFor="let produto of itens()">
+		<div class="media">
+			<div class="media-body">
+				<h4 class="mt-0" style="font-size: 20px;">{{produto.nomeProduto}} </h4>
+				<span style="font-size: 18px;">{{produto.valorVenda | currency: 'BRL': true}}</span>
+			</div>
+			<span class="remove-item"  style="font-size: 16px;" (click)="removeItem(produto)">
+        remover
+      </span>
+		</div>
+	</li>
+	<li class="total-cart text-right">
+      <div>
+        <h3>Total</h3>
+        <h2>{{total() | currency: 'BRL': true}}</h2>
+      </div>
+	</li>
+</ul>
+<ul class="navbar-nav cart-items" *ngIf="itens().length == 0">
+	<li class="nav-item">
+		Seu carrinho está vazio :/
+	</li>
+</ul> -->
+
+
+
+<h3>Pedido</h3>
+<table class="demo-table mat-elevation-z8">
+  <thead>
+    <tr >
+      <th>Produto</th>
+      <th>Quantidade</th>
+      <th>Preço</th>
+      <th>SubTotal</th>
+    </tr>
+  </thead>
+  <tbody>
+    <ng-container *ngFor="let item of itens">
+    <tr  >
+      <td>{{item.produto.nomeProduto}}</td>
+      <td>{{item.quantidade}}</td>
+      <td>{{item.produto.valorVenda | currency:'BRL':true}}</td>
+      <td>{{item.produto.valorVenda * item.quantidade | currency:'BRL':true}}</td>
+    </tr>
+    </ng-container>
+  </tbody>
+</table>
+
+<p class="text-end">Total {{total() | currency:'BRL':true}}</p>
+<div class="text-end">
+    <button [disabled]="itens.length == 0" mat-raised-button color="primary" (click)="comprar()">Comprar</button>
+</div>

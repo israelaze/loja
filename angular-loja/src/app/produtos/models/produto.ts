@@ -9,9 +9,9 @@ export class Produto {
 	dataCadastro: string;
 	ativo: string;
 	peso: string;
-	valorCusto: string;
-	valorVenda: string;
-	margemLucro: string;
-	fornecedor: Fornecedor;
+	valorCusto: number;
+	valorVenda: number;
+	margemLucro: number;
+	fornecedor: Fornecedor = new Fornecedor;
 
 }

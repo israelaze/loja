@@ -2,6 +2,15 @@
 
   <h1>Controle de Pedidos</h1>
 
+    <!-- Botão de cadastro -->
+    <div>
+      <a mat-button color="warn" routerLink="/pedidos/adicionar-pedido">
+        <mat-icon>add_box</mat-icon>
+        Adicionar pedido
+      </a>
+    </div>
+    <br><br>
+
   <!-- Filtro -->
   <mat-form-field class="filter">
       <mat-label class="filter">Filtro</mat-label>
@@ -32,11 +41,11 @@
     <!-- Total -->
     <ng-container matColumnDef="total">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Total </th>
-        <td mat-cell *matCellDef="let pedido"> {{pedido.total}} </td>
+        <td mat-cell *matCellDef="let pedido"> {{pedido.total | currency : 'BRL' : true}} </td>
     </ng-container>
 
     <!-- Situação -->
-    <ng-container matColumnDef="situacao">
+    <ng-container matColumnDef="situacao">z
         <th mat-header-cell *matHeaderCellDef> Situação </th>
         <td mat-cell *matCellDef="let pedido"> {{pedido.situacao}} </td>
     </ng-container>
@@ -87,7 +96,7 @@
                             <span> <i>Não informada</i> </span>
                         </div>
                     </div>
-                    <div> {{pedido.desconto}} </div>
+                    <div> {{pedido.desconto | currency: 'BRL':true}} </div>
                     <br>
                     <div >
 
@@ -97,8 +106,8 @@
                            {{item.produto.descricao}},
                            {{item.produto.peso}},
                            {{item.quantidade}},
-                           {{item.preco}},
-                           {{item.subTotal}},
+                           {{item.preco | currency: 'BRL':true}},
+                           {{item.subTotal | currency: 'BRL':true}},
                         </div>
 
                     </div>

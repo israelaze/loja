@@ -3,8 +3,6 @@ import { RouterModule, Routes } from '@angular/router';
 import { FornecedoresCadComponent } from './../fornecedores/components/fornecedores-cad/fornecedores-cad.component';
 import { FornecedoresListComponent } from './../fornecedores/components/fornecedores-list/fornecedores-list.component';
 import { HomeComponent } from './../home/components/home/home.component';
-import { PedidosCadComponent } from './../pedidos/components/pedidos-cad/pedidos-cad.component';
-import { PedidosListComponent } from './../pedidos/components/pedidos-list/pedidos-list.component';
 import { ProdutosCadComponent } from './../produtos/components/produtos-cad/produtos-cad.component';
 import { ProdutosListComponent } from './../produtos/components/produtos-list/produtos-list.component';
 import { RelatoriosComponent } from './../relatorios/components/relatorios/relatorios.component';
@@ -23,14 +21,16 @@ const routes: Routes = [
       { path: 'cadastrar-fornecedor', component: FornecedoresCadComponent },
       { path: 'produtos-lista', component: ProdutosListComponent },
       { path: 'cadastrar-produto', component: ProdutosCadComponent },
-      { path: 'pedidos-lista', component: PedidosListComponent },
-      { path: 'cadastrar-pedido', component: PedidosCadComponent },
       { path: 'usuarios-lista', component: UsuariosListComponent },
       { path: 'relatorios', component: RelatoriosComponent },
 
       {
         path: 'clientes',
         loadChildren: () => import('../clientes/clientes.module').then(m=> m.ClientesModule)
+      },
+      {
+        path: 'pedidos',
+        loadChildren: () => import('../pedidos/pedidos.module').then(m=> m.PedidosModule)
       },
 
     ]

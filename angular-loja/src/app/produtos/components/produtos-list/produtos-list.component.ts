@@ -42,7 +42,7 @@ export class ProdutosListComponent implements OnInit {
         },
         error: e => {
           console.log(e.error);
-          const msg: string = "Erro obtendo usuários.";
+          const msg: string = "Erro obtendo produtos.";
           this.snackBar.open(msg, "Erro", { duration: 5000 });
         }
       })
