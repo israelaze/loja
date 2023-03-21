@@ -60,14 +60,14 @@ export class PedidosListComponent implements OnInit {
         // recebendo um lista de pedidos
         this.listaPedidos = pedidos;
 
-        this.listaPedidos.forEach(function (pedido) {
+        // this.listaPedidos.forEach(function (pedido) {
 
-          // recebendo um lista de ítens de cada pedido
-          const itens = pedido.itens;
+        //   // recebendo um lista de ítens de cada pedido
+        //   const itens = pedido.itens;
 
-          // exibindo a lista
-          console.log(itens);
-        });
+        //   // exibindo a lista
+        //   console.log(itens);
+        // });
 
         this.dataSource = new MatTableDataSource<Pedido>(this.listaPedidos);
         this.dataSource.sort = this.sort;

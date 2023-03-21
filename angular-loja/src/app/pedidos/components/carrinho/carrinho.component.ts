@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Pedido } from '../../models/pedido';
 import { CarrinhoService } from '../../services/carrinho.service';
@@ -16,76 +17,73 @@ import { PedidosService } from './../../services/pedidos.service';
 export class CarrinhoComponent implements OnInit {
 
   constructor(private carrinhoService: CarrinhoService, private pedidoService: PedidosService,
-     private alertService: AlertService, private router: Router) { }
-
-  // ngOnInit() {
-  //   //sessionStorage.removeItem("carrinho")
-  //   let carrinhoSession = sessionStorage.getItem("carrinho");
-  //   //carrinho não está vazio
-  //   if(carrinhoSession != null){
-  //     this.carrinhoService.itens = JSON.parse(carrinhoSession);
-  //   }
-  // }
-
-  // itens(): Produto[] {
-
-  //   return this.carrinhoService.itens;
-
-
-  // }
-  // removeItem(Produto){
-  //   let c = this.carrinhoService.removeItem(Produto);
-  // }
-
-  // total() :number{
-  //   return this.carrinhoService.total()
-  // }
-
+    private alertService: AlertService, private router: Router, private _formBuilder: FormBuilder)
+  { }
 
   itens : ItemPedido[] = [];
-
   lista: ItemPedidoPost[] = [];
-
   pedidoPost: PedidoPost = new PedidoPost;
 
+  valorDesconto: number = 0;
   idCliente: number = 1;
+  temDesconto: boolean = false;
+  checked = true;
 
+  // Capturando valor do desconto
+  desconto = this._formBuilder.group({
 
-  // items(){
-  //   return this.carrinhoService.itens.length > 0 ? this.carrinhoService.itens.length : ""
+    valor: [''],
+  });
 
-  // }
-
+  //Busca uma lista de ítens de pedido
   ngOnInit(): void {
-     this.carrinhoService.itens.subscribe(data => this.itens = data);
-     console.log(this.itens);
-
+    this.carrinhoService.itens.subscribe(data => this.itens = data);
   }
 
+  //Calcula o total do pedido com ou sem desconto
   total(){
     let sum=0;
     this.itens.forEach(item => {
       sum += item.quantidade * item.preco;
     });
 
-    return sum;
+   if(this.temDesconto){
+     this.conversor(this.desconto.value.valor);
+
+   }else{
+    this.valorDesconto = 0;
+   }
+
+   sum = sum - this.valorDesconto;
+
+   if(sum < 0 ){
+    this.checked = false;
+   }else{
+    this.checked = true;
+     return  sum;
+   }
+
+   return sum;
+
   }
 
-  comprar() {
+  //Converte a string em number
+  conversor(valor: string){
+   this.valorDesconto = +valor;
+  }
 
-
-    console.log(this.itens);
+  // Cria um novo pedido
+  confirmar() {
 
     if(this.itens.length > 0){
 
       this.pedidoPost.idCliente = this.idCliente;
       this.pedidoPost.idVendedor = this.idCliente;
       this.pedidoPost.situacao = 'PAGO';
-      this.pedidoPost.desconto = 0.0;
+      this.pedidoPost.desconto = this.valorDesconto;
       this.pedidoPost.itens = this.lista;
 
       console.log(this.pedidoPost);
-
 
       this.carrinhoService.cadastrarPedido(this.pedidoPost).subscribe({
         next: result => {
@@ -95,11 +93,7 @@ export class CarrinhoComponent implements OnInit {
           this.onError(e)
         }
       });
-
-
     }
-
-
   }
 
   private onSucess(result: Pedido) {

@@ -24,30 +24,51 @@
 </ul> -->
 
 
+<div *ngIf="itens.length > 0">
+  <h3>Ítens</h3>
+  <table class="demo-table mat-elevation-z8">
+    <thead>
+      <tr >
+        <th>Produto</th>
+        <th>Quantidade</th>
+        <th>Preço</th>
+        <th>SubTotal</th>
+      </tr>
+    </thead>
+    <tbody>
+      <ng-container *ngFor="let item of itens">
+      <tr  >
+        <td>{{item.produto.nomeProduto}}</td>
+        <td>{{item.quantidade}}</td>
+        <td>{{item.produto.valorVenda | currency:'BRL':true}}</td>
+        <td>{{item.produto.valorVenda * item.quantidade | currency:'BRL':true}}</td>
+      </tr>
+      </ng-container>
+    </tbody>
+  </table>
+  <br>
 
-<h3>Pedido</h3>
-<table class="demo-table mat-elevation-z8">
-  <thead>
-    <tr >
-      <th>Produto</th>
-      <th>Quantidade</th>
-      <th>Preço</th>
-      <th>SubTotal</th>
-    </tr>
-  </thead>
-  <tbody>
-    <ng-container *ngFor="let item of itens">
-    <tr  >
-      <td>{{item.produto.nomeProduto}}</td>
-      <td>{{item.quantidade}}</td>
-      <td>{{item.produto.valorVenda | currency:'BRL':true}}</td>
-      <td>{{item.produto.valorVenda * item.quantidade | currency:'BRL':true}}</td>
-    </tr>
-    </ng-container>
-  </tbody>
-</table>
+  <h3>Pedido</h3>
 
-<p class="text-end">Total {{total() | currency:'BRL':true}}</p>
-<div class="text-end">
-    <button [disabled]="itens.length == 0" mat-raised-button color="primary" (click)="comprar()">Comprar</button>
+  <span>Aplicar desconto ao pedido?</span>
+  <input mat-input type="checkbox" [(ngModel)]="temDesconto" >
+
+  <div *ngIf="temDesconto">
+    <section [formGroup]="desconto">
+      <input matInput formControlName="valor" type="number"
+        required
+        placeholder="informe o valor do desconto..." min="0">
+    </section>
+  </div>
 </div>
+<br>
+
+<div *ngIf="!checked">
+  <span> ** ERRO: Valor do desconto é superior ao valor total do pedido.</span>
+</div>
+
+<p class="total">TOTAL: {{total() | currency:'BRL':true}}</p>
+<div class="text-end">
+    <button [disabled]="itens.length == 0 || (temDesconto && !valorDesconto || !checked)" mat-raised-button color="primary" (click)="confirmar()">Confirmar</button>
+</div>
+

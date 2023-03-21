@@ -28,7 +28,7 @@ import { DialogExcluirComponent } from './components/dialog-excluir/dialog-exclu
     CommonModule,
     ClientesRoutingModule,
     SharedModule,
-    
+
   ]
 })
 export class ClientesModule { }

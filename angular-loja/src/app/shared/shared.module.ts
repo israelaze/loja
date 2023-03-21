@@ -1,9 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { AppMaterialModule } from './app-material/app-material.module';
-import { DataPipe } from './pipes/data.pipe';
 import { ConfirmationDialogComponent } from './components/confirmation-dialog/confirmation-dialog.component';
+import { DataPipe } from './pipes/data.pipe';
 
 @NgModule({
   declarations: [
@@ -13,12 +13,14 @@ import { ConfirmationDialogComponent } from './components/confirmation-dialog/co
   imports: [
     CommonModule,
     AppMaterialModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    FormsModule
   ],
   exports: [
     DataPipe,
     AppMaterialModule,
     ReactiveFormsModule,
+    FormsModule,
     ConfirmationDialogComponent,
   ]
 })

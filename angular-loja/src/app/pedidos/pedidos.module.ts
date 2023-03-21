@@ -5,7 +5,6 @@ import { SharedModule } from '../shared/shared.module';
 import { CarrinhoComponent } from './components/carrinho/carrinho.component';
 import { PedidosCadComponent } from './components/pedidos-cad/pedidos-cad.component';
 import { PedidosListComponent } from './components/pedidos-list/pedidos-list.component';
-import { PedidosComponent } from './components/pedidos/pedidos.component';
 import { PedidosRoutingModule } from './pedidos-routing.module';
 
 
@@ -13,13 +12,12 @@ import { PedidosRoutingModule } from './pedidos-routing.module';
   declarations: [
     PedidosListComponent,
     PedidosCadComponent,
-    CarrinhoComponent,
-    PedidosComponent
+    CarrinhoComponent
   ],
   imports: [
     CommonModule,
     PedidosRoutingModule,
-    SharedModule
+    SharedModule,
   ]
 })
 export class PedidosModule { }

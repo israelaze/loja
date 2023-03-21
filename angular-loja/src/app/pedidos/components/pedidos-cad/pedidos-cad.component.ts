@@ -22,7 +22,7 @@ export class PedidosCadComponent implements OnInit {
 
   itens: ItemPedidoPost[] = [];
 
-  itemPedido: ItemPedido = new ItemPedido;
+  itemPedido: ItemPedido;
 
   pedidoPost: PedidoPost = new PedidoPost;
 
@@ -34,6 +34,7 @@ export class PedidosCadComponent implements OnInit {
   ngOnInit(): void {
     this.buscarProdutos();
   }
+
 
   // BUSCAR PRODUTOS
   buscarProdutos(): void {
@@ -70,24 +71,24 @@ export class PedidosCadComponent implements OnInit {
 
 
 
-  comprar() {
+  // comprar() {
 
-    this.pedidoPost.idCliente = 1;
-    this.pedidoPost.idVendedor = 1;
-    this.pedidoPost.situacao = 'PAGO';
-    this.pedidoPost.desconto = 0.0;
-    this.pedidoPost.itens = this.itens;
+  //   this.pedidoPost.idCliente = 1;
+  //   this.pedidoPost.idVendedor = 1;
+  //   this.pedidoPost.situacao = 'PAGO';
+  //   this.pedidoPost.desconto = '';
+  //   this.pedidoPost.itens = this.itens;
 
-    this.pedidoService.cadastrarPedido(this.pedidoPost).subscribe({
-      next: result => {
-        this.onSucess(result)
-      },
-      error: e =>{
-        this.onError(e)
-      }
-    });
+  //   this.pedidoService.cadastrarPedido(this.pedidoPost).subscribe({
+  //     next: result => {
+  //       this.onSucess(result)
+  //     },
+  //     error: e =>{
+  //       this.onError(e)
+  //     }
+  //   });
 
-  }
+  // }
 
   private onSucess(result: Pedido) {
     this.alertService.success('Pedido realizado com sucesso.');
@@ -100,9 +101,16 @@ export class PedidosCadComponent implements OnInit {
 
   upQuantity(produto : Produto): void{
 
-    this.itemPedido.quantidade ++;
-    this.itemPedido.preco = produto.valorVenda;
-    this.itemPedido.produto = produto;
+    if(!this.itemPedido || produto.idProduto != this.itemPedido.produto.idProduto){
+      this.itemPedido = new ItemPedido;
+      this.itemPedido.quantidade ++;
+      this.itemPedido.preco = produto.valorVenda;
+      this.itemPedido.produto = produto;
+    }else{
+      this.itemPedido.quantidade ++;
+      this.itemPedido.preco = produto.valorVenda;
+      this.itemPedido.produto = produto;
+    }
 
     this.carrinhoService.addItem(this.itemPedido);
 
