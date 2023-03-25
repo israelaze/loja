@@ -80,27 +80,42 @@ public class PopularBanco implements CommandLineRunner{
 		Fornecedor forn1 = new Fornecedor("Sadia", "05.565.279/0001-74", "3263-3666", "2690-0000", "sadia@bol.com", endFornecedor1);
 		Fornecedor forn2 = new Fornecedor("Lg", "15.565.279/0001-02", "3769-0001", null, "lg@bol.com", endFornecedor2);
 		Fornecedor forn3 = new Fornecedor("Consul", "28.565.279/0001-38", "2598-0322", null, "consul@bol.com", null);
+		Fornecedor forn4 = new Fornecedor("Princesinha do Alho", "28.565.259/0001-38", "2598-0000", null, "princesinha@bol.com", null);
 		
-		fornecedorRepository.saveAll(Arrays.asList(forn1, forn2, forn3));
+		fornecedorRepository.saveAll(Arrays.asList(forn1, forn2, forn3, forn4));
 		
 		// CADASTRANDO PRODUTOS
+		String quilo = "kg";
+		String gramas = "g";
+		
 		String cod1 = RandomUtils.gerarCodigoProdutoAleatorio();
 		Date data1 = Date.from(Instant.now());		
 		Produto prod1 = new Produto("Lasanha", cod1, "Sabor bolonhesa", data1, true, 250.0, 5.00, 11.00, forn3); 
 		
 		String cod2 = RandomUtils.gerarCodigoProdutoAleatorio();
 		Date data2 = Date.from(Instant.now());	
-		Produto prod2 = new Produto("Pizza", cod2, "Calabresa", data2, true, 0.4, 14.5, 25.5, forn1);
+		Produto prod2 = new Produto("Pizza", cod2, "Sabor calabresa", data2, true, 0.4, 14.5, 25.5, forn1);
 		
 		String cod3 = RandomUtils.gerarCodigoProdutoAleatorio();
 		Date data3 = Date.from(Instant.now());	
-		Produto prod3 = new Produto("Monitor", cod3, "22 pol", data3, true, 600.0 ,850.0, 1500.0, forn2);
+		Produto prod3 = new Produto("Monitor", cod3, "Tela 22 pol", data3, true, 600.0 ,850.0, 1500.0, forn2);
 		
 		String cod4 = RandomUtils.gerarCodigoProdutoAleatorio();
-		Date data4 = Date.from(Instant.now());	
-		Produto prod4 = new Produto("Mouse", cod4, "Verde", data4, true, 25.0, 30.0, 45.0, forn3);
+		Date data4 = Date.from(Instant.now());
+		double peso4 = 1.0;
+		Produto prod4 = new Produto("Alho descascado", cod4, "Saco de alho descascado", data4, true, peso4, 10.0, 20.0, forn4);
+		
+		String cod5 = RandomUtils.gerarCodigoProdutoAleatorio();
+		Date data5 = Date.from(Instant.now());
+		double peso5 = 500.0;
+		Produto prod5 = new Produto("Alho triturado", cod5, "Pote de alho triturado", data5, true, peso5, 7.0, 15.0, forn4);
 
-		produtoRepository.saveAll(Arrays.asList(prod1, prod2, prod3,prod4));
+		String cod6 = RandomUtils.gerarCodigoProdutoAleatorio();
+		Date data6 = Date.from(Instant.now());	
+		double peso6 = 250.0;
+		Produto prod6 = new Produto("Alho triturado", cod6, "Pote de alho triturado", data6, true, peso6, 5.0, 10.0, forn4);
+		
+		produtoRepository.saveAll(Arrays.asList(prod1, prod2, prod3,prod4, prod5, prod6));
 		
 		// CADASTRANDO VENDEDORES
 		Vendedor vend1 = new Vendedor(null, "Joãozinho",  "dev", null);

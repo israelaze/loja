@@ -90,6 +90,15 @@
 
   <section>
     <h2>Histórico de pedidos</h2>
+    <br>
+
+    <div>
+      <a mat-raised-button  class="dsc-btn" style="background-color: lightsteelblue" routerLink="/pedidos/adicionar-pedido/cliente/{{cliente.idCliente}}">
+        <mat-icon>add_shopping_cart</mat-icon>
+        Novo pedido
+      </a>
+    </div>
+    <br>
 
     <!-- Não há pedidos -->
     <div *ngIf="listaPedidos.length == 0">
@@ -138,13 +147,13 @@
         <!-- Desconto -->
         <ng-container matColumnDef="desconto">
           <th mat-header-cell *matHeaderCellDef> Desconto </th>
-          <td class="centro" mat-cell *matCellDef="let pedido"> {{pedido.desconto | currency: 'BRL': true}} </td>
+          <td class="centro" mat-cell *matCellDef="let pedido"> {{pedido.desconto | currency: 'R$ '}} </td>
         </ng-container>
 
         <!-- Total -->
         <ng-container matColumnDef="total">
           <th class="colunaTotal" mat-header-cell *matHeaderCellDef mat-sort-header> Total </th>
-          <td  class="valor" mat-cell *matCellDef="let pedido"> {{pedido.total | currency: 'BRL': true}}  </td>
+          <td  class="valor" mat-cell *matCellDef="let pedido"> {{pedido.total | currency: 'R$ '}} </td>
         </ng-container>
 
         <!-- Situação -->
@@ -211,13 +220,13 @@
                   <!-- Preço -->
                   <ng-container matColumnDef="preco">
                     <th mat-header-cell *matHeaderCellDef> Preço </th>
-                    <td mat-cell *matCellDef="let element"> {{element.produto.valorVenda | currency: 'BRL': true}} </td>
+                    <td mat-cell *matCellDef="let element"> {{element.produto.valorVenda | currency: 'R$ '}} </td>
                   </ng-container>
 
                   <!-- Subtotal -->
                   <ng-container matColumnDef="subtotal">
                     <th class="colunaTotal" mat-header-cell *matHeaderCellDef> Subtotal </th>
-                    <td class="valor" mat-cell *matCellDef="let element"> {{element.subTotal | currency: 'BRL': true}} </td>
+                    <td class="valor" mat-cell *matCellDef="let element"> {{element.subTotal | currency: 'R$ '}} </td>
                   </ng-container>
 
                   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

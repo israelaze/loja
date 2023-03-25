@@ -6,13 +6,15 @@ import { CarrinhoComponent } from './components/carrinho/carrinho.component';
 import { PedidosCadComponent } from './components/pedidos-cad/pedidos-cad.component';
 import { PedidosListComponent } from './components/pedidos-list/pedidos-list.component';
 import { PedidosRoutingModule } from './pedidos-routing.module';
+import { CatalogoComponent } from './components/catalogo/catalogo.component';
 
 
 @NgModule({
   declarations: [
     PedidosListComponent,
     PedidosCadComponent,
-    CarrinhoComponent
+    CarrinhoComponent,
+    CatalogoComponent
   ],
   imports: [
     CommonModule,

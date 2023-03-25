@@ -41,7 +41,7 @@
     <!-- Total -->
     <ng-container matColumnDef="total">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Total </th>
-        <td mat-cell *matCellDef="let pedido"> {{pedido.total | currency : 'BRL' : true}} </td>
+        <td mat-cell *matCellDef="let pedido"> {{pedido.total | currency : 'R$ '}} </td>
     </ng-container>
 
     <!-- Situação -->
@@ -96,7 +96,7 @@
                             <span> <i>Não informada</i> </span>
                         </div>
                     </div>
-                    <div> {{pedido.desconto | currency: 'BRL':true}} </div>
+                    <div> {{pedido.desconto | currency: 'R$ '}} </div>
                     <br>
                     <div >
 
@@ -106,8 +106,8 @@
                            {{item.produto.descricao}},
                            {{item.produto.peso}},
                            {{item.quantidade}},
-                           {{item.preco | currency: 'BRL':true}},
-                           {{item.subTotal | currency: 'BRL':true}},
+                           {{item.preco | currency: 'R$ '}},
+                           {{item.subTotal | currency: 'R$ '}},
                         </div>
 
                     </div>

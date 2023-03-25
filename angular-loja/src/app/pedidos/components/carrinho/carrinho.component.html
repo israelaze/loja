@@ -1,74 +1,57 @@
-<!-- <ul class="navbar-nav cart-items" *ngIf="itens().length">
-	<li class="nav-item" *ngFor="let produto of itens()">
-		<div class="media">
-			<div class="media-body">
-				<h4 class="mt-0" style="font-size: 20px;">{{produto.nomeProduto}} </h4>
-				<span style="font-size: 18px;">{{produto.valorVenda | currency: 'BRL': true}}</span>
-			</div>
-			<span class="remove-item"  style="font-size: 16px;" (click)="removeItem(produto)">
-        remover
-      </span>
-		</div>
-	</li>
-	<li class="total-cart text-right">
-      <div>
-        <h3>Total</h3>
-        <h2>{{total() | currency: 'BRL': true}}</h2>
-      </div>
-	</li>
-</ul>
-<ul class="navbar-nav cart-items" *ngIf="itens().length == 0">
-	<li class="nav-item">
-		Seu carrinho está vazio :/
-	</li>
-</ul> -->
-
-
-<div *ngIf="itens.length > 0">
-  <h3>Ítens</h3>
-  <table class="demo-table mat-elevation-z8">
-    <thead>
-      <tr >
-        <th>Produto</th>
-        <th>Quantidade</th>
-        <th>Preço</th>
-        <th>SubTotal</th>
-      </tr>
-    </thead>
-    <tbody>
-      <ng-container *ngFor="let item of itens">
-      <tr  >
-        <td>{{item.produto.nomeProduto}}</td>
-        <td>{{item.quantidade}}</td>
-        <td>{{item.produto.valorVenda | currency:'BRL':true}}</td>
-        <td>{{item.produto.valorVenda * item.quantidade | currency:'BRL':true}}</td>
-      </tr>
-      </ng-container>
-    </tbody>
-  </table>
-  <br>
-
-  <h3>Pedido</h3>
-
-  <span>Aplicar desconto ao pedido?</span>
-  <input mat-input type="checkbox" [(ngModel)]="temDesconto" >
-
-  <div *ngIf="temDesconto">
-    <section [formGroup]="desconto">
-      <input matInput formControlName="valor" type="number"
-        required
-        placeholder="informe o valor do desconto..." min="0">
-    </section>
-  </div>
-</div>
 <br>
+<body>
+  <header class="dsc-header-client">
+    <nav class="dsc-container">
+      <h1>Carrinho</h1>
+      <div class="dsc-navbar-right">
+        <div class="dsc-menu-items-container">
+          <div class="dsc-menu-item">
+            <img src="assets/imagens/carrinho.svg" alt="Carrinho de compras" />
+            <span>x{{itens.length}}</span>
 
-<div *ngIf="!checked">
-  <span> ** ERRO: Valor do desconto é superior ao valor total do pedido.</span>
-</div>
+          </div>
+        </div>
+        <!-- <a href="#">Entrar</a> -->
+      </div>
+    </nav>
+  </header>
+  <main>
+    <section id="cart-container-section" class="dsc-container">
+      <div class="dsc-card dsc-mb20">
+        <div *ngFor="let itemPedido of itens">
 
-<p class="total">TOTAL: {{total() | currency:'BRL':true}}</p>
-<div class="text-end">
-    <button [disabled]="itens.length == 0 || (temDesconto && !valorDesconto || !checked)" mat-raised-button color="primary" (click)="confirmar()">Confirmar</button>
-</div>
+          <div class="dsc-cart-item-container dsc-line-bottom">
+            <div class="dsc-cart-item-left">
+              <img src="assets/imagens/poteAlho.png" alt="Computador" />
+              <div class="dsc-cart-item-description">
+                <h3>{{itemPedido.produto.nomeProduto}}</h3>
+                <div class="dsc-cart-item-quantity-container">
+                  <div class="dsc-cart-item-quantity-btn">-</div>
+                  <p>1</p>
+                  <!-- <button class="dsc-cart-item-quantity-btn">+</button> -->
 
+                  <div class="dsc-cart-item-quantity-btn" (click)="upQuantity(itemPedido)" >+</div>
+                </div>
+              </div>
+            </div>
+            <div class="dsc-cart-item-right">
+              {{itemPedido.preco | currency:'R$ '}}
+            </div>
+          </div>
+        </div>
+        <div class="dsc-cart-total-container">
+          <h3> Total: &nbsp;
+            {{total() | currency:'R$ '}}</h3>
+        </div>
+      </div>
+      <div class="dsc-btn-page-container">
+          <div class="dsc-btn dsc-btn-blue">
+            Finalizar pedido
+          </div>
+          <div class="dsc-btn dsc-btn-white">
+            Continuar comprando
+          </div>
+      </div>
+    </section>
+  </main>
+</body>

@@ -19,21 +19,21 @@ export class CarrinhoService {
 
   constructor(private httpClient: HttpClient) { }
 
+  // Recebe os itens adicionados ao carrinho
   private _itens: ItemPedido[] = [];
 
-
+  // emite o valor mais recente da lista
   private _itensPedido : BehaviorSubject<ItemPedido[]> = new BehaviorSubject(this._itens);
 
+  // método público que recebe a lista e compartilha
   public itens : Observable<ItemPedido[]> = this._itensPedido.asObservable();
 
+  addItem(item: ItemPedido){
+      this._itens.push(item)
+      sessionStorage.setItem("carrinho",JSON.stringify(this._itens))
+      console.log("Lista:", this._itens);
 
-
-  // addItem(item: ItemPedidoPost){
-  //     this._itens.push(item)
-  //     sessionStorage.setItem("cart",JSON.stringify(this._itens))
-  //     console.log(this._itens);
-
-  // }
+  }
 
   // removeItem(item: ItemPedidoPost){
   //     this._itens.splice(this._itens.indexOf(ItemPedidoPost), 1)
@@ -45,24 +45,28 @@ export class CarrinhoService {
   // }
 
 
-  addItem(item: ItemPedido) {
-    console.log("Ítem adicionado:", item);
+//   addItem(item: ItemPedido) {
+//     console.log("Ítem adicionado:", item);
 
 
-    let index = this._itens.findIndex(b => b.produto.idProduto === item.produto.idProduto);
-    if (index === -1) {
-      this._itens.push(item);
+//     let index = this._itens.findIndex(b => b.produto.idProduto === item.produto.idProduto);
 
-    } else {
-      this._itens[index].quantidade = item.quantidade;
-      if (item.quantidade == 0) {
-        this._itens.splice(index, 1);
-      }
-    }
+// console.log(index);
 
-    console.log("Lista:", this._itens);
 
-  }
+//     if (index === -1) {
+//       this._itens.push(item);
+
+//     } else {
+//       this._itens[index].quantidade = item.quantidade;
+//       if (item.quantidade == 0) {
+//         this._itens.splice(index, 1);
+//       }
+//     }
+
+//     console.log("Lista:", this._itens);
+
+//   }
 
   // comprar() {
 
@@ -92,31 +96,31 @@ export class CarrinhoService {
 
 
     // CADASTRAR PEDIDO
-    cadastrarPedido(pedidoPost: PedidoPost){
+    // cadastrarPedido(pedidoPost: PedidoPost){
 
 
-      let listaItemPost: ItemPedidoPost[] = [];
+    //   let listaItemPost: ItemPedidoPost[] = [];
 
-      this._itens.forEach(function (item) {
+    //   this._itens.forEach(function (item) {
 
-        let itemPedidoPost: ItemPedidoPost = new ItemPedidoPost;
+    //     let itemPedidoPost: ItemPedidoPost = new ItemPedidoPost;
 
-        console.log(item);
+    //     console.log(item);
 
-        itemPedidoPost.quantidade = item.quantidade;
-        itemPedidoPost.idProduto = item.produto.idProduto;
+    //     itemPedidoPost.quantidade = item.quantidade;
+    //     itemPedidoPost.idProduto = item.produto.idProduto;
 
 
-        listaItemPost.push(itemPedidoPost);
+    //     listaItemPost.push(itemPedidoPost);
 
-        console.log(listaItemPost);
-        pedidoPost.itens = listaItemPost;
+    //     console.log(listaItemPost);
+    //     pedidoPost.itens = listaItemPost;
 
-      });
+    //   });
 
-      console.log(pedidoPost);
+    //   console.log(pedidoPost);
 
-      return this.httpClient.post<Pedido>(this.endpoint, pedidoPost);
-    }
+    //   return this.httpClient.post<Pedido>(this.endpoint, pedidoPost);
+    // }
 
 }
