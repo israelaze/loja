@@ -42,7 +42,7 @@ export class ClienteDetalhesComponent implements OnInit{
   //atributo para guardar o parâmetro recebido na rota
   parametro = this.route.snapshot.paramMap.get('id');
 
-  foto: any;
+  foto: string;
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -80,35 +80,7 @@ export class ClienteDetalhesComponent implements OnInit{
 
         if(this.cliente.foto){
           this.foto = 'data:image/jpeg;base64,' + this.cliente.foto;
-        }else{
-
-          //------PROVISÓRIO -------//
-        const idCliente = cliente.idCliente;
-        switch (idCliente) {
-          case 1:
-            this.foto = "assets/imagens/Bia.jpg";
-            break;
-          case 2:
-            this.foto = "assets/imagens/Edy.jpg";
-            break;
-          case 3:
-            this.foto = "assets/imagens/Tom.jpg";
-            break;
-          case 4:
-            this.foto = "assets/imagens/Ana.jpeg";
-            break;
-          case 5:
-            this.foto = "assets/imagens/Tiao.jpg";
-            break;
-          case 6:
-            this.foto = "assets/imagens/Caio.jpg";
-            break;
-          default:
-            break;
         }
-
-        }
-
       },
       error: e => {
         console.log(e.error.message);

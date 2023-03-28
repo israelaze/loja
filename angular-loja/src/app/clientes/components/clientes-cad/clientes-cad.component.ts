@@ -146,7 +146,9 @@ export class ClientesCadComponent implements OnInit {
 
     this.clienteService.cadastrar(dadosCliente, this.foto).subscribe({
       next: result => {
-        this.onSuccess(result)
+        this.onSuccess(result);
+        this.router.navigate(['clientes/cliente-detalhes/'+ result.idCliente]);
+
       },
       error: e => {
         this.onError(e)
@@ -180,7 +182,7 @@ export class ClientesCadComponent implements OnInit {
 
   private onSuccess(result: Cliente) {
     this.alertService.success('Cliente ' + result.nome+ ' cadastrado(a) com sucesso');
-    this.router.navigate(['clientes/cliente-detalhes/'+ result.idCliente]);
+    //this.router.navigate(['clientes/cliente-detalhes/'+ result.idCliente]);
   }
 
   private onError(e: any) {
