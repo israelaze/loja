@@ -1,10 +1,13 @@
-import { Produto } from 'src/app/produtos/models/produto';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { Pedido } from '../../models/pedido';
 import { CarrinhoService } from '../../services/carrinho.service';
+import { Cliente } from './../../../clientes/models/cliente';
 import { AlertService } from './../../../util/services/alert.service';
+import { Vendedor } from './../../../vendedores/models/vendedor';
+import { VendedoresService } from './../../../vendedores/services/vendedores.service';
 import { ItemPedido } from './../../models/itemPedido';
 import { ItemPedidoPost } from './../../models/itemPedidoPost';
 import { PedidoPost } from './../../models/pedidoPost';
@@ -18,173 +21,200 @@ import { PedidosService } from './../../services/pedidos.service';
 export class CarrinhoComponent implements OnInit {
 
   constructor(private carrinhoService: CarrinhoService, private pedidoService: PedidosService,
-    private alertService: AlertService, private router: Router, private _formBuilder: FormBuilder)
+    private alertService: AlertService, private router: Router, private _formBuilder: FormBuilder,
+    private vendedoresService: VendedoresService, private snackBar: MatSnackBar)
   { }
 
-  itens : ItemPedido[] = [];
+  cliente: Cliente;
+  itensPedido : ItemPedido[] = [];
   lista: ItemPedidoPost[] = [];
+  itemPedidoPost: ItemPedidoPost;
   pedidoPost: PedidoPost = new PedidoPost;
+  vendedores: Vendedor[] = [];
 
   valorDesconto: number = 0;
-  idCliente: number = 1;
   temDesconto: boolean = false;
+  temVendedor: boolean = false;
   checked = true;
 
-  // Capturando valor do desconto
-  desconto = this._formBuilder.group({
+  qtdeProdutos: number = 0;
 
-    valor: [''],
+  // Formulário
+  form = this._formBuilder.group({
+    desconto: [''],
+    vendedor: ['', [Validators.required]]
   });
 
-  //Busca uma lista de ítens de pedido
+
   ngOnInit(): void {
-    this.carrinhoService.itens.subscribe(data => this.itens = data);
-    console.log(this.itens);
 
-    let carrinhoSession = sessionStorage.getItem('carrinho');
-    console.log(carrinhoSession);
-   // sessionStorage.removeItem('carrinho');
+    // captura o carrinho da sessão(Json)
+    let carrinhoSession = sessionStorage.getItem('carrinhoSession');
+    if(carrinhoSession !=null){
+      console.log('kk');
+
+      this.carrinhoService.itens = this.converterStringToObjeto(carrinhoSession);
+     // this.itens();
+    }else{
+      this.router.navigate(['home']);
+    }
+
+    let produtosSession = this.converterStringToObjeto(sessionStorage.getItem('produtosSession'));
+    this.qtdeProdutos = produtosSession.length;
 
 
-
+    // captura o cliente da sessão(Json)
+    let clienteSession = sessionStorage.getItem('clienteSession');
+    this.cliente = this.converterStringToObjeto(clienteSession);
+    this.buscarVendedores();
   }
 
-  //Calcula o total do pedido com ou sem desconto
-  total(){
-    let sum=0;
-    this.itens.forEach(item => {
-      // sum += item.quantidade * item.preco;
-      sum += 1 * item.preco;
-    });
+  itens(): ItemPedido[]{
+    this.itensPedido = this.carrinhoService.itens;
+    console.log(this.itensPedido);
 
-   if(this.temDesconto){
-     this.conversor(this.desconto.value.valor);
+    if(this.temDesconto){
 
-   }else{
-    this.valorDesconto = 0;
-   }
+      this.valorDesconto = this.converterStringToNumber(this.form.value.desconto);
+    }else{
+      this.valorDesconto = 0;
+    }
 
-   sum = sum - this.valorDesconto;
+    if(this.form.value.vendedor != ''){
+      this.temVendedor = true;
+    }
 
-   console.log(sum);
-
-
-   if(sum < 0 ){
-    this.checked = false;
-   }else{
-    this.checked = true;
-     return  sum;
-   }
-
-   return sum;
-
+    return this.itensPedido;
   }
 
   //Converte a string em number
-  conversor(valor: string){
-   this.valorDesconto = +valor;
+  converterStringToNumber(valor: string): number{
+    return +valor;
+  }
+
+  converterStringToObjeto(json: string): any{
+    return JSON.parse(json);
   }
 
   // Cria um novo pedido
-  confirmar() {
+  confirmar(): void {
 
-    // if(this.itens.length > 0){
+    if(this.itensPedido.length > 0){
 
-    //   this.pedidoPost.idCliente = this.idCliente;
-    //   this.pedidoPost.idVendedor = this.idCliente;
-    //   this.pedidoPost.situacao = 'PAGO';
-    //   this.pedidoPost.desconto = this.valorDesconto;
-    //   this.pedidoPost.itens = this.lista;
+      this.criarPedidoPost();
 
-    //   console.log(this.pedidoPost);
+      console.log(this.pedidoPost);
 
-    //   this.carrinhoService.cadastrarPedido(this.pedidoPost).subscribe({
-    //     next: result => {
-    //       this.onSucess(result)
-    //     },
-    //     error: e =>{
-    //       this.onError(e)
-    //     }
-    //   });
-    // }
+      this.carrinhoService.cadastrarPedido(this.pedidoPost).subscribe({
+        next: result => {
+          this.onSucess(result)
+        },
+        error: e =>{
+          this.onError(e)
+        }
+      });
+    }
   }
 
   private onSucess(result: Pedido) {
     this.alertService.success('Pedido realizado com sucesso.');
     this.router.navigate(['clientes/cliente-detalhes/'+ result.cliente.idCliente]);
+    sessionStorage.removeItem('carrinhoSession');
   }
 
   private onError(e: any) {
     this.alertService.error(e.error.message);
   }
 
+  criarPedidoPost(): void{
 
+    this.itensPedido.forEach(item => {
+      this.itemPedidoPost = new ItemPedidoPost;
+      this.itemPedidoPost.idProduto = item.produto.idProduto;
+      this.itemPedidoPost.quantidade = item.quantidade;
 
+      this.lista.push(this.itemPedidoPost);
+    });
 
+    console.log(this.lista);
 
-
-
-
-  //--------------------------
-
-  produtos: Produto[] = [];
-
-  //itens: ItemPedidoPost[] = [];
-
-  itemPedido: ItemPedido;
-
- // pedidoPost: PedidoPost = new PedidoPost;
-
-  upQuantity(itemPedido : ItemPedido): void{
-
-    console.log(itemPedido);
-
-
-    // if(!this.itemPedido || produto.idProduto != this.itemPedido.produto.idProduto){
-    //   this.itemPedido = new ItemPedido;
-    //   this.itemPedido.quantidade ++;
-    //   this.itemPedido.preco = produto.valorVenda;
-    //   this.itemPedido.produto = produto;
-    // }else{
-    //   this.itemPedido.quantidade ++;
-    //   this.itemPedido.preco = produto.valorVenda;
-    //   this.itemPedido.produto = produto;
-    // }
-
-    // this.carrinhoService.addItem(this.itemPedido);
-
-    // console.log('Qtde:', this.itemPedido.quantidade);
-
+    this.pedidoPost.idCliente = this.cliente.idCliente;
+    this.pedidoPost.idVendedor = this.converterStringToNumber(this.form.value.vendedor);
+    this.pedidoPost.situacao = 'PAGO';
+    this.pedidoPost.desconto = this.converterStringToNumber(this.form.value.desconto);
+    this.pedidoPost.itens = this.lista;
   }
 
-  downQuantity(produto : Produto): void{
+  // BUSCAR VENDEDORES
+  buscarVendedores(): void {
+    this.vendedoresService.buscarTodos()
+      .subscribe({
+        next: vendedores => {
+          this.vendedores = vendedores;
+        },
+        error: e => {
+          console.log(e.error);
+          const msg: string = "Erro obtendo vendedores.";
+          this.snackBar.open(msg, "Erro", { duration: 5000 });
+        }
+    })
+  }
 
-    if(this.itemPedido.quantidade > 0){
-      this.itemPedido.quantidade --;
+  getErrorMessage(fieldName: string){
 
-      this.carrinhoService.addItem(this.itemPedido);
+    const form1 = this.form.get(fieldName);
+
+    if (form1?.hasError('required')) {
+      return 'Campo obrigatório';
     }
-
-    console.log('Qtde:', this.itemPedido.quantidade);
-
+    return 'Inválido';
   }
 
-  verificarQuantidade(itemPedidoPost : ItemPedidoPost, produto: Produto): void {
+  // Remover ítem do carrinho
+  removeItem(item: ItemPedido): void{
+    return this.carrinhoService.removeItem(item);
+  }
 
-    // itemPedidoPost.idProduto = produto.idProduto;
-    // console.log(itemPedidoPost);
+  // Aumenta a quantidade
+  upQuantity(itemPedido : ItemPedido): void{
+    itemPedido.quantidade ++;
+  }
 
-    // this.carrinhoService.addItem(this.itemPedidoPost);
+  // Diminui a quantidade
+  downQuantity(itemPedido : ItemPedido): void{
+    if(itemPedido.quantidade > 1){
+      itemPedido.quantidade --;
+    }
+  }
 
-
-    if(itemPedidoPost.quantidade < 0) {
-      alert("Quantidae é zero");
-      itemPedidoPost.quantidade = 0;
+  verificarQuantidade(itemPedido : ItemPedido): void {
+    if(itemPedido.quantidade < 1) {
+      alert('Quantidade mínima do produto é 1.');
+      itemPedido.quantidade = 1;
     }
     else{
-      itemPedidoPost.quantidade;
-
+      itemPedido.quantidade;
     }
+  }
+
+  //Calcula o total do pedido com ou sem desconto
+  total() : number{
+    let soma : number = 0;
+    soma = this.carrinhoService.total();
+
+    return soma - this.valorDesconto;
+  }
+
+  // Subtotal
+  subTotal(item: ItemPedido): number{
+    let sum = 0;
+    sum = item.quantidade * item.preco;
+
+    return sum;
+  }
+
+  voltar(){
+    history.go(-1);
   }
 
 }

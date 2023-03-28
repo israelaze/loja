@@ -93,7 +93,12 @@
     <br>
 
     <div>
-      <a mat-raised-button  class="dsc-btn" style="background-color: lightsteelblue" routerLink="/pedidos/adicionar-pedido/cliente/{{cliente.idCliente}}">
+      <!-- <a mat-raised-button  class="dsc-btn" style="background-color: lightsteelblue" routerLink="/pedidos/adicionar-pedido/cliente/{{cliente.idCliente}}">
+        <mat-icon>add_shopping_cart</mat-icon>
+        Novo pedido
+      </a> -->
+
+      <a mat-raised-button  class="dsc-btn" style="background-color: lightsteelblue" (click)="novoPedido()">
         <mat-icon>add_shopping_cart</mat-icon>
         Novo pedido
       </a>
@@ -153,7 +158,7 @@
         <!-- Total -->
         <ng-container matColumnDef="total">
           <th class="colunaTotal" mat-header-cell *matHeaderCellDef mat-sort-header> Total </th>
-          <td  class="valor" mat-cell *matCellDef="let pedido"> {{pedido.total | currency: 'R$ '}} </td>
+          <td  class="valor" mat-cell *matCellDef="let pedido"> {{pedido.total | currency: 'R$ ' }} </td>
         </ng-container>
 
         <!-- Situação -->
@@ -265,8 +270,12 @@
   <!-- FIM DA LISTA DE PEDIDOS -->
 
   <mat-card-actions>
-    <a href="clientes/clientes-lista" color="primary">
-      <button mat-raised-button color="primary">Voltar</button>
+    <!-- <a href="clientes/clientes-lista" color="primary">
+      <button mat-raised-button color="primary">Lista de clientes</button>
+    </a> -->
+
+    <a color="primary">
+      <button mat-raised-button color="primary" (click)="voltar()">Voltar</button>
     </a>
   </mat-card-actions>
   <br><br>

@@ -1,7 +1,7 @@
 import { Endereco } from "src/app/shared/models/endereco";
 
 export class Cliente{
-  idCliente?: any;
+  idCliente?: number;
   nome: string;
   cpf: string;
   dataNascimento: string;

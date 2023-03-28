@@ -164,4 +164,16 @@ export class ClienteDetalhesComponent implements OnInit{
     }
   }
 
+  novoPedido(){
+    // limpa a sessão
+    sessionStorage.clear();
+    //navegação
+    this.router.navigate(['/pedidos/adicionar-pedido/cliente/'+ this.cliente.idCliente]);
+  }
+
+  // Botão voltar à página anterior
+  voltar(){
+    history.go(-1);
+  }
+
 }

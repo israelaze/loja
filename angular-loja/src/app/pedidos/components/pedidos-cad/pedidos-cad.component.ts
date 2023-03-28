@@ -32,24 +32,24 @@ export class PedidosCadComponent implements OnInit {
   { }
 
   ngOnInit(): void {
-    this.buscarProdutos();
+    // this.buscarProdutos();
   }
 
 
   // BUSCAR PRODUTOS
-  buscarProdutos(): void {
-    this.produtoService.buscarTodos()
-      .subscribe({
-        next: produtos => {
-          this.produtos = produtos;
-        },
-        error: e => {
-          console.log(e.error);
-          const msg: string = "Erro obtendo produtos.";
-          this.snackBar.open(msg, "Erro", { duration: 5000 });
-        }
-      })
-  }
+  // buscarProdutos(): void {
+  //   this.produtoService.buscarTodos()
+  //     .subscribe({
+  //       next: produtos => {
+  //         this.produtos = produtos;
+  //       },
+  //       error: e => {
+  //         console.log(e.error);
+  //         const msg: string = "Erro obtendo produtos.";
+  //         this.snackBar.open(msg, "Erro", { duration: 5000 });
+  //       }
+  //     })
+  // }
 
   // adicionarItem(produto){
 
@@ -99,54 +99,54 @@ export class PedidosCadComponent implements OnInit {
     this.alertService.error(e.error.message);
   }
 
-  upQuantity(produto : Produto): void{
+  // upQuantity(produto : Produto): void{
 
-    if(!this.itemPedido || produto.idProduto != this.itemPedido.produto.idProduto){
-      this.itemPedido = new ItemPedido;
-      this.itemPedido.quantidade ++;
-      this.itemPedido.preco = produto.valorVenda;
-      this.itemPedido.produto = produto;
-    }else{
-      this.itemPedido.quantidade ++;
-      this.itemPedido.preco = produto.valorVenda;
-      this.itemPedido.produto = produto;
-    }
+  //   if(!this.itemPedido || produto.idProduto != this.itemPedido.produto.idProduto){
+  //     this.itemPedido = new ItemPedido;
+  //     this.itemPedido.quantidade ++;
+  //     this.itemPedido.preco = produto.valorVenda;
+  //     this.itemPedido.produto = produto;
+  //   }else{
+  //     this.itemPedido.quantidade ++;
+  //     this.itemPedido.preco = produto.valorVenda;
+  //     this.itemPedido.produto = produto;
+  //   }
 
-    this.carrinhoService.addItem(this.itemPedido);
+  //   this.carrinhoService.addItem(this.itemPedido);
 
-    console.log('Qtde:', this.itemPedido.quantidade);
+  //   console.log('Qtde:', this.itemPedido.quantidade);
 
-  }
+  // }
 
-  downQuantity(produto : Produto): void{
+  // downQuantity(produto : Produto): void{
 
-    if(this.itemPedido.quantidade > 0){
-      this.itemPedido.quantidade --;
+  //   if(this.itemPedido.quantidade > 0){
+  //     this.itemPedido.quantidade --;
 
-      this.carrinhoService.addItem(this.itemPedido);
-    }
+  //     this.carrinhoService.addItem(this.itemPedido);
+  //   }
 
-    console.log('Qtde:', this.itemPedido.quantidade);
+  //   console.log('Qtde:', this.itemPedido.quantidade);
 
-  }
+  // }
 
-  verificarQuantidade(itemPedidoPost : ItemPedidoPost, produto: Produto): void {
+  // verificarQuantidade(itemPedidoPost : ItemPedidoPost, produto: Produto): void {
 
-    // itemPedidoPost.idProduto = produto.idProduto;
-    // console.log(itemPedidoPost);
+  //   // itemPedidoPost.idProduto = produto.idProduto;
+  //   // console.log(itemPedidoPost);
 
-    // this.carrinhoService.addItem(this.itemPedidoPost);
+  //   // this.carrinhoService.addItem(this.itemPedidoPost);
 
 
-    if(itemPedidoPost.quantidade < 0) {
-      alert("Quantidae é zero");
-      itemPedidoPost.quantidade = 0;
-    }
-    else{
-      itemPedidoPost.quantidade;
+  //   if(itemPedidoPost.quantidade < 0) {
+  //     alert("Quantidae é zero");
+  //     itemPedidoPost.quantidade = 0;
+  //   }
+  //   else{
+  //     itemPedidoPost.quantidade;
 
-    }
-  }
+  //   }
+  // }
 
 
 }

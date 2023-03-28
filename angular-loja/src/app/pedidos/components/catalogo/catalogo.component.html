@@ -1,8 +1,13 @@
 <br>
+<div>
+  <span>{{cliente.nome}}</span>
+</div>
+
 <body>
   <header class="dsc-header-client">
     <nav class="dsc-container">
       <h1>Catálogo de produtos</h1>
+
       <div class="dsc-navbar-right">
         <div class="dsc-menu-items-container">
           <div class="dsc-menu-item">
@@ -11,45 +16,63 @@
           </div>
         </div>
         <div *ngIf="itens.length > 0">
-          <a  routerLink="/pedidos/carrinho">Ver carrinho</a>
+          <a  routerLink="/pedidos/carrinho/cliente/{{cliente.idCliente}}">Ver carrinho</a>
         </div>
       </div>
     </nav>
   </header>
-  <main>
-    <section id="catalog-section" class="dsc-container">
-      <form class="dsc-search-bar">
-        <button type="submit">🔎︎</button>
-        <input type="text" placeholder="Nome do produto" />
-        <button type="reset">🗙</button>
-      </form>
-      <div class="dsc-catalog-cards dsc-mb20 dsc-mt20">
+  <div *ngIf="produtos.length != 0">
+    <main>
+      <section id="catalog-section" class="dsc-container">
+        <form class="dsc-search-bar">
+          <button type="submit">🔎︎</button>
+          <input type="text" placeholder="Nome do produto" />
+          <button type="reset">🗙</button>
+        </form>
+        <div class="dsc-catalog-cards dsc-mb20 dsc-mt20">
 
-        <div *ngFor="let produto of produtos">
-          <div class="dsc-card">
-            <div class="dsc-catalog-card-top dsc-line-bottom">
-              <img src="assets/imagens/poteAlho.png" alt="Computer" />
-            </div>
-            <div class="dsc-catalog-card-bottom">
-              <h3>{{produto.valorVenda | currency:'R$ '}}</h3>
-              <h4>
-                {{produto.nomeProduto}}
-                <span style="font-size: x-small;font-style: italic;">
-                  {{produto.fornecedor.nomeFornecedor}}
-                </span>
-              </h4>
-              <h5>
-                {{produto.descricao}}
-              </h5>
-              <br>
-              <button  mat-button style="display: flex; color: #00eeff; background-color:rgba(190, 43, 43, 0.724); " (click)="adicionar(produto)">
-                Adicionar ao carrinho
-              </button>
+          <div *ngFor="let produto of produtos">
+            <div class="dsc-card">
+              <div class="dsc-catalog-card-top dsc-line-bottom">
+                <img src="assets/imagens/poteAlho.png" alt="Computer" />
+              </div>
+              <div class="dsc-catalog-card-bottom">
+                <h3>{{produto.valorVenda | currency:'R$ '}}</h3>
+                <h4>
+                  {{produto.nomeProduto}}
+                  <span style="font-size: x-small;font-style: italic;">
+                    {{produto.fornecedor.nomeFornecedor}}
+                  </span>
+                </h4>
+                <h5>
+                  {{produto.descricao}}
+                </h5>
+                <br>
+                <button  mat-button style="display: flex; color: #00eeff; background-color:rgba(190, 43, 43, 0.724); " (click)="adicionar(produto)">
+                  Adicionar ao carrinho
+                </button>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <div class="dsc-btn-next-page">Carregar mais</div>
-    </section>
-  </main>
+        <div class="dsc-btn-next-page">Carregar mais</div>
+      </section>
+    </main>
+  </div>
 </body>
+
+<div *ngIf="produtos.length == 0 && itens.length > 0">
+  <br>
+    <h4>
+      <p>
+
+        Todos os produtos já foram adicionados.
+      </p>
+    </h4>
+  <p>Verifique o carrinho.</p>
+</div>
+
+<div *ngIf="produtos.length == 0 && itens.length == 0">
+  <br>
+  <h4>Não existem produtos disponíveis.</h4>
+</div>
