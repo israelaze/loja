@@ -22,6 +22,7 @@ public class ProdutoGetDTO {
 	private Double valorCusto;
 	private Double valorVenda;
 	private Double margemLucro;
+	private byte[] foto;
 	
 	private FornecedorGetDTO fornecedor;
 	
@@ -36,6 +37,7 @@ public class ProdutoGetDTO {
 		this.valorCusto = produto.getValorCusto();
 		this.valorVenda = produto.getValorVenda();
 		this.margemLucro = produto.getMargemLucro();
+		this.foto = produto.getFoto();
 		this.fornecedor = new FornecedorGetDTO(produto.getFornecedor());
 	}
 

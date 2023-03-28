@@ -50,7 +50,7 @@ public class ClientesController {
 			ClientePostDTO dto = mapper.readValue(dadosCliente, ClientePostDTO.class);
 			
 			// Redimensionando e setando a foto no dto
-			if(file != null) {
+			if(file != null && !file.isEmpty()) {
 				dto.setFoto(ImagemUtils.resizeMultipartFileToByteArray(file));
 				//dto.setFoto(ImagemUtils.compressImage(file.getBytes()));
 
@@ -100,11 +100,9 @@ public class ClientesController {
 			ClientePutDTO dto = mapper.readValue(dadosCliente, ClientePutDTO.class);
 			
 			// Redimensionando e setando a foto no dto
-			if(file != null) {
+			if(file != null && !file.isEmpty()) {
 				dto.setFoto(ImagemUtils.resizeMultipartFileToByteArray(file));
 				//dto.setFoto(ImagemUtils.compressImage(file.getBytes()));
-
-
 			}
 			
 			ClienteGetDTO getDto = service.atualizar(dto);

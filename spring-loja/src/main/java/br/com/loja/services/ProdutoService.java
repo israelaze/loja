@@ -55,7 +55,7 @@ public class ProdutoService {
 		Date dataCadastro = Date.from(Instant.now());
 	
 		Produto produto = new Produto(dto.getNomeProduto(), codigo, dto.getDescricao(), dataCadastro, 
-				dto.getAtivo(), dto.getPeso(),dto.getValorCusto(), dto.getValorVenda(), fornecedor);
+				dto.getAtivo(), dto.getPeso(),dto.getValorCusto(), dto.getValorVenda(), dto.getFoto(), fornecedor);
 	
 		produtoRepository.save(produto);
 

@@ -73,7 +73,7 @@ public class Cliente implements Serializable{
 	private byte[] foto;
 	
 	public Cliente(String nome, String cpf, Date dataNascimento, String telefone1, String telefone2, String email,
-			String observacao, Endereco endereco, byte [] foto) {
+			String observacao, Endereco endereco, byte[] foto) {
 		this.nome = nome;
 		this.cpf = cpf;
 		this.dataNascimento = dataNascimento;

@@ -29,9 +29,9 @@ public class SecurityConfiguration {
 			"/configuration/ui", "/configuration/security", "/swagger-ui.html", "/webjars/**", "/v3/api-docs/**",
 			"/swagger-ui/**", "/api-docs/**" };
 
-  private static final String[] TESTES = {"/api/clientes/**", "/api/enderecos/**",
-			"/api/fornecedores/**", "/api/produtos/**",
-			"/api/pedidos/**", "/api/vendedores/**"};
+//  private static final String[] TESTES = {"/api/clientes/**", "/api/enderecos/**",
+//			"/api/fornecedores/**", "/api/produtos/**",
+//			"/api/pedidos/**", "/api/vendedores/**"};
 
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {

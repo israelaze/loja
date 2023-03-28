@@ -12,6 +12,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
@@ -56,6 +57,9 @@ public class Produto implements Serializable{
 	
 	@Setter(AccessLevel.NONE)
 	private Double margemLucro;
+	
+	@Lob
+	private byte[] foto;
 
 	@ManyToOne
 	@JoinColumn(name = "idFornecedor", nullable = false)
@@ -65,7 +69,7 @@ public class Produto implements Serializable{
 	private Set<ItemPedido> itens = new HashSet<>();
 	
 	public Produto(String nomeProduto, String codigo, String descricao, Date dataCadastro, boolean ativo, Double peso, Double valorCusto,
-			Double valorVenda, Fornecedor fornecedor) {
+			Double valorVenda, byte[] foto, Fornecedor fornecedor) {
 		this.nomeProduto = nomeProduto;
 		this.codigo = codigo;
 		this.descricao = descricao;
@@ -74,6 +78,7 @@ public class Produto implements Serializable{
 		this.peso = peso;
 		this.valorCusto = valorCusto;
 		this.valorVenda = valorVenda;
+		this.foto = foto;
 		this.margemLucro = valorVenda - valorCusto;
 		this.fornecedor = fornecedor;
 	}
