@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import br.com.loja.dtos.produto.ProdutoGetDTO;
@@ -28,12 +29,17 @@ public class ProdutoService {
 
 	private final ProdutoRepository produtoRepository;
 	private final FornecedorRepository fornecedorRepository;
+	private final ModelMapper mapper;
+
 
 	// CADASTRAR
 	public ProdutoGetDTO cadastrar(ProdutoPostDTO dto) {
 		
-		if(dto.getValorVenda() < dto.getValorCusto()) {
-			throw new BadRequestException("O valor de venda não pode ser inferior ao valor de custo.");
+		if(dto.getValorVenda() != null) {
+			
+			if(dto.getValorVenda() < dto.getValorCusto()) {
+				throw new BadRequestException("O valor de venda não pode ser inferior ao valor de custo.");
+			}
 		}
 		
 		Optional<Produto> result = produtoRepository.findByNomeProdutoAndDescricaoAndPesoAndValorVenda(
@@ -53,10 +59,12 @@ public class ProdutoService {
 		Fornecedor fornecedor = fornec.get();
 		String codigo = RandomUtils.gerarCodigoProdutoAleatorio();
 		Date dataCadastro = Date.from(Instant.now());
-	
-		Produto produto = new Produto(dto.getNomeProduto(), codigo, dto.getDescricao(), dataCadastro, 
-				dto.getAtivo(), dto.getPeso(),dto.getValorCusto(), dto.getValorVenda(), dto.getFoto(), fornecedor);
-	
+			
+		Produto produto = mapper.map(dto, Produto.class);
+		produto.setCodigo(codigo);
+		produto.setDataCadastro(dataCadastro);
+		produto.setFornecedor(fornecedor);
+		
 		produtoRepository.save(produto);
 
 		return new ProdutoGetDTO(produto);
@@ -94,8 +102,11 @@ public class ProdutoService {
 	// ATUALIZAR UM PRODUTO
 	public ProdutoGetDTO atualizar(ProdutoPutDTO dto) {
 
-		if(dto.getValorVenda() < dto.getValorCusto()) {
-			throw new BadRequestException("O valor de venda não pode ser inferior ao valor de custo.");
+		if(dto.getValorVenda() != null) {
+			
+			if(dto.getValorVenda() < dto.getValorCusto()) {
+				throw new BadRequestException("O valor de venda não pode ser inferior ao valor de custo.");
+			}
 		}
 		
 		Optional<Produto> result = produtoRepository.findById(dto.getIdProduto());
@@ -109,12 +120,11 @@ public class ProdutoService {
 		if (fornec.isEmpty()) {
 			throw new EntityNotFoundException("Fornecedor não encontrado.");
 		}
-		Fornecedor fornecedor = fornec.get();
-		
+		Fornecedor fornecedor = fornec.get();	
 		Produto produto = result.get();
-		produto.atualizar(dto.getNomeProduto(), dto.getDescricao(), dto.getAtivo(), dto.getPeso(),
-				dto.getValorCusto(), dto.getValorVenda(), fornecedor);
 		
+		produto = mapper.map(dto, Produto.class);
+		produto.setFornecedor(fornecedor);
 		produtoRepository.save(produto);
 
 		return new ProdutoGetDTO(produto);

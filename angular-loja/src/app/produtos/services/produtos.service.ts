@@ -18,4 +18,16 @@ export class ProdutosService {
   buscarTodos() {
     return this.httpClient.get<Produto[]>(this.endpoint);
   }
+
+  // CADASTRAR
+  cadastrar(dados: string, file: File) {
+
+    const formData: FormData = new FormData();
+
+    formData.append('file', file);
+    formData.append('dadosProduto', dados)
+
+    return this.httpClient.post<Produto>(this.endpoint, formData);
+  }
+
 }

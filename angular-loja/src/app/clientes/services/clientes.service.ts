@@ -1,9 +1,7 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { Cliente } from '../models/cliente';
-import { ClientePost } from './../models/cliente-post';
-import { ClientePut } from './../models/cliente-put';
 
 
 @Injectable({

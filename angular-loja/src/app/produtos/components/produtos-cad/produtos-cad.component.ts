@@ -1,8 +1,12 @@
+import { Produto } from 'src/app/produtos/models/produto';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Fornecedor } from 'src/app/fornecedores/models/fornecedor';
 import { FornecedoresService } from 'src/app/fornecedores/services/fornecedores.service';
+import { AlertService } from 'src/app/util/services/alert.service';
+import { ProdutosService } from './../../services/produtos.service';
+import { ProdutoPost } from '../../models/produtoPost';
 
 @Component({
   selector: 'app-produtos-cad',
@@ -12,29 +16,32 @@ import { FornecedoresService } from 'src/app/fornecedores/services/fornecedores.
 export class ProdutosCadComponent implements OnInit {
 
   constructor(private formBuilder: FormBuilder, private fornecedorService: FornecedoresService,
-    private snackBar: MatSnackBar)
+    private snackBar: MatSnackBar, private produtoService: ProdutosService, private alertService: AlertService)
   { }
 
-  form: FormGroup;
   fornecedores: Fornecedor[] = [];
   foto: File;
 
-
   ngOnInit(): void {
-    this.form = this.formBuilder.group({
-      nomeProduto: [''],
-      descricao: [''],
-      ativo: [''],
-      peso: [''],
-      valorCusto: [''],
-      valorVenda: [''],
-      foto: [''],
-      fornecedor: ['']
-    });
-
     this.buscarFornecedores();
   }
 
+  form = this.formBuilder.group({
+    nomeProduto: [''],
+    descricao: [''],
+    ativo: [''],
+    peso: [''],
+    valorCusto: [''],
+    valorVenda: [''],
+    idFornecedor: ['']
+  });
+
+  //Recebendo um evento/valor do componente FILHO
+  // onUpload(evento){
+  //   console.log(evento);
+  //   this.foto = evento;
+
+  // }
 
   // BUSCAR FORNECEDORES
   buscarFornecedores(): void {
@@ -51,17 +58,48 @@ export class ProdutosCadComponent implements OnInit {
       })
   }
 
-  //Recebendo um evento/valor do componente FILHO
-  onUpload(evento){
+  cadastrar() {
+    let dadosProdutos = this.converterObjetoToJson(this.form.value);
+
+    this.produtoService.cadastrar(dadosProdutos, null).subscribe({
+      next: result => {
+        this.onSuccess(result)
+      },
+      error: e => {
+        this.onError(e);
+      }
+    });
 
   }
 
-  cadastrar(): void{
-
+  cancelar(){
+    history.go(-1);
   }
 
-  cancelar(): void{
+  /* ------------- M E N S A G E N S  -------------------------*/
 
+  private onSuccess(result: Produto) {
+    this.form.reset();
+    this.alertService.success('Produto ' + result.nomeProduto+ ' cadastrado(a) com sucesso');
+  }
+
+  private onError(e: any) {
+    this.alertService.error(e.error.message);
+  }
+
+
+  /* ------------- C O N V E R S O R E S  -------------------------*/
+
+  converterStringToNumber(valor: string): number{
+    return +valor;
+  }
+
+  converterJsonToObjeto(json: string): any{
+    return JSON.parse(json);
+  }
+
+  converterObjetoToJson(objeto: any): string{
+    return JSON.stringify(objeto);
   }
 
 }

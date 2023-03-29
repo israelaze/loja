@@ -45,15 +45,15 @@
         <mat-label>Ativo</mat-label>
         <mat-select formControlName="ativo">
           <mat-option value="null"></mat-option>
-          <mat-option value="1">SIM</mat-option>
-          <mat-option value="0">NÃO</mat-option>
+          <mat-option value="true">SIM</mat-option>
+          <mat-option value="false">NÃO</mat-option>
         </mat-select>
       </mat-form-field>
 
       <mat-form-field class="full-width">
         <mat-label>Fornecedor</mat-label>
-        <mat-select formControlName="fornecedor">
-          <mat-option value="null"> </mat-option>
+        <mat-select formControlName="idFornecedor">
+          <mat-option></mat-option>
           <mat-option *ngFor="let fornecedor of fornecedores" [value]="fornecedor.idFornecedor" >
             {{fornecedor.nomeFornecedor}}
           </mat-option>

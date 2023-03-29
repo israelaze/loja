@@ -11,7 +11,6 @@ import { VendedoresService } from './../../../vendedores/services/vendedores.ser
 import { ItemPedido } from './../../models/itemPedido';
 import { ItemPedidoPost } from './../../models/itemPedidoPost';
 import { PedidoPost } from './../../models/pedidoPost';
-import { PedidosService } from './../../services/pedidos.service';
 
 @Component({
   selector: 'app-carrinho',
@@ -20,8 +19,8 @@ import { PedidosService } from './../../services/pedidos.service';
 })
 export class CarrinhoComponent implements OnInit {
 
-  constructor(private carrinhoService: CarrinhoService, private pedidoService: PedidosService,
-    private alertService: AlertService, private router: Router, private _formBuilder: FormBuilder,
+  constructor(private carrinhoService: CarrinhoService, private alertService: AlertService,
+    private router: Router, private _formBuilder: FormBuilder,
     private vendedoresService: VendedoresService, private snackBar: MatSnackBar)
   { }
 
