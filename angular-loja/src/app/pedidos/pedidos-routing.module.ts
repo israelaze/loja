@@ -10,11 +10,7 @@ const routes: Routes = [
   { path: 'pedidos-lista', component: PedidosListComponent},
   { path: 'adicionar-pedido', component: CatalogoComponent },
   { path: 'adicionar-pedido/cliente/:id', component: CatalogoComponent },
-  { path: 'carrinho/cliente/:id', component: CarrinhoComponent },
-
-
- // { path: 'adicionar-pedido', component: PedidosCadComponent },
-
+  { path: 'carrinho/cliente/:id', component: CarrinhoComponent }
 ];
 @NgModule({
   imports: [RouterModule.forChild(routes)],

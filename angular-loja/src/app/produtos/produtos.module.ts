@@ -1,16 +1,23 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
 
-import { ProdutosRoutingModule } from './produtos-routing.module';
-import { ProdutosListComponent } from './components/produtos-list/produtos-list.component';
-import { ProdutosCadComponent } from './components/produtos-cad/produtos-cad.component';
 import { SharedModule } from '../shared/shared.module';
+// import { UploadFileComponent } from '../upload-file/components/upload-file/upload-file.component';
+import { ProdutoDetalhesComponent } from './components/produto-detalhes/produto-detalhes.component';
+import { ProdutoUpdateComponent } from './components/produto-update/produto-update.component';
+import { ProdutosCadComponent } from './components/produtos-cad/produtos-cad.component';
+import { ProdutosListComponent } from './components/produtos-list/produtos-list.component';
+import { ProdutosRoutingModule } from './produtos-routing.module';
 
 
 @NgModule({
   declarations: [
     ProdutosListComponent,
-    ProdutosCadComponent
+    ProdutosCadComponent,
+    ProdutoDetalhesComponent,
+    ProdutoUpdateComponent,
+   // UploadFileComponent
+
   ],
   imports: [
     CommonModule,

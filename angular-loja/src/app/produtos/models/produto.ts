@@ -3,15 +3,16 @@ import { Fornecedor } from "src/app/fornecedores/models/fornecedor";
 export class Produto {
 
   idProduto?: number;
-	nomeProduto: string;
-	codigo: string;
-	descricao: string;
-	dataCadastro: string;
-	ativo: string;
+	nomeProduto?: string;
+	codigo?: string;
+	descricao?: string;
+	dataCadastro?: string;
+	ativo?: string;
 	peso: string;
-	valorCusto: number;
-	valorVenda: number;
-	margemLucro: number;
-	fornecedor: Fornecedor = new Fornecedor;
+	valorCusto?: number;
+	valorVenda?: number;
+  foto?: string;
+	margemLucro?: number;
+	fornecedor?: Fornecedor = new Fornecedor;
 
 }
