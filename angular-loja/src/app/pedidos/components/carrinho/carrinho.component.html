@@ -1,8 +1,8 @@
 <br>
 <div *ngIf="itens().length > 0">
-
   <div>
-    <span>{{cliente.nome}}</span>
+    <span>cliente: </span>
+    <span style="color: rgb(255, 0, 0); font-size: large;">{{cliente.nome}}</span>
   </div>
 
   <body>
@@ -19,36 +19,29 @@
         </div>
       </nav>
     </header>
+
     <main>
       <section id="cart-container-section" class="dsc-container">
         <div class="dsc-card dsc-mb20">
           <div *ngFor="let itemPedido of itens()">
-
             <div class="dsc-cart-item-container dsc-line-bottom">
               <div class="dsc-cart-item-left">
-                <img src="assets/imagens/poteAlho.png" alt="Computador" />
+                <img [src]="itemPedido.produto.foto" alt="" />
+                &nbsp;
                 <div class="dsc-cart-item-description">
-                  <h3>{{itemPedido.produto.nomeProduto}}</h3>
+                  <h3 >{{itemPedido.produto.nomeProduto}}</h3>
+                  <h6>
+                    {{itemPedido.produto.fornecedor.nomeFornecedor}}
+                    <br>
+                    {{itemPedido.produto.descricao}}
+                  </h6>
+                  <br>
                   <div class="dsc-cart-item-quantity-container">
-                    <!-- <button class="dsc-cart-item-quantity-btn">-</button>
-                    <p>1</p>
-                    <button class="dsc-cart-item-quantity-btn">+</button>
-                    <span class="remove-item" (click)="removeItem(itemPedido)">x</span> -->
-
-
                     <div class="input-group input-group-sm mb-3">
-                      <button type="button" class="btn btn-light btn-sm" (click)="downQuantity(itemPedido)">-</button>
-                      <!-- <input class="form-control form-control-sm" type="number" [(ngModel)]="itemPedido.quantidade" min="1"/> -->
-                      <input type="number" style="width: 1.8em;"  [(ngModel)]="itemPedido.quantidade" (focusout)="verificarQuantidade(itemPedido)" min="1"/>
-
-                      <button type="button" class="btn btn-light btn-sm" (click)="upQuantity(itemPedido)" >+</button>
+                      <button type="button" style="width: 20px; cursor: pointer;" (click)="downQuantity(itemPedido)">-</button>
+                      <input type="number"  style="width: 2.56em;"  [(ngModel)]="itemPedido.quantidade" (focusout)="verificarQuantidade(itemPedido)" min="1" max="99"/>
+                      <button type="button" style="width: 20px; cursor: pointer;"  (click)="upQuantity(itemPedido)" >+</button>
                     </div>
-
-                    <!-- <div style="font-size: 25px;" class="dsc-cart-item-quantity-btn" (click)="upQuantity(itemPedido)">-</div> -->
-
-                   <!-- <input type="number" style="width: 1.8em;"  [(ngModel)]="itemPedido.quantidade" (focusout)="verificarQuantidade(itemPedido)" min="0"/> -->
-
-                    <!-- <div style="font-size: 25px;" class="dsc-cart-item-quantity-btn" (click)="upQuantity(itemPedido)">+</div> -->
                   </div>
                 </div>
               </div>
@@ -68,13 +61,17 @@
         </div>
         <br>
 
+        <div *ngIf="!descontoValido" style="color: rgb(220, 20, 20); font-weight: 600;">
+          <span> ** ERRO: O valor do desconto não deve ser superior ao valor do pedido.</span>
+        </div>
+
         <section class="example-section">
           <mat-checkbox class="example-margin" [labelPosition]="'before'"
             [(ngModel)]="temDesconto">Aplicar desconto ao pedido?
           </mat-checkbox>
         </section>
-        <form [formGroup]="form">
 
+        <form [formGroup]="form">
           <div *ngIf="temDesconto">
             <mat-form-field class="fullWidth" appearance="fill">
               <mat-label>Desconto:</mat-label>
@@ -82,12 +79,8 @@
                 formControlName="desconto"  placeholder="Informe o valor do desconto..."
               />
             </mat-form-field>
-
-            <div *ngIf="!checked">
-              <span> ** ERRO: Valor do desconto é superior ao valor total do pedido.</span>
-            </div>
           </div>
-          <mat-form-field class="fullWidth" appearance="fill">
+          <mat-form-field  appearance="fill">
             <mat-label>Vendedor:</mat-label>
             <mat-select formControlName="vendedor">
               <mat-option></mat-option>
@@ -99,13 +92,25 @@
               getErrorMessage("vendedor")
             }}</mat-error>
           </mat-form-field>
+          <br>
+          <mat-form-field  appearance="fill">
+            <mat-label>Pagamento:</mat-label>
+            <mat-select formControlName="pagamento">
+              <mat-option></mat-option>
+              <mat-option value="PAGO">SIM</mat-option>
+              <mat-option value="AGUARDANDO_PAGAMENTO">NÃO</mat-option>
+            </mat-select>
+            <mat-error *ngIf="form.get('pagamento')?.invalid">{{
+              getErrorMessage("pagamento")
+            }}</mat-error>
+          </mat-form-field>
         </form>
+
         <div class="dsc-btn-page-container">
-
-
-          <button class="dsc-btn dsc-btn-blue" [disabled]="itens.length != 0 || (temDesconto && !valorDesconto) || (!checked || !temVendedor )" type="button"  color="primary" mat-raised-button (click)="confirmar()">Finalizar pedido</button>
-
-          <!--Exibe o botão caso ainda exista produtos não adicionados-->
+          <button class="dsc-btn dsc-btn-blue" [disabled]="itens.length != 0 || (temDesconto && !valorDesconto) || (!descontoValido || !form.valid )"
+            type="button"  color="primary" mat-raised-button (click)="confirmar()">Finalizar pedido
+          </button>
+          <!--Exibe o botão caso ainda exista produtos não adicionados no catálogo-->
           <div *ngIf="itens.length != qtdeProdutos">
             <button class="dsc-btn dsc-btn-white" (click)="voltar()" type="button">
               Continuar comprando
@@ -115,6 +120,5 @@
       </section>
     </main>
   </body>
-
 </div>
 

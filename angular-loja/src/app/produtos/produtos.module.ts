@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
 import { SharedModule } from '../shared/shared.module';
-// import { UploadFileComponent } from '../upload-file/components/upload-file/upload-file.component';
+import { UploadFileModule } from '../upload-file/upload-file.module';
 import { ProdutoDetalhesComponent } from './components/produto-detalhes/produto-detalhes.component';
 import { ProdutoUpdateComponent } from './components/produto-update/produto-update.component';
 import { ProdutosCadComponent } from './components/produtos-cad/produtos-cad.component';
@@ -16,13 +16,12 @@ import { ProdutosRoutingModule } from './produtos-routing.module';
     ProdutosCadComponent,
     ProdutoDetalhesComponent,
     ProdutoUpdateComponent,
-   // UploadFileComponent
-
   ],
   imports: [
     CommonModule,
     ProdutosRoutingModule,
-    SharedModule
+    SharedModule,
+    UploadFileModule
   ]
 })
 export class ProdutosModule { }

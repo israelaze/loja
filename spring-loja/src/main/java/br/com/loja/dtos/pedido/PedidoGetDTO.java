@@ -8,6 +8,7 @@ import br.com.loja.dtos.itemPedido.ItemPedidoGetDTO;
 import br.com.loja.dtos.vendedor.VendedorGetDTO;
 import br.com.loja.entities.ItemPedido;
 import br.com.loja.entities.Pedido;
+import br.com.loja.enums.SituacaoPedido;
 import br.com.loja.utils.DateUtils;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,7 +23,7 @@ public class PedidoGetDTO {
 	private String numeroPedido;
 	private String dataPedido;
 	private String dataEntrega;
-	private String situacao;
+	private int situacao;
 	private Double desconto;
 	private Double total;
 	private ClienteGetDTO cliente;
@@ -35,7 +36,7 @@ public class PedidoGetDTO {
 		this.numeroPedido = pedido.getNumeroPedido();
 		this.dataPedido = DateUtils.toString(pedido.getDataPedido());
 		this.dataEntrega = DateUtils.toString(pedido.getDataEntrega());
-		this.situacao = pedido.getSituacao().toString();
+		this.situacao = pedido.getSituacao().getCodigo();
 		this.desconto = pedido.getDesconto();
 		this.total = pedido.getTotal();
 		this.cliente = new ClienteGetDTO(pedido.getCliente());

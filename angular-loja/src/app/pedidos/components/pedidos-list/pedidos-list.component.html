@@ -47,7 +47,11 @@
     <!-- Situação -->
     <ng-container matColumnDef="situacao">z
         <th mat-header-cell *matHeaderCellDef> Situação </th>
-        <td mat-cell *matCellDef="let pedido"> {{pedido.situacao}} </td>
+        <td mat-cell *matCellDef="let pedido">
+          <div *ngIf="pedido.situacao == 1">AGUARDANDO PAGAMENTO</div>
+          <div *ngIf="pedido.situacao == 2">PAGO</div>
+          <div *ngIf="pedido.situacao == 3">CANCELADO</div>
+        </td>
     </ng-container>
 
     <!-- Expandir elementos-->

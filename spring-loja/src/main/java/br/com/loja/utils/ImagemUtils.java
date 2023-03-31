@@ -4,6 +4,7 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.util.zip.Deflater;
 import java.util.zip.Inflater;
@@ -89,11 +90,38 @@ public class ImagemUtils {
 
         // Converter a imagem redimensionada em um array de bytes
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        ImageIO.write(outputImage, "jpg", baos);
+        ImageIO.write(outputImage, "jpeg", baos);
         byte[] resizedImageByteArray = baos.toByteArray();
 
         return resizedImageByteArray;
     }
+    
+    
+    public static byte[] resizeMultipartFileToByteArrayPng(MultipartFile multipartFile) throws IOException {
 
+        // Ler a imagem PNG
+        BufferedImage inputImage = ImageIO.read(multipartFile.getInputStream());
+        
+        // Converter a imagem para JPEG
+        BufferedImage outputImage = new BufferedImage(inputImage.getWidth(),
+                                                       inputImage.getHeight(), BufferedImage.TYPE_INT_RGB);
+        outputImage.createGraphics().drawImage(inputImage, 0, 0, java.awt.Color.WHITE, null);
+        
+        // Salvar a imagem JPEG em um arquivo
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ImageIO.write(outputImage, "jpeg", baos);
+        baos.close();
+        
+        byte[] resizedImageByteArray = baos.toByteArray();
 
+        return resizedImageByteArray;
+    }
 }
+
+
+
+
+
+
+
+

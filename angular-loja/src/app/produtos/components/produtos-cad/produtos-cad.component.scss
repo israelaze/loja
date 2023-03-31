@@ -21,3 +21,14 @@ mat-card {
   justify-content: center;
 }
 
+
+
+
+
+
+
+input.text-field::-webkit-outer-spin-button,
+input.text-field::-webkit-inner-spin-button {
+  display: none;
+}
+

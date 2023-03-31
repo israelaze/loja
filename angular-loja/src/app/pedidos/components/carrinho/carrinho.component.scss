@@ -2,6 +2,9 @@
   width: 60%;
 }
 
+.container{
+  width: 100%;
+}
 
 .example-h2 {
   margin: 10px;
@@ -16,6 +19,10 @@
 
 .example-margin {
   margin: 0 10px;
+}
+
+.full-width{
+  width: 100%;
 }
 
 
@@ -42,7 +49,10 @@
 .dsc-cart-total-container h3 {
   text-align: left;
   font-size: 16px;
-  color: var(--dsc-color-font-secondary);
+  // color: var(--dsc-color-font-secondary);
+  color: rgb(210, 33, 30);
+  font-style: oblique;
+  font-size: large;
 }
 
 .dsc-cart-item-container {
@@ -52,8 +62,9 @@
 }
 
 .dsc-cart-item-container img {
-  width: 78px;
-  height: 78px;
+   width: 120px;
+   min-height: 120px;
+   max-height: 120px;
 }
 
 .dsc-cart-item-left {

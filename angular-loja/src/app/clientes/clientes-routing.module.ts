@@ -12,13 +12,6 @@ const routes: Routes = [
   { path: 'cadastrar-cliente', component: ClientesCadComponent },
   { path: 'cliente-update/:id', component: ClienteUpdateComponent },
   { path: 'cliente-detalhes/:id', component: ClienteDetalhesComponent },
-
-
-
-
-
-
-
 ];
 
 @NgModule({

@@ -54,8 +54,15 @@ public class ProdutosController {
 			
 			// Redimensionando e setando a foto no dto
 			if(file != null && !file.isEmpty()) {
-				dto.setFoto(ImagemUtils.resizeMultipartFileToByteArray(file));
-				//dto.setFoto(ImagemUtils.compressImage(file.getBytes()));
+				
+				if(file.getContentType().equals("image/png")) {
+					
+					dto.setFoto(ImagemUtils.resizeMultipartFileToByteArrayPng(file));
+				}else {
+					
+					dto.setFoto(ImagemUtils.resizeMultipartFileToByteArray(file));
+					//dto.setFoto(ImagemUtils.compressImage(file.getBytes()));
+				}
 			}
 
 			ProdutoGetDTO getDto = service.cadastrar(dto);

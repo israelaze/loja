@@ -6,7 +6,7 @@
   <!-- Imagem -->
   <section>
     <div *ngIf="foto" >
-      <img  matCardImage class="foto" [src]="foto"  alt=" ">
+      <img  matCardImage class="foto" [src]="foto"  alt="">
     </div>
   </section>
 
@@ -163,8 +163,12 @@
 
         <!-- Situação -->
         <ng-container matColumnDef="situacao">
-          <th mat-header-cell *matHeaderCellDef> Situação </th>
-          <td mat-cell *matCellDef="let pedido"> {{pedido.situacao}} </td>
+          <th mat-header-cell *matHeaderCellDef> Pagamento</th>
+          <td mat-cell *matCellDef="let pedido">
+            <div *ngIf="pedido.situacao == 1">AGUARDANDO PAGAMENTO</div>
+            <div *ngIf="pedido.situacao == 2">PAGO</div>
+            <div *ngIf="pedido.situacao == 3">CANCELADO</div>
+          </td>
         </ng-container>
 
         <!-- Botão expandir elementos-->

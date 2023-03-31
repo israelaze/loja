@@ -37,11 +37,11 @@ export class ProdutosCadComponent implements OnInit {
   });
 
   //Recebendo um evento/valor do componente FILHO
-  // onUpload(evento){
-  //   console.log(evento);
-  //   this.foto = evento;
+  onUpload(evento){
+    console.log(evento);
+    this.foto = evento;
 
-  // }
+  }
 
   // BUSCAR FORNECEDORES
   buscarFornecedores(): void {
@@ -61,7 +61,7 @@ export class ProdutosCadComponent implements OnInit {
   cadastrar() {
     let dadosProdutos = this.converterObjetoToJson(this.form.value);
 
-    this.produtoService.cadastrar(dadosProdutos, null).subscribe({
+    this.produtoService.cadastrar(dadosProdutos, this.foto).subscribe({
       next: result => {
         this.onSuccess(result)
       },

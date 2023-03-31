@@ -85,6 +85,16 @@ export class CatalogoComponent implements OnInit{
       this.produtosService.buscarTodos().subscribe({
         next: produtos => {
           this.produtos = produtos;
+
+          this.produtos.forEach(produto => {
+            if(produto.foto){
+
+              let foto = 'data:image/jpeg;base64,' + produto.foto;
+              console.log(foto);
+
+              produto.foto = foto;
+            }
+          });
         },
         error: e => {
           console.log(e.error);

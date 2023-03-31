@@ -6,12 +6,12 @@
   <mat-card-content>
     <form [formGroup]="form" class="min-width">
 
-      <!-- <section>
+      <section>
         <mat-label class="label">Foto:</mat-label>
 
-        <!-- Passando para o componente PAI, o evento customizado disparado pelo componente FILHO  --
+        <!-- Passando para o componente PAI, o evento customizado disparado pelo componente FILHO  -->
         <app-upload-file (evento)="onUpload($event)"> </app-upload-file>
-      </section> -->
+      </section>
 
       <mat-form-field class="full-width">
         <input matInput placeholder="Nome do produto" formControlName="nomeProduto" maxlength="50" #nome />
@@ -33,12 +33,16 @@
         <input matInput placeholder="Peso" formControlName="peso" type="number"  min="0" #peso />
       </mat-form-field>
 
-      <mat-form-field class="full-width">
-        <input matInput placeholder="Custo" formControlName="valorCusto" type="number" min="0" #custo />
+      <mat-form-field class="full-width" floatLabel="always">
+        <mat-label>Valor de custo</mat-label>
+        <input matInput class="text-field" placeholder="0" formControlName="valorCusto" type="number" min="0" #custo />
+        <span matTextPrefix>R$&nbsp;</span>
       </mat-form-field>
 
-      <mat-form-field class="full-width" >
-        <input matInput placeholder="Valor de venda" formControlName="valorVenda" type="number" min="0" #preco />
+      <mat-form-field class="full-width" floatLabel="always">
+        <mat-label>Valor de venda</mat-label>
+        <input matInput class="text-field" placeholder="0" formControlName="valorVenda" type="number" min="0" #preco />
+        <span matTextPrefix>R$&nbsp;</span>
       </mat-form-field>
 
       <mat-form-field class="full-width">

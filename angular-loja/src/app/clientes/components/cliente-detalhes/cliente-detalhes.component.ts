@@ -99,11 +99,13 @@ export class ClienteDetalhesComponent implements OnInit{
 
         this.listaPedidos = result;
 
-        // this.listaPedidos.forEach(function (pedido) {
+        this.listaPedidos.forEach(function (pedido) {
 
-        //   // recebendo um lista de ítens de cada pedido
-        //   const itens = pedido.itens;
-        // });
+          // recebendo um lista de ítens de cada pedido
+          console.log(pedido.situacao);
+
+
+        });
 
         this.dataSource = new MatTableDataSource<Pedido>(this.listaPedidos);
         this.ref.detectChanges();

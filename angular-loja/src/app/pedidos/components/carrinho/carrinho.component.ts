@@ -30,18 +30,19 @@ export class CarrinhoComponent implements OnInit {
   itemPedidoPost: ItemPedidoPost;
   pedidoPost: PedidoPost = new PedidoPost;
   vendedores: Vendedor[] = [];
-
   valorDesconto: number = 0;
+
   temDesconto: boolean = false;
   temVendedor: boolean = false;
-  checked = true;
+  descontoValido = true;
 
   qtdeProdutos: number = 0;
 
   // Formulário
   form = this._formBuilder.group({
     desconto: [''],
-    vendedor: ['', [Validators.required]]
+    vendedor: ['', [Validators.required]],
+    pagamento: ['', [Validators.required]]
   });
 
 
@@ -135,12 +136,13 @@ export class CarrinhoComponent implements OnInit {
       this.lista.push(this.itemPedidoPost);
     });
 
-    console.log(this.lista);
-
     this.pedidoPost.idCliente = this.cliente.idCliente;
     this.pedidoPost.idVendedor = this.converterStringToNumber(this.form.value.vendedor);
-    this.pedidoPost.situacao = 'PAGO';
-    this.pedidoPost.desconto = this.converterStringToNumber(this.form.value.desconto);
+    this.pedidoPost.situacao = this.form.value.pagamento;
+
+    if(this.temDesconto){
+      this.pedidoPost.desconto = this.converterStringToNumber(this.form.value.desconto);
+    }
     this.pedidoPost.itens = this.lista;
   }
 
@@ -201,6 +203,11 @@ export class CarrinhoComponent implements OnInit {
     let soma : number = 0;
     soma = this.carrinhoService.total();
 
+    this.descontoValido = true;
+
+    if(this.valorDesconto > soma){
+      this.descontoValido = false;
+    }
     return soma - this.valorDesconto;
   }
 

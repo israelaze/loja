@@ -1,6 +1,7 @@
 <br>
 <div>
-  <span>{{cliente.nome}}</span>
+  <span>cliente: </span>
+  <span style="color: rgb(255, 0, 0); font-size: large;">{{cliente.nome}}</span>
 </div>
 
 <body>
@@ -34,7 +35,7 @@
           <div *ngFor="let produto of produtos">
             <div class="dsc-card">
               <div class="dsc-catalog-card-top dsc-line-bottom">
-                <img src="assets/imagens/poteAlho.png" alt="Computer" />
+                <img [src]="produto.foto" alt=" " />
               </div>
               <div class="dsc-catalog-card-bottom">
                 <h3>{{produto.valorVenda | currency:'R$ '}}</h3>
