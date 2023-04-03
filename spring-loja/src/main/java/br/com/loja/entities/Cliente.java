@@ -67,8 +67,6 @@ public class Cliente implements Serializable{
 	@OneToMany(mappedBy = "cliente")
 	private Set<Pedido> pedidos = new HashSet<>();
 	
-//	@OneToOne
-//	@JoinColumn(name = "idImagem", unique = true)
 	@Lob
 	private byte[] foto;
 	

@@ -1,5 +1,6 @@
 import { HttpClientModule } from '@angular/common/http';
-import { NgModule } from '@angular/core';
+import ptBr from '@angular/common/locales/pt';
+import { DEFAULT_CURRENCY_CODE, LOCALE_ID, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
@@ -12,12 +13,15 @@ import { RelatoriosModule } from './relatorios/relatorios.module';
 import { UsuariosModule } from './usuarios/usuarios.module';
 import { VendedoresModule } from './vendedores/vendedores.module';
 
+
+import { registerLocaleData } from '@angular/common';
 import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { MatPaginatorIntl } from '@angular/material/paginator';
+import { httpInterceptorProviders } from './_interceptors/index';
 import { AppComponent } from './app.component';
 import { TraducaoMatPaginatorIntl } from './shared/traducao-mat-paginator-intl';
-import { httpInterceptorProviders } from './_interceptors/index';
 
+registerLocaleData(ptBr);
 @NgModule({
   declarations: [
     AppComponent
@@ -39,6 +43,8 @@ import { httpInterceptorProviders } from './_interceptors/index';
   providers: [
     {provide: MatPaginatorIntl, useClass: TraducaoMatPaginatorIntl},
     {provide: MAT_DATE_LOCALE, useValue: 'pt-BR'},
+    {provide: LOCALE_ID, useValue: 'pt' },
+    {provide: DEFAULT_CURRENCY_CODE, useValue: 'BRL'},
     httpInterceptorProviders
 
   ],

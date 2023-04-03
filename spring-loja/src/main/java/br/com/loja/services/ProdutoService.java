@@ -35,7 +35,7 @@ public class ProdutoService {
 	// CADASTRAR
 	public ProdutoGetDTO cadastrar(ProdutoPostDTO dto) {
 		
-		if(dto.getValorVenda() != null) {
+		if(dto.getValorVenda() != null && dto.getValorCusto() != null) {
 			
 			if(dto.getValorVenda() < dto.getValorCusto()) {
 				throw new BadRequestException("O valor de venda não pode ser inferior ao valor de custo.");
@@ -64,6 +64,7 @@ public class ProdutoService {
 		produto.setCodigo(codigo);
 		produto.setDataCadastro(dataCadastro);
 		produto.setFornecedor(fornecedor);
+		//produto.setMargemLucro(dto.getValorCusto(), dto.getValorVenda());
 		
 		produtoRepository.save(produto);
 

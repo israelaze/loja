@@ -48,6 +48,9 @@
                 <h5>
                   {{produto.descricao}}
                 </h5>
+                <p *ngIf="produto.categoria == 'ALIMENTÍCIOS' || produto.categoria == 'TEMPEROS'">
+                  {{produto.peso}} {{produto.tipoPeso}}
+                </p>
                 <br>
                 <button  mat-button style="display: flex; color: #00eeff; background-color:rgba(190, 43, 43, 0.724); " (click)="adicionar(produto)">
                   Adicionar ao carrinho

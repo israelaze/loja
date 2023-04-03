@@ -1,1 +1,60 @@
-<p>produto-detalhes works!</p>
+<body>
+  <header class="dsc-header-client">
+    <nav class="dsc-container">
+      <h1>Detalhes do produto</h1>
+      <!-- <div class="dsc-navbar-right">
+        <div class="dsc-menu-items-container">
+          <div class="dsc-menu-item">
+            <img src="" alt="" />
+          </div>
+        </div>
+        <a href="#">Entrar</a>
+      </div> -->
+    </nav>
+  </header>
+  <main>
+    <section id="product-details-section" class="dsc-container">
+      <div class="dsc-card dsc-mb20">
+        <div  *ngIf="produto.foto " class="dsc-product-details-top dsc-line-bottom" >
+          <img [src]="produto.foto" alt="" />
+        </div>
+        <div class="dsc-product-details-bottom" style="font-weight: 500;">
+          <h3>{{produto.valorVenda | currency }}</h3>
+          <h4 style="font-size: large;">{{produto.nomeProduto}}</h4>
+          <h5>{{produto.fornecedor.nomeFornecedor}}</h5>
+          <br>
+
+          <p> código: {{produto.codigo}}</p>
+          <p> data de cadastro: {{produto.dataCadastro | data}}</p>
+          <p> ativo: {{produto.ativo}}</p>
+          <p> peso: {{produto.peso}} {{produto.tipoPeso}}</p>
+          <p> custo: {{produto.valorCusto | currency}}</p>
+          <p> margem de lucro: {{produto.margemLucro | currency}}</p>
+          <br>
+
+          <div *ngIf="produto.categoria" class="dsc-category-container">
+            <div class="dsc-category">
+              {{produto.categoria}}
+            </div>
+          </div>
+
+          <h5>Descrição:</h5>
+          <p>
+           {{produto.descricao}}
+          </p>
+          <br>
+
+        </div>
+      </div>
+      <div class="dsc-btn-page-container">
+          <button mat-raised-button color="primary" class="dsc-btn dsc-btn-blue" routerLink="/produtos/produto-update/{{produto.idProduto}}">
+              Editar
+          </button>
+          <button mat-raised-button class="dsc-btn dsc-btn-white" (click)="voltar()">
+              Voltar
+          </button>
+      </div>
+    </section>
+  </main>
+</body>
+

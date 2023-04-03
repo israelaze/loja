@@ -30,4 +30,24 @@ export class ProdutosService {
     return this.httpClient.post<Produto>(this.endpoint, formData);
   }
 
+  // BUSCAR ID
+  buscarId(idProduto: number) {
+    return this.httpClient.get<Produto>(this.endpoint + '/' + idProduto);
+  }
+
+  // ATUALIZAR
+  atualizar(dados: string, file: File) {
+    const formData: FormData = new FormData();
+
+    formData.append('file', file);
+    formData.append('dadosProduto', dados)
+
+    return this.httpClient.put<Produto>(this.endpoint, formData);
+  }
+
+  //EXCLUIR
+  excluir(idProduto: number) {
+    return this.httpClient.delete(this.endpoint + '/' + idProduto, {responseType: 'text'});
+  }
+
 }

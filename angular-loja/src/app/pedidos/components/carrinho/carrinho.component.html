@@ -34,6 +34,9 @@
                     {{itemPedido.produto.fornecedor.nomeFornecedor}}
                     <br>
                     {{itemPedido.produto.descricao}}
+                    <p *ngIf="itemPedido.produto.categoria == 'ALIMENTÍCIOS' || itemPedido.produto.categoria == 'TEMPEROS'">
+                      {{itemPedido.produto.peso}} {{itemPedido.produto.tipoPeso}}
+                    </p>
                   </h6>
                   <br>
                   <div class="dsc-cart-item-quantity-container">

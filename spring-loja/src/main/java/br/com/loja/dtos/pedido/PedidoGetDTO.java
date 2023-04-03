@@ -8,7 +8,6 @@ import br.com.loja.dtos.itemPedido.ItemPedidoGetDTO;
 import br.com.loja.dtos.vendedor.VendedorGetDTO;
 import br.com.loja.entities.ItemPedido;
 import br.com.loja.entities.Pedido;
-import br.com.loja.enums.SituacaoPedido;
 import br.com.loja.utils.DateUtils;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -5,7 +5,6 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { Router } from '@angular/router';
 import { Cliente } from 'src/app/clientes/models/cliente';
 import { AlertService } from 'src/app/util/services/alert.service';
 import { ClientesService } from '../../services/clientes.service';
@@ -32,7 +31,6 @@ export class ClientesListComponent implements OnInit, AfterViewInit {
     private snackBar: MatSnackBar,
     private _liveAnnouncer: LiveAnnouncer,
     private alertService: AlertService,
-    private router: Router,
     public dialog: MatDialog
     )
   { }

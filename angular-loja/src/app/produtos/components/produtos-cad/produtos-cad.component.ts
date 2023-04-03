@@ -1,12 +1,15 @@
 import { Produto } from 'src/app/produtos/models/produto';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Fornecedor } from 'src/app/fornecedores/models/fornecedor';
 import { FornecedoresService } from 'src/app/fornecedores/services/fornecedores.service';
 import { AlertService } from 'src/app/util/services/alert.service';
 import { ProdutosService } from './../../services/produtos.service';
 import { ProdutoPost } from '../../models/produtoPost';
+import { Router } from '@angular/router';
+import { CategoriasService } from '../../services/categorias.service';
+import { Login } from 'src/app/usuarios/models/login';
 
 @Component({
   selector: 'app-produtos-cad',
@@ -15,32 +18,36 @@ import { ProdutoPost } from '../../models/produtoPost';
 })
 export class ProdutosCadComponent implements OnInit {
 
-  constructor(private formBuilder: FormBuilder, private fornecedorService: FornecedoresService,
-    private snackBar: MatSnackBar, private produtoService: ProdutosService, private alertService: AlertService)
+  constructor(private formBuilder: FormBuilder, private fornecedorService: FornecedoresService, private categoriasService: CategoriasService,
+    private snackBar: MatSnackBar, private produtoService: ProdutosService, private alertService: AlertService,
+    private router: Router)
   { }
 
   fornecedores: Fornecedor[] = [];
+  categorias = [];
   foto: File;
 
   ngOnInit(): void {
     this.buscarFornecedores();
+    this.buscarCategorias();
   }
 
   form = this.formBuilder.group({
-    nomeProduto: [''],
+    nomeProduto: ['', [Validators.required]],
     descricao: [''],
     ativo: [''],
     peso: [''],
+    tipoPeso: [''],
     valorCusto: [''],
     valorVenda: [''],
-    idFornecedor: ['']
+    categoria: [''],
+    idFornecedor: ['', [Validators.required]]
   });
 
   //Recebendo um evento/valor do componente FILHO
   onUpload(evento){
     console.log(evento);
     this.foto = evento;
-
   }
 
   // BUSCAR FORNECEDORES
@@ -58,8 +65,28 @@ export class ProdutosCadComponent implements OnInit {
       })
   }
 
+  // BUSCAR CATEGORIAS
+  buscarCategorias(): void {
+    this.categoriasService.buscarCategorias()
+      .subscribe({
+        next: result => {
+          this.categorias = result as [];
+        },
+        error: e => {
+          console.log(e.error);
+          const msg: string = "Erro obtendo categorias.";
+          this.snackBar.open(msg, "Erro", { duration: 5000 });
+        }
+      })
+  }
+
+  // CADASTRAR PRODUTOS
   cadastrar() {
     let dadosProdutos = this.converterObjetoToJson(this.form.value);
+    console.log(typeof this.form.value.valorCusto);
+    console.log( typeof this.form.value.valorVenda);
+
+
 
     this.produtoService.cadastrar(dadosProdutos, this.foto).subscribe({
       next: result => {
@@ -81,11 +108,24 @@ export class ProdutosCadComponent implements OnInit {
   private onSuccess(result: Produto) {
     this.form.reset();
     this.alertService.success('Produto ' + result.nomeProduto+ ' cadastrado(a) com sucesso');
+    this.router.navigate(['produtos/produto-detalhes/'+ result.idProduto]);
+
   }
 
   private onError(e: any) {
     this.alertService.error(e.error.message);
   }
+
+  getErrorMessage(fieldName: string){
+
+    const form = this.form.get(fieldName);
+
+    if (form?.hasError('required')) {
+      return 'Campo obrigatório';
+    }
+    return 'Inválido';
+  }
+
 
 
   /* ------------- C O N V E R S O R E S  -------------------------*/

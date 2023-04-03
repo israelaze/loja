@@ -16,6 +16,8 @@ public class ProdutoPostDTO {
 //	private String dataCadastro; - OBTIDO DO SISTEMA 
 	private Boolean ativo;
 	private Double peso;
+	private String tipoPeso;
+	private String categoria;
 	private Double valorCusto;
 	private Double valorVenda;
 	private byte[] foto;

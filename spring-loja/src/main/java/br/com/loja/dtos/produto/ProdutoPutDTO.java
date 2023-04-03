@@ -21,6 +21,8 @@ public class ProdutoPutDTO {
 	private Double peso;
 	private Double valorCusto;
 	private Double valorVenda;
+	private String tipoPeso;
+	private String categoria;
 	private byte[] foto;
 	
 	@NotNull

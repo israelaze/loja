@@ -6,9 +6,11 @@ export class Produto {
 	nomeProduto?: string;
 	codigo?: string;
 	descricao?: string;
+  categoria?: string;
 	dataCadastro?: string;
 	ativo?: string;
 	peso: string;
+  tipoPeso: string;
 	valorCusto?: number;
 	valorVenda?: number;
   foto?: string;

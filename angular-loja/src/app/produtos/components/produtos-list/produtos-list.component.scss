@@ -7,18 +7,17 @@ table {
   width: 100%;
 }
 
-mat-form-field {
-  width: 100%;
-}
-
 button {
   width: 100%;
 }
+
+
 
 h1 {
   width: 100%;
   text-align: center;
   margin-bottom: 2rem;
+  //font-weight: bold;
 }
 
 .edit {
@@ -27,4 +26,41 @@ h1 {
 
 .delete {
   color: red;
+}
+
+.search {
+  color: red;
+}
+
+.fab-container{
+  position: fixed;
+  bottom: 3%;
+  z-index: z('add-button');
+}
+
+.fab{
+  height: 50px;
+  width: 50px;
+  font-size: 50px;
+  margin-top: -12.5px;
+}
+
+.mat-button{
+  min-width: 10px;
+}
+
+
+
+.mat-table {
+  overflow: auto;
+  max-height: 600px;
+}
+
+.action-column {
+  flex: 1 1 80px;
+
+}
+
+.action-column-header {
+  margin: 0 auto;
 }

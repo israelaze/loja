@@ -2,6 +2,8 @@ package br.com.loja.dtos.produto;
 
 import br.com.loja.dtos.fornecedor.FornecedorGetDTO;
 import br.com.loja.entities.Produto;
+import br.com.loja.enums.Categoria;
+import br.com.loja.enums.TipoPeso;
 import br.com.loja.utils.DateUtils;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,6 +24,8 @@ public class ProdutoGetDTO {
 	private Double valorCusto;
 	private Double valorVenda;
 	private Double margemLucro;
+	private TipoPeso tipoPeso;
+	private Categoria categoria;
 	private byte[] foto;
 	
 	private FornecedorGetDTO fornecedor;
@@ -36,7 +40,12 @@ public class ProdutoGetDTO {
 		this.peso = produto.getPeso();
 		this.valorCusto = produto.getValorCusto();
 		this.valorVenda = produto.getValorVenda();
-		this.margemLucro = produto.getMargemLucro();
+		
+		if(this.valorCusto != null && this.valorVenda != null) {
+			this.margemLucro = produto.getMargemLucro();
+		}
+		this.tipoPeso =  produto.getTipoPeso();
+		this.categoria = produto.getCategoria();
 		this.foto = produto.getFoto();
 		this.fornecedor = new FornecedorGetDTO(produto.getFornecedor());
 	}

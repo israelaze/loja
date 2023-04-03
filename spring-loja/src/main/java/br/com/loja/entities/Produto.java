@@ -6,8 +6,12 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+import br.com.loja.enums.Categoria;
+import br.com.loja.enums.TipoPeso;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -58,6 +62,12 @@ public class Produto implements Serializable{
 	@Setter(AccessLevel.NONE)
 	private Double margemLucro;
 	
+	@Enumerated(EnumType.STRING)
+	private TipoPeso tipoPeso;
+
+	@Enumerated(EnumType.STRING)
+	private Categoria categoria;
+	
 	@Lob
 	private byte[] foto;
 
@@ -68,33 +78,6 @@ public class Produto implements Serializable{
 	@OneToMany(mappedBy = "idItemPedido.produto") 
 	private Set<ItemPedido> itens = new HashSet<>();
 	
-	public Produto(String nomeProduto, String codigo, String descricao, Date dataCadastro, boolean ativo, Double peso, Double valorCusto,
-			Double valorVenda, byte[] foto, Fornecedor fornecedor) {
-		this.nomeProduto = nomeProduto;
-		this.codigo = codigo;
-		this.descricao = descricao;
-		this.dataCadastro = dataCadastro;
-		this.ativo = ativo;
-		this.peso = peso;
-		this.valorCusto = valorCusto;
-		this.valorVenda = valorVenda;
-		this.foto = foto;
-		this.margemLucro = valorVenda - valorCusto;
-		this.fornecedor = fornecedor;
-	}
-	
-	public void atualizar(String nomeProduto, String descricao, boolean ativo, Double peso, Double valorCusto,
-			Double valorVenda, Fornecedor fornecedor) {
-		this.nomeProduto = nomeProduto;
-		this.descricao = descricao;
-		this.ativo = ativo;
-		this.peso = peso;
-		this.valorCusto = valorCusto;
-		this.valorVenda = valorVenda;
-		this.margemLucro = valorVenda - valorCusto;
-		this.fornecedor = fornecedor;
-	}
-	
 	public String getAtivo() {
 		if(this.ativo) {
 			return "SIM";
@@ -102,9 +85,11 @@ public class Produto implements Serializable{
 		return "NÃO";
 	}
 	
-	public void setMargemLucro(Double valorCusto, Double valorVenda) {
+	// método para calcular a margem de lucro
+	public Double getMargemLucro() {
 		this.margemLucro = 0.0;
-		this.margemLucro = valorVenda - valorCusto;
+		this.margemLucro = this.valorVenda - this.valorCusto;
+		return this.margemLucro;
 	}
 	
 	public Set<Pedido> getPedidos(){
