@@ -5,7 +5,6 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Cliente } from 'src/app/clientes/models/cliente';
 import { ClientesService } from 'src/app/clientes/services/clientes.service';
@@ -49,7 +48,7 @@ export class ClienteDetalhesComponent implements OnInit{
 
   constructor(private clientesService: ClientesService, private pedidosService: PedidosService,
     private _liveAnnouncer: LiveAnnouncer, private snackBar: MatSnackBar, private ref: ChangeDetectorRef,
-    private route: ActivatedRoute, private sanitizer: DomSanitizer, private router: Router
+    private route: ActivatedRoute, private router: Router
   ){}
 
   // EXECUTA QUANDO O COMPONENTE É CARREGADO
@@ -92,20 +91,20 @@ export class ClienteDetalhesComponent implements OnInit{
     })
   }
 
-   // BUSCAR PEDIDOS
-   buscarPedidosByCliente(idCliente: number): void {
+  // BUSCAR PEDIDOS
+  buscarPedidosByCliente(idCliente: number): void {
     this.pedidosService.buscarPedidosByCliente(idCliente).subscribe({
       next: result => {
 
         this.listaPedidos = result;
 
-        this.listaPedidos.forEach(function (pedido) {
+        // this.listaPedidos.forEach(function (pedido) {
 
-          // recebendo um lista de ítens de cada pedido
-          console.log(pedido.situacao);
+        //   // recebendo um lista de ítens de cada pedido
+        //   console.log(pedido.situacao);
 
 
-        });
+        // });
 
         this.dataSource = new MatTableDataSource<Pedido>(this.listaPedidos);
         this.ref.detectChanges();

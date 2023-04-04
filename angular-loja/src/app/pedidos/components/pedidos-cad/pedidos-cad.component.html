@@ -1,0 +1,161 @@
+<br>
+
+<div class="container">
+
+  <h1>Buscar cliente</h1>
+
+  <p>Informar uma opção para a busca</p>
+  <br>
+
+  <!-- BUSCA -->
+  <mat-card class="fullWidth">
+
+      <!-- <img matCardImage src="Card wide image source"> -->
+      <mat-card-content>
+        <form [formGroup]="form" class="min-width">
+
+          <mat-label>Buscar por</mat-label>
+          <br><br>
+          <mat-select formControlName="opcao">
+            <mat-option value=""></mat-option>
+            <mat-option value="nome">Nome ou sobrenome</mat-option>
+            <mat-option value="cpf">CPF</mat-option>
+            <mat-option value="telefone">Telefone</mat-option>
+            <mat-option value="email">Email</mat-option>
+          </mat-select>
+
+          <div *ngIf="escolha()"></div>
+
+          <div *ngIf="opcaoBusca == 'nome'">
+            <mat-form-field class="halfWidth" appearance="fill">
+              <mat-label class="label">Nome</mat-label>
+              <input matInput type="text" formControlName="nome" minlength="3" maxlength="50"
+              />
+            </mat-form-field>
+          </div>
+
+          <div *ngIf="opcaoBusca == 'cpf'">
+            <mat-form-field class="halfWidth" appearance="fill">
+              <mat-label>CPF:</mat-label>
+              <input matInput type="text" formControlName="cpf" minlength="11" maxlength="12"
+              />
+            </mat-form-field>
+          </div>
+
+          <div *ngIf="opcaoBusca == 'telefone'">
+            <mat-form-field class="halfWidth" appearance="fill">
+              <mat-label class="label">Telefone</mat-label>
+              <input matInput type="tel" formControlName="telefone" minlength="8" maxlength="9"
+              />
+            </mat-form-field>
+          </div>
+
+          <div *ngIf="opcaoBusca == 'email'">
+            <mat-form-field class="halfWidth" appearance="fill">
+              <mat-label>Email:</mat-label>
+              <input matInput type="email" formControlName="email" minlength="9" maxlength="50"
+              />
+            </mat-form-field>
+          </div>
+        </form>
+      </mat-card-content>
+
+      <div *ngIf="opcaoBusca">
+        <mat-card-actions align="start">
+            <button [disabled]="valor && !form.valid" mat-raised-button style="background-color: cornflowerblue;" (click)="buscarCliente()">Buscar</button>
+        </mat-card-actions>
+      </div>
+  </mat-card>
+  <br><br>
+
+  <!-- RESULTADO DA BUSCA  -->
+  <div *ngIf="dataSource.filteredData.length > 0">
+
+    <h4>Resultado:</h4>
+    <br>
+
+    <!-- Filtro -->
+    <!-- <mat-form-field class="filter">
+      <mat-label class="filter">Filtro</mat-label>
+      <input matInput (keyup)="applyFilter($event)" placeholder="pesquisar" #input>
+    </mat-form-field> -->
+
+    <!-- Tabela -->
+    <table mat-table [dataSource]="dataSource" matSort (matSortChange)="announceSortChange($event)" class="mat-elevation-z8">
+
+      <!-- Nome -->
+      <ng-container matColumnDef="nome">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Nome </mat-header-cell>
+        <mat-cell *matCellDef="let cliente">{{cliente.nome}}</mat-cell>
+      </ng-container>
+
+      <!-- Endereço -->
+      <ng-container matColumnDef="endereco">
+        <mat-header-cell *matHeaderCellDef> Endereço </mat-header-cell>
+        <mat-cell *matCellDef="let cliente">
+          <div *ngIf="cliente.endereco">
+            {{cliente.endereco.logradouro}}, {{cliente.endereco.numero}}, {{cliente.endereco.bairro}}
+          </div>
+          <div *ngIf="!cliente.endereco">
+            <span> <i>Não cadastrado</i> </span>
+          </div>
+        </mat-cell>
+      </ng-container>
+
+      <!-- Telefones -->
+      <ng-container matColumnDef="telefone">
+        <mat-header-cell *matHeaderCellDef> Telefones </mat-header-cell>
+        <mat-cell *matCellDef="let cliente">
+          <div *ngIf="cliente.telefone2">
+            {{cliente.telefone1}} / {{cliente.telefone2}}
+          </div>
+          <div *ngIf="!cliente.telefone2">
+            {{cliente.telefone1}}
+          </div>
+        </mat-cell>
+      </ng-container>
+
+      <!-- Ações -->
+      <ng-container matColumnDef="acoes">
+        <mat-header-cell *matHeaderCellDef> Ações</mat-header-cell>
+        <mat-cell *matCellDef="let cliente" class="action-column">
+          <button mat-button aria-label="Consultar Cliente" routerLink="/clientes/cliente-detalhes/{{cliente.idCliente}}">
+            <mat-icon>search</mat-icon>
+          </button>
+          &nbsp;
+          <a mat-raised-button  class="dsc-btn" style="background-color: rgb(94, 243, 193)" routerLink="/pedidos/adicionar-pedido/cliente/{{cliente.idCliente}}">
+            <mat-icon>add_shopping_cart</mat-icon>
+            Novo pedido
+          </a>
+        </mat-cell>
+      </ng-container>
+
+      <!-- Definição das colunas e linhas -->
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+
+      <!-- Mensagem exibida quando não há dados correspondentes na filtragem -->
+      <!-- <tr class="mat-row" *matNoDataRow>
+        <td class="mat-cell" colspan="4">Não encontrado: "{{input.value}}"</td>
+      </tr> -->
+
+    </table>
+    <br>
+
+    <!-- Paginação -->
+    <mat-paginator
+      [pageSizeOptions]="[10, 15, 25]"
+      showFirstLastButtons
+      aria-label="Selecionar página">
+    </mat-paginator>
+  </div>
+
+  <a color="primary">
+    <button mat-raised-button color="primary" (click)="voltar()">Voltar</button>
+  </a>
+  <br><br>
+</div>
+
+
+
+

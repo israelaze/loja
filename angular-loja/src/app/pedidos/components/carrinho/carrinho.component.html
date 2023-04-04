@@ -49,16 +49,16 @@
                 </div>
               </div>
               <div class="dsc-cart-item-right">
-                {{subTotal(itemPedido) | currency:'R$ '}}
+                {{subTotal(itemPedido) | currency }}
               </div>
             </div>
           </div>
           <div class="dsc-cart-total-container">
             <h3 style="font-size: 70%;"> Desconto: &nbsp;
-              {{valorDesconto | currency: 'R$ '}}
+              {{valorDesconto | currency }}
             </h3>
             <h3> Total: &nbsp;
-              {{total() | currency:'R$ '}}
+              {{total() | currency }}
             </h3>
           </div>
         </div>
