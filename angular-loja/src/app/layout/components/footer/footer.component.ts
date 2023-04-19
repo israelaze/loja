@@ -17,7 +17,7 @@ export class FooterComponent implements OnInit{
   const dataAtual = new Date();
   const anoAtual = dataAtual.getFullYear();
   this.anoAtual = anoAtual;
-  console.log(anoAtual);
+ // console.log(anoAtual);
 
   }
 

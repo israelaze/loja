@@ -24,23 +24,30 @@ export class CarrinhoComponent implements OnInit {
     private vendedoresService: VendedoresService, private snackBar: MatSnackBar)
   { }
 
-  cliente: Cliente;
   itensPedido : ItemPedido[] = [];
+  qtdeProdutos: number = 0;
+  cliente: Cliente;
+  vendedores: Vendedor[] = [];
+
   lista: ItemPedidoPost[] = [];
   itemPedidoPost: ItemPedidoPost;
   pedidoPost: PedidoPost = new PedidoPost;
-  vendedores: Vendedor[] = [];
-  valorDesconto: number = 0;
+  valorDesconto = 0;
 
   temDesconto: boolean = false;
   temVendedor: boolean = false;
-  descontoValido = true;
+  descontoValido: boolean = true;
 
-  qtdeProdutos: number = 0;
+
+  carrinho : ItemPedido[] = [];
 
   // Formulário
-  form = this._formBuilder.group({
-    desconto: [''],
+  form1 = this._formBuilder.group({
+    desconto: ['',]
+  });
+
+  // Formulário
+  form2 = this._formBuilder.group({
     vendedor: ['', [Validators.required]],
     pagamento: ['', [Validators.required]]
   });
@@ -48,53 +55,85 @@ export class CarrinhoComponent implements OnInit {
 
   ngOnInit(): void {
 
-    // captura o carrinho da sessão(Json)
-    let carrinhoSession = sessionStorage.getItem('carrinhoSession');
-    if(carrinhoSession !=null){
-      console.log('kk');
 
-      this.carrinhoService.itens = this.converterStringToObjeto(carrinhoSession);
-     // this.itens();
-    }else{
-      this.router.navigate(['home']);
-    }
-
-    let produtosSession = this.converterStringToObjeto(sessionStorage.getItem('produtosSession'));
-    this.qtdeProdutos = produtosSession.length;
-
-
-    // captura o cliente da sessão(Json)
-    let clienteSession = sessionStorage.getItem('clienteSession');
-    this.cliente = this.converterStringToObjeto(clienteSession);
+    this.buscarCarrinhoSession();
+    this.buscarProdutosSession()
+    this.buscarClienteSession();
     this.buscarVendedores();
   }
 
-  itens(): ItemPedido[]{
-    this.itensPedido = this.carrinhoService.itens;
-    console.log(this.itensPedido);
+  change(): boolean{
 
-    if(this.temDesconto){
+    console.log(this.temDesconto);
+    console.log(this.temVendedor);
 
-      this.valorDesconto = this.converterStringToNumber(this.form.value.desconto);
-    }else{
-      this.valorDesconto = 0;
+    if(this.temDesconto == true){
+
+      return true;
+    }
+    return false;
+  };
+
+  // BUSCAR ÍTENS DO CARRINHO(sessão)
+  buscarCarrinhoSession(): void{
+    this.itensPedido = this.carrinhoService.buscarCarrinho();
+
+    if(this.itensPedido.length <= 0){
+      this.router.navigate(['home']);
     }
 
-    if(this.form.value.vendedor != ''){
-      this.temVendedor = true;
-    }
-
-    return this.itensPedido;
+    console.log('Qtde de ítens no carrinho: ', this.itensPedido.length);
   }
 
-  //Converte a string em number
-  converterStringToNumber(valor: string): number{
-    return +valor;
+  // BUSCAR PRODUTOS NÃO ADICIONADOS AO CARRINHO(sessão)
+  buscarProdutosSession(): void{
+    let produtosSession = this.converterStringToObjeto(sessionStorage.getItem('produtosSession'));
+    this.qtdeProdutos = produtosSession.length;
+
+    console.log('Qtde de produtos disponíveis: ', this.qtdeProdutos);
   }
 
-  converterStringToObjeto(json: string): any{
-    return JSON.parse(json);
+  // BUSCAR CLIENTE NA SESSÃO
+  buscarClienteSession(): void {
+    let clienteSession = this.converterStringToObjeto(sessionStorage.getItem('clienteSession'));
+    this.cliente = clienteSession;
+
+    console.log('Cliente: ', this.cliente.nome);
   }
+
+  // BUSCAR VENDEDORES
+  buscarVendedores(): void {
+    this.vendedoresService.buscarTodos()
+      .subscribe({
+        next: vendedores => {
+          this.vendedores = vendedores;
+        },
+        error: e => {
+          console.log(e.error);
+          const msg: string = "Erro obtendo vendedores.";
+          this.snackBar.open(msg, "Erro", { duration: 5000 });
+        }
+      })
+  }
+
+  // itens(): ItemPedido[]{
+  //   //this.itensPedido = this.carrinhoService.itens;
+  //   console.log('Tem desconto', this.temDesconto);
+  //   console.log('Form válido',this.form.valid);
+
+  //   if(this.temDesconto){
+
+  //     this.valorDesconto = this.converterStringToNumber(this.form.value.desconto);
+  //   }else{
+  //     this.valorDesconto = 0;
+  //   }
+
+  //   if(this.form.value.vendedor != ''){
+  //     this.temVendedor = true;
+  //   }
+
+  //   return this.itensPedido;
+  // }
 
   // Cria um novo pedido
   confirmar(): void {
@@ -137,43 +176,60 @@ export class CarrinhoComponent implements OnInit {
     });
 
     this.pedidoPost.idCliente = this.cliente.idCliente;
-    this.pedidoPost.idVendedor = this.converterStringToNumber(this.form.value.vendedor);
-    this.pedidoPost.situacao = this.form.value.pagamento;
+    this.pedidoPost.idVendedor = this.converterStringToNumber(this.form2.value.vendedor);
+    this.pedidoPost.situacao = this.form2.value.pagamento;
 
     if(this.temDesconto){
-      this.pedidoPost.desconto = this.converterStringToNumber(this.form.value.desconto);
+      this.pedidoPost.desconto = this.converterStringToNumber(this.form1.value.desconto);
     }
     this.pedidoPost.itens = this.lista;
   }
 
-  // BUSCAR VENDEDORES
-  buscarVendedores(): void {
-    this.vendedoresService.buscarTodos()
-      .subscribe({
-        next: vendedores => {
-          this.vendedores = vendedores;
-        },
-        error: e => {
-          console.log(e.error);
-          const msg: string = "Erro obtendo vendedores.";
-          this.snackBar.open(msg, "Erro", { duration: 5000 });
-        }
-    })
-  }
+
 
   getErrorMessage(fieldName: string){
 
-    const form1 = this.form.get(fieldName);
+    const form1 = this.form1.get(fieldName);
+    const form2 = this.form2.get(fieldName);
 
-    if (form1?.hasError('required')) {
+    if (form1?.hasError('required') || form2?.hasError('required')) {
       return 'Campo obrigatório';
     }
     return 'Inválido';
   }
 
   // Remover ítem do carrinho
-  removeItem(item: ItemPedido): void{
-    return this.carrinhoService.removeItem(item);
+  // removeItem(item: ItemPedido): void{
+  //   //this.carrinhoService.removeItem(item);
+  //  // console.log("Lista:", this.carrinhoSession);
+  //   this.itensPedido.splice(this.itensPedido.indexOf(item), 1);
+  //    //salva na sessão
+  //    sessionStorage.setItem("carrinhoSession",JSON.stringify(this.itensPedido));
+  //    console.log("NovaLista:", this.itensPedido);
+  //   // this.carrinhoService.itens = this.itensPedido;
+
+  // }
+
+    removeItem(item: ItemPedido): void{
+      console.log("Lista:", this.itensPedido);
+      console.log("Lista:", this.itensPedido.length);
+
+    this.carrinho = this.carrinhoService.buscarCarrinho();
+
+
+    console.log("Carrinho:", this.carrinho);
+
+    this.carrinho.splice(this.carrinho.indexOf(item), 1);
+    console.log("Carrinho:", this.carrinho);
+
+    //salva na sessão
+   // console.log("Lista:", this.itensPedido);
+
+   sessionStorage.setItem('carrinhoSession',JSON.stringify(this.carrinho));
+    this.router.navigate(['/pedidos/carrinho/cliente/' + this.cliente.idCliente]);
+
+
+    // this.router.navigate(['/pedidos/carrinho/cliente/', this.cliente.idCliente]);
   }
 
   // Aumenta a quantidade
@@ -188,6 +244,7 @@ export class CarrinhoComponent implements OnInit {
     }
   }
 
+  // Quantidade atual do ítem
   verificarQuantidade(itemPedido : ItemPedido): void {
     if(itemPedido.quantidade < 1) {
       alert('Quantidade mínima do produto é 1.');
@@ -201,13 +258,26 @@ export class CarrinhoComponent implements OnInit {
   //Calcula o total do pedido com ou sem desconto
   total() : number{
     let soma : number = 0;
-    soma = this.carrinhoService.total();
+
+    soma = this.itensPedido
+    .map(item => item.preco * item.quantidade)
+    .reduce((prev, value) => prev+value, 0);
 
     this.descontoValido = true;
+
+    if(this.temDesconto){
+      this.valorDesconto = this.converterStringToNumber(this.form1.value.desconto);
+    }else{
+      this.valorDesconto = 0;
+    }
+
+    console.log(this.valorDesconto);
 
     if(this.valorDesconto > soma){
       this.descontoValido = false;
     }
+
+
     return soma - this.valorDesconto;
   }
 
@@ -217,6 +287,17 @@ export class CarrinhoComponent implements OnInit {
     sum = item.quantidade * item.preco;
 
     return sum;
+  }
+
+
+
+  //Converte a string em number
+  converterStringToNumber(valor: string): number{
+    return +valor;
+  }
+
+  converterStringToObjeto(json: string): any{
+    return JSON.parse(json);
   }
 
   voltar(){

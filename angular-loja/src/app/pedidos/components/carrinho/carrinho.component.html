@@ -1,5 +1,5 @@
 <br>
-<div *ngIf="itens().length > 0">
+<div>
   <div>
     <span>cliente: </span>
     <span style="color: rgb(255, 0, 0); font-size: large;">{{cliente.nome}}</span>
@@ -13,7 +13,7 @@
           <div class="dsc-menu-items-container">
             <div class="dsc-menu-item">
               <img src="assets/imagens/carrinho.svg" alt="Carrinho de compras" />
-              <span>x{{itens().length}}</span>
+              <span>x{{itensPedido.length}}</span>
             </div>
           </div>
         </div>
@@ -23,7 +23,7 @@
     <main>
       <section id="cart-container-section" class="dsc-container">
         <div class="dsc-card dsc-mb20">
-          <div *ngFor="let itemPedido of itens()">
+          <div *ngFor="let itemPedido of itensPedido">
             <div class="dsc-cart-item-container dsc-line-bottom">
               <div class="dsc-cart-item-left">
                 <img [src]="itemPedido.produto.foto" alt="" />
@@ -44,16 +44,23 @@
                       <button type="button" style="width: 20px; cursor: pointer;" (click)="downQuantity(itemPedido)">-</button>
                       <input type="number"  style="width: 2.56em;"  [(ngModel)]="itemPedido.quantidade" (focusout)="verificarQuantidade(itemPedido)" min="1" max="99"/>
                       <button type="button" style="width: 20px; cursor: pointer;"  (click)="upQuantity(itemPedido)" >+</button>
+                      &nbsp;
+                      <!-- <a href="">
+                        <span class="remove-item" (click)="removeItem(itemPedido)" style="font-size: 11px; color: red;">remover</span>
+                      </a> -->
                     </div>
                   </div>
                 </div>
               </div>
+              <a href="">
+                <span class="remove-item" (click)="removeItem(itemPedido)" style="font-size: 11px; color: red;">remover</span>
+              </a>
               <div class="dsc-cart-item-right">
                 {{subTotal(itemPedido) | currency }}
               </div>
             </div>
           </div>
-          <div class="dsc-cart-total-container">
+          <div class="dsc-cart-total-container" *ngIf="total()">
             <h3 style="font-size: 70%;"> Desconto: &nbsp;
               {{valorDesconto | currency }}
             </h3>
@@ -74,15 +81,21 @@
           </mat-checkbox>
         </section>
 
-        <form [formGroup]="form">
+        <form [formGroup]="form1">
           <div *ngIf="temDesconto">
             <mat-form-field class="fullWidth" appearance="fill">
               <mat-label>Desconto:</mat-label>
               <input matInput type="number" required  min="0"
                 formControlName="desconto"  placeholder="Informe o valor do desconto..."
               />
+              <mat-error *ngIf="form1.get('desconto')?.invalid">{{
+                getErrorMessage("desconto")
+              }}</mat-error>
             </mat-form-field>
           </div>
+        </form>
+
+        <form [formGroup]="form2">
           <mat-form-field  appearance="fill">
             <mat-label>Vendedor:</mat-label>
             <mat-select formControlName="vendedor">
@@ -91,7 +104,7 @@
                 {{vendedor.nome }}
               </mat-option>
             </mat-select>
-            <mat-error *ngIf="form.get('vendedor')?.invalid">{{
+            <mat-error *ngIf="form2.get('vendedor')?.invalid">{{
               getErrorMessage("vendedor")
             }}</mat-error>
           </mat-form-field>
@@ -103,18 +116,18 @@
               <mat-option value="PAGO">SIM</mat-option>
               <mat-option value="AGUARDANDO_PAGAMENTO">NÃO</mat-option>
             </mat-select>
-            <mat-error *ngIf="form.get('pagamento')?.invalid">{{
+            <mat-error *ngIf="form2.get('pagamento')?.invalid">{{
               getErrorMessage("pagamento")
             }}</mat-error>
           </mat-form-field>
         </form>
 
         <div class="dsc-btn-page-container">
-          <button class="dsc-btn dsc-btn-blue" [disabled]="itens.length != 0 || (temDesconto && !valorDesconto) || (!descontoValido || !form.valid )"
-            type="button"  color="primary" mat-raised-button (click)="confirmar()">Finalizar pedido
+          <button class="dsc-btn dsc-btn" [disabled]="!form2.valid || (!form1.valid  && temDesconto || !descontoValido)"
+            type="button" color="primary" mat-raised-button (click)="confirmar()">Finalizar pedido
           </button>
           <!--Exibe o botão caso ainda exista produtos não adicionados no catálogo-->
-          <div *ngIf="itens.length != qtdeProdutos">
+          <div *ngIf="itensPedido.length != qtdeProdutos">
             <button class="dsc-btn dsc-btn-white" (click)="voltar()" type="button">
               Continuar comprando
             </button>
@@ -124,4 +137,8 @@
     </main>
   </body>
 </div>
+<div *ngIf="itensPedido.length == 0">
+  <p>ERRO</p>
+</div>
+
 

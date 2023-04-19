@@ -1,4 +1,3 @@
-import { Login } from './../../../usuarios/models/login';
 import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -32,6 +31,8 @@ export class CatalogoComponent implements OnInit{
   carrinhoSession: ItemPedido[] = [];
   produtosSession: Produto[] = [];
 
+  qtdeInicioProdutos = 0;
+
   ngOnInit(){
 
     this.buscarCliente(this.converterStringToNumber(this.parametro));
@@ -41,10 +42,7 @@ export class CatalogoComponent implements OnInit{
   // BUSCAR cliente por id
   buscarCliente(idCliente: number): void {
 
-    console.log(this.parametro);
-    console.log(typeof idCliente);
-
-
+    console.log('IdCliente:', this.parametro);
 
     // verificando se o cliente da sessão é o mesmo do parâmetro da requisição
     let clienteSession =  this.converterJsonToObjeto(sessionStorage.getItem('clienteSession'));
@@ -80,17 +78,22 @@ export class CatalogoComponent implements OnInit{
     if(sessao){
       this.produtos = this.produtosSession;
       this.itens = this.carrinhoSession;
+      this.qtdeInicioProdutos = this.produtos.length;
+
 
     }else{
       this.produtosService.buscarTodos().subscribe({
         next: produtos => {
           this.produtos = produtos;
+          this.qtdeInicioProdutos = this.produtos.length;
+          console.log('Qtde de produtos cadastrados:', this.qtdeInicioProdutos);
+
 
           this.produtos.forEach(produto => {
             if(produto.foto){
 
               let foto = 'data:image/jpeg;base64,' + produto.foto;
-              console.log(foto);
+            //  console.log(foto);
 
               produto.foto = foto;
             }
@@ -116,7 +119,7 @@ export class CatalogoComponent implements OnInit{
     return false;
   }
 
-  // Adicionar produto ao carrinho
+  // ADICIONAR PRODUTO
   adicionar(produto: Produto): void {
 
     let itemPedido = new ItemPedido;
@@ -124,17 +127,21 @@ export class CatalogoComponent implements OnInit{
     itemPedido.produto = produto;
     itemPedido.preco  = produto.valorVenda;
     itemPedido.quantidade = 1;
- //   this.carrinhoService.addItem(itemPedido);
 
-    window.alert('Produto: ' + produto.nomeProduto + ' adicionado ao carrinho com sucesso.');
-
-    // adiciona o ítem numa lista de ItemPedido e salva na sessão
+    // adiciona o ítem numa lista de ItemPedido(apenas para uso no catálogo)
     this.itens.push(itemPedido);
+
+    //converte e adiciona a lista ao carrinho(Sessão)
     sessionStorage.setItem('carrinhoSession', this.converterObjetoToJson(this.itens));
 
     // removendo o produto da lista de exibição e salva na sessão, os produtos NÃO ADICIONADOS ao carrinho
     this.produtos.splice(this.produtos.indexOf(produto), 1);
     sessionStorage.setItem('produtosSession', this.converterObjetoToJson(this.produtos));
+
+    console.log('Qtde de produtos disponíveis: ', this.produtos.length);
+
+    this.snackBar.open(produto.nomeProduto + ' adicionado ao carrinho com sucesso.', '', { duration: 3000 });
+   // window.alert('Produto: ' + produto.nomeProduto + ' adicionado ao carrinho com sucesso.');
 
   }
 
