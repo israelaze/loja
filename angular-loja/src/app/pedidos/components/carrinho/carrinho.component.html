@@ -44,17 +44,13 @@
                       <button type="button" style="width: 20px; cursor: pointer;" (click)="downQuantity(itemPedido)">-</button>
                       <input type="number"  style="width: 2.56em;"  [(ngModel)]="itemPedido.quantidade" (focusout)="verificarQuantidade(itemPedido)" min="1" max="99"/>
                       <button type="button" style="width: 20px; cursor: pointer;"  (click)="upQuantity(itemPedido)" >+</button>
-                      &nbsp;
-                      <!-- <a href="">
-                        <span class="remove-item" (click)="removeItem(itemPedido)" style="font-size: 11px; color: red;">remover</span>
-                      </a> -->
                     </div>
                   </div>
+                  <button type="button"  style="color: rgb(235, 235, 235); background-color: crimson; cursor: pointer;"  (click)="removeItem(itemPedido)">
+                    remover
+                  </button>
                 </div>
               </div>
-              <a href="">
-                <span class="remove-item" (click)="removeItem(itemPedido)" style="font-size: 11px; color: red;">remover</span>
-              </a>
               <div class="dsc-cart-item-right">
                 {{subTotal(itemPedido) | currency }}
               </div>

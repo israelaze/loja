@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import { ConfirmationDialogComponent } from 'src/app/shared/components/confirmation-dialog/confirmation-dialog.component';
 import { Pedido } from '../../models/pedido';
 import { CarrinhoService } from '../../services/carrinho.service';
 import { Cliente } from './../../../clientes/models/cliente';
@@ -21,7 +23,9 @@ export class CarrinhoComponent implements OnInit {
 
   constructor(private carrinhoService: CarrinhoService, private alertService: AlertService,
     private router: Router, private _formBuilder: FormBuilder,
-    private vendedoresService: VendedoresService, private snackBar: MatSnackBar)
+    private vendedoresService: VendedoresService, private snackBar: MatSnackBar,
+    public dialog: MatDialog
+    )
   { }
 
   itensPedido : ItemPedido[] = [];
@@ -35,9 +39,7 @@ export class CarrinhoComponent implements OnInit {
   valorDesconto = 0;
 
   temDesconto: boolean = false;
-  temVendedor: boolean = false;
   descontoValido: boolean = true;
-
 
   carrinho : ItemPedido[] = [];
 
@@ -52,27 +54,12 @@ export class CarrinhoComponent implements OnInit {
     pagamento: ['', [Validators.required]]
   });
 
-
   ngOnInit(): void {
-
-
     this.buscarCarrinhoSession();
     this.buscarProdutosSession()
     this.buscarClienteSession();
     this.buscarVendedores();
   }
-
-  change(): boolean{
-
-    console.log(this.temDesconto);
-    console.log(this.temVendedor);
-
-    if(this.temDesconto == true){
-
-      return true;
-    }
-    return false;
-  };
 
   // BUSCAR ÍTENS DO CARRINHO(sessão)
   buscarCarrinhoSession(): void{
@@ -81,7 +68,6 @@ export class CarrinhoComponent implements OnInit {
     if(this.itensPedido.length <= 0){
       this.router.navigate(['home']);
     }
-
     console.log('Qtde de ítens no carrinho: ', this.itensPedido.length);
   }
 
@@ -115,25 +101,6 @@ export class CarrinhoComponent implements OnInit {
         }
       })
   }
-
-  // itens(): ItemPedido[]{
-  //   //this.itensPedido = this.carrinhoService.itens;
-  //   console.log('Tem desconto', this.temDesconto);
-  //   console.log('Form válido',this.form.valid);
-
-  //   if(this.temDesconto){
-
-  //     this.valorDesconto = this.converterStringToNumber(this.form.value.desconto);
-  //   }else{
-  //     this.valorDesconto = 0;
-  //   }
-
-  //   if(this.form.value.vendedor != ''){
-  //     this.temVendedor = true;
-  //   }
-
-  //   return this.itensPedido;
-  // }
 
   // Cria um novo pedido
   confirmar(): void {
@@ -185,8 +152,6 @@ export class CarrinhoComponent implements OnInit {
     this.pedidoPost.itens = this.lista;
   }
 
-
-
   getErrorMessage(fieldName: string){
 
     const form1 = this.form1.get(fieldName);
@@ -199,37 +164,26 @@ export class CarrinhoComponent implements OnInit {
   }
 
   // Remover ítem do carrinho
-  // removeItem(item: ItemPedido): void{
-  //   //this.carrinhoService.removeItem(item);
-  //  // console.log("Lista:", this.carrinhoSession);
-  //   this.itensPedido.splice(this.itensPedido.indexOf(item), 1);
-  //    //salva na sessão
-  //    sessionStorage.setItem("carrinhoSession",JSON.stringify(this.itensPedido));
-  //    console.log("NovaLista:", this.itensPedido);
-  //   // this.carrinhoService.itens = this.itensPedido;
+  removeItem(item: ItemPedido): void{
 
-  // }
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      data: 'Tem certeza que deseja excluir ' + item.produto.nomeProduto + ' ?',
+    });
 
-    removeItem(item: ItemPedido): void{
-      console.log("Lista:", this.itensPedido);
-      console.log("Lista:", this.itensPedido.length);
+    dialogRef.afterClosed().subscribe((result: boolean) => {
+      console.log(result);
 
-    this.carrinho = this.carrinhoService.buscarCarrinho();
+      if (result) {
 
+        this.itensPedido.splice(this.itensPedido.indexOf(item), 1);
+        console.log("Carrinho:", this.itensPedido);
 
-    console.log("Carrinho:", this.carrinho);
+        sessionStorage.setItem('carrinhoSession',JSON.stringify(this.itensPedido));
 
-    this.carrinho.splice(this.carrinho.indexOf(item), 1);
-    console.log("Carrinho:", this.carrinho);
+        this.ngOnInit();
+      }
+    });
 
-    //salva na sessão
-   // console.log("Lista:", this.itensPedido);
-
-   sessionStorage.setItem('carrinhoSession',JSON.stringify(this.carrinho));
-    this.router.navigate(['/pedidos/carrinho/cliente/' + this.cliente.idCliente]);
-
-
-    // this.router.navigate(['/pedidos/carrinho/cliente/', this.cliente.idCliente]);
   }
 
   // Aumenta a quantidade
@@ -271,12 +225,10 @@ export class CarrinhoComponent implements OnInit {
       this.valorDesconto = 0;
     }
 
-    console.log(this.valorDesconto);
-
+   // console.log(this.valorDesconto);
     if(this.valorDesconto > soma){
       this.descontoValido = false;
     }
-
 
     return soma - this.valorDesconto;
   }
@@ -288,8 +240,6 @@ export class CarrinhoComponent implements OnInit {
 
     return sum;
   }
-
-
 
   //Converte a string em number
   converterStringToNumber(valor: string): number{

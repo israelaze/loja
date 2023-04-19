@@ -35,7 +35,9 @@
           <div *ngFor="let produto of produtos">
             <div class="dsc-card">
               <div class="dsc-catalog-card-top dsc-line-bottom">
-                <img [src]="produto.foto" alt=" " />
+                <a routerLink="/produtos/produto-detalhes/{{produto.idProduto}}">
+                  <img [src]="produto.foto" alt=" " />
+                </a>
               </div>
               <div class="dsc-catalog-card-bottom">
                 <h3>{{produto.valorVenda | currency }}</h3>
