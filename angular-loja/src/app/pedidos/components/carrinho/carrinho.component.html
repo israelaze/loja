@@ -1,5 +1,5 @@
 <br>
-<div>
+<div *ngIf="itensPedido.length != 0">
   <div>
     <span>cliente: </span>
     <span style="color: rgb(255, 0, 0); font-size: large;">{{cliente.nome}}</span>
@@ -134,7 +134,31 @@
   </body>
 </div>
 <div *ngIf="itensPedido.length == 0">
-  <p>ERRO</p>
+  <div>
+    <span>cliente: </span>
+    <span style="color: rgb(255, 0, 0); font-size: large;">{{cliente.nome}}</span>
+  </div>
+
+  <body>
+    <header class="dsc-header-client">
+      <nav class="dsc-container">
+        <h1>Carrinho</h1>
+        <div class="dsc-navbar-right">
+          <div class="dsc-menu-items-container">
+            <div class="dsc-menu-item">
+              <img src="assets/imagens/carrinho.svg" alt="Carrinho de compras" />
+              <span>x{{itensPedido.length}}</span>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+    <br>
+  <p>Seu carrinho está vazio. </p>
+  <P>Clique
+    <a href="/pedidos/adicionar-pedido/cliente/{{cliente.idCliente}}" style="color: blue; cursor: pointer;">AQUI</a>
+    para adicionar ítens ao carrinho!</P>
+  </body>
 </div>
 
 

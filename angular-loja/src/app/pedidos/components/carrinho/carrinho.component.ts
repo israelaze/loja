@@ -3,6 +3,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import { Produto } from 'src/app/produtos/models/produto';
 import { ConfirmationDialogComponent } from 'src/app/shared/components/confirmation-dialog/confirmation-dialog.component';
 import { Pedido } from '../../models/pedido';
 import { CarrinhoService } from '../../services/carrinho.service';
@@ -41,7 +42,7 @@ export class CarrinhoComponent implements OnInit {
   temDesconto: boolean = false;
   descontoValido: boolean = true;
 
-  carrinho : ItemPedido[] = [];
+  produtosSession: Produto[] = [];
 
   // Formulário
   form1 = this._formBuilder.group({
@@ -65,16 +66,16 @@ export class CarrinhoComponent implements OnInit {
   buscarCarrinhoSession(): void{
     this.itensPedido = this.carrinhoService.buscarCarrinho();
 
-    if(this.itensPedido.length <= 0){
-      this.router.navigate(['home']);
-    }
+    // if(this.itensPedido.length <= 0){
+    //   this.router.navigate(['home']);
+    // }
     console.log('Qtde de ítens no carrinho: ', this.itensPedido.length);
   }
 
   // BUSCAR PRODUTOS NÃO ADICIONADOS AO CARRINHO(sessão)
   buscarProdutosSession(): void{
-    let produtosSession = this.converterStringToObjeto(sessionStorage.getItem('produtosSession'));
-    this.qtdeProdutos = produtosSession.length;
+    this.produtosSession = this.converterStringToObjeto(sessionStorage.getItem('produtosSession'));
+    this.qtdeProdutos = this.produtosSession.length;
 
     console.log('Qtde de produtos disponíveis: ', this.qtdeProdutos);
   }
@@ -178,9 +179,15 @@ export class CarrinhoComponent implements OnInit {
         this.itensPedido.splice(this.itensPedido.indexOf(item), 1);
         console.log("Carrinho:", this.itensPedido);
 
+        // salva o novo carrinho na sessão
         sessionStorage.setItem('carrinhoSession',JSON.stringify(this.itensPedido));
 
-        this.ngOnInit();
+        // retornando com o produto para o catálogo
+        this.produtosSession.push(item.produto);
+        // atualizando o catálogo na sessão
+        sessionStorage.setItem('produtosSession', JSON.stringify (this.produtosSession));
+
+       // this.ngOnInit();
       }
     });
 

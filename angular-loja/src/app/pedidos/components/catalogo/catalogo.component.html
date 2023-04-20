@@ -13,7 +13,7 @@
         <div class="dsc-menu-items-container">
           <div class="dsc-menu-item">
             <img src="assets/imagens/carrinho.svg" alt="Carrinho de compras" />
-            <span>x{{itens.length}}</span>
+            <span>x{{itens.length}}/{{produtos.length}}</span>
           </div>
         </div>
         <div *ngIf="itens.length > 0">
@@ -25,11 +25,11 @@
   <div *ngIf="produtos.length != 0">
     <main>
       <section id="catalog-section" class="dsc-container">
-        <form class="dsc-search-bar">
+        <!-- <form class="dsc-search-bar">
           <button type="submit">🔎︎</button>
           <input type="text" placeholder="Nome do produto" />
           <button type="reset">🗙</button>
-        </form>
+        </form> -->
         <div class="dsc-catalog-cards dsc-mb20 dsc-mt20">
 
           <div *ngFor="let produto of produtos">
@@ -61,7 +61,7 @@
             </div>
           </div>
         </div>
-        <div class="dsc-btn-next-page">Carregar mais</div>
+        <!-- <div class="dsc-btn-next-page">Carregar mais</div> -->
       </section>
     </main>
   </div>
@@ -71,7 +71,6 @@
   <br>
     <h4>
       <p>
-
         Todos os produtos já foram adicionados.
       </p>
     </h4>
