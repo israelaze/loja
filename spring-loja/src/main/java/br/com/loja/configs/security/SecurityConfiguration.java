@@ -46,6 +46,7 @@ public class SecurityConfiguration {
         .authorizeHttpRequests(auth -> auth
         // permitir o acesso ao console do banco de dados h2
         .requestMatchers(AntPathRequestMatcher.antMatcher("/h2-console/**")).permitAll()
+        .requestMatchers("/**").permitAll()
         
               
         //PERMITIR PROVISORIAMENTE PARA TESTES
