@@ -19,6 +19,7 @@ export class ProdutoDetalhesComponent implements OnInit{
   //atributo para guardar o parâmetro recebido na rota
   parametro = this.route.snapshot.paramMap.get('id');
   produto: Produto = new Produto;
+  ativo: string = '';
 
 
   ngOnInit(): void {
@@ -35,6 +36,12 @@ export class ProdutoDetalhesComponent implements OnInit{
         this.produto = result;
 
         console.log(this.produto.tipoPeso);
+
+        if(result.ativo == false){
+          this.ativo = 'NÃO';
+        }else{
+          this.ativo = 'SIM';
+        }
 
 
         if(this.produto.foto){

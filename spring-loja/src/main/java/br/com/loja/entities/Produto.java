@@ -54,7 +54,7 @@ public class Produto implements Serializable{
 	@Temporal(TemporalType.DATE)
 	private Date dataCadastro;
 
-	private boolean ativo;
+	private Boolean ativo;
 	private Double peso;
 	private Double valorCusto;
 	private Double valorVenda;
@@ -77,13 +77,6 @@ public class Produto implements Serializable{
 
 	@OneToMany(mappedBy = "idItemPedido.produto") 
 	private Set<ItemPedido> itens = new HashSet<>();
-	
-	public String getAtivo() {
-		if(this.ativo) {
-			return "SIM";
-		}
-		return "NÃO";
-	}
 	
 	// método para calcular a margem de lucro
 	public Double getMargemLucro() {

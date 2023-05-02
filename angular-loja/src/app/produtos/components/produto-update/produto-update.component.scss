@@ -6,7 +6,7 @@
 
 .dsc-product-form-container {
   width: 100%;
-  max-width: 500px;
+  max-width: 600px;
   margin: 0 auto;
 }
 
@@ -21,4 +21,17 @@
   #product-form-section {
     padding: 40px 0;
   }
+}
+
+
+.foto {
+  width: auto;
+  height: auto;
+  max-width: 140px;
+  max-height: 140px;
+  zoom: 1.5;
+}
+
+.label {
+  white-space: normal;
 }

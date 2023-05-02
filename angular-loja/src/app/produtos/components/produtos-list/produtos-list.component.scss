@@ -49,18 +49,27 @@ h1 {
   min-width: 10px;
 }
 
-
-
 .mat-table {
   overflow: auto;
   max-height: 600px;
 }
 
 .action-column {
-  flex: 1 1 80px;
+  flex: 1 1 90px;
 
 }
 
 .action-column-header {
   margin: 0 auto;
+}
+
+
+mat-header-cell {
+  flex-direction: column;
+  justify-content: center;
+}
+
+mat-cell {
+  text-align: center;
+  justify-content:center;
 }

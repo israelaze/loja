@@ -8,7 +8,7 @@ export class Produto {
 	descricao?: string;
   categoria?: string;
 	dataCadastro?: string;
-	ativo?: string;
+	ativo?: boolean;
 	peso: string;
   tipoPeso: string;
 	valorCusto?: number;

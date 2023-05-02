@@ -39,20 +39,24 @@
     <!-- Peso -->
     <ng-container matColumnDef="peso">
       <mat-header-cell *matHeaderCellDef> Peso </mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.peso}} {{element.tipoPeso}} </mat-cell>
+      <mat-cell  *matCellDef="let element">
+        <div *ngIf="element.peso != null">
+          {{element.peso}} {{element.tipoPeso}}
+        </div>
+      </mat-cell>
     </ng-container>
 
     <!-- Ações -->
     <ng-container matColumnDef="acoes">
       <mat-header-cell *matHeaderCellDef> Ações</mat-header-cell>
       <mat-cell *matCellDef="let produto">
-        <a type="button" mat-button  color="warn" aria-label="Consultar produto"
+        <button mat-button color="warn" aria-label="Consultar produto"
           routerLink="/produtos/produto-detalhes/{{produto.idProduto}}">
           <mat-icon >search</mat-icon>
-        </a>
-        <a type="button" mat-button color="warn" aria-label="Remover produto"  (click)="excluir(produto)">
+        </button>
+        <button mat-button color="warn" aria-label="Remover produto"  (click)="excluir(produto)">
           <mat-icon>delete</mat-icon>
-        </a>
+        </button>
       </mat-cell>
     </ng-container>
 

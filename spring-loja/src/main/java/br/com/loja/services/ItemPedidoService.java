@@ -36,7 +36,7 @@ public class ItemPedidoService {
 			Optional<Produto> prod = produtoRepository.findById(itemDto.getIdProduto());
 			Produto produto = prod.get();
 			
-			if(produto.getAtivo() != "SIM") {
+			if(produto.getAtivo() != true) {
 				throw new BadRequestException("O produto: " + produto.getNomeProduto()+ " - cód:" + produto.getCodigo() + ", não está ativo no momento.");
 			}
 

@@ -124,7 +124,7 @@ public class ProdutoService {
 		Fornecedor fornecedor = fornec.get();	
 		Produto produto = result.get();
 		
-		produto = mapper.map(dto, Produto.class);
+		mapper.map(dto, produto);
 		produto.setFornecedor(fornecedor);
 		produtoRepository.save(produto);
 

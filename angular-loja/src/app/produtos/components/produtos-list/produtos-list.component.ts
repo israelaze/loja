@@ -53,26 +53,26 @@ export class ProdutosListComponent implements OnInit {
     })
   }
 
-    // EXCLUIR
-    excluir(produto: Produto) {
-      const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
-        data: 'Tem certeza que deseja excluir ' + produto.nomeProduto + ' ?',
-      });
+  // EXCLUIR
+  excluir(produto: Produto) {
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      data: 'Tem certeza que deseja excluir ' + produto.nomeProduto + ' ?',
+    });
 
-      dialogRef.afterClosed().subscribe((result: boolean) => {
-        if (result) {
-          this.produtoService.excluir(produto.idProduto).subscribe({
-            next: result => {
-              this.ngOnInit();
-              this.alertService.success('Produto ' + produto.nomeProduto + ' removido(a) com sucesso');
-            },
-            error: e => {
-              this.alertService.error('Não é possível excluir o produto ' + produto.nomeProduto + ' pois ele pertence a um ou mais pedidos cadastrados.', 'Erro',);
-            }
-          });
-        }
-      });
-    }
+    dialogRef.afterClosed().subscribe((result: boolean) => {
+      if (result) {
+        this.produtoService.excluir(produto.idProduto).subscribe({
+          next: result => {
+            this.ngOnInit();
+            this.alertService.success('Produto ' + produto.nomeProduto + ' removido(a) com sucesso');
+          },
+          error: e => {
+            this.alertService.error('Não é possível excluir o produto ' + produto.nomeProduto + ' pois ele pertence a um ou mais pedidos cadastrados.', 'Erro',);
+          }
+        });
+      }
+    });
+  }
 
   // FILTRO
   applyFilter(event: Event) {

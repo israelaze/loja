@@ -8,33 +8,98 @@
     <main>
       <section id="product-form-section" class="dsc-container">
         <div class="dsc-product-form-container">
-          <form class="dsc-card dsc-form">
-            <h2>Dados do produto</h2>
+          <form [formGroup]="form" class="dsc-card dsc-form">
+            <!-- <h2>Dados do produto</h2> -->
+
+            <section>
+              <mat-label class="label">Foto:</mat-label>
+
+                <!-- exibindo a imagem do cliente -->
+                <div *ngIf="!foto">
+                  <img matCardImage class="foto" [src]="imagem" >
+                </div>
+              <!-- Passando para o componente PAI, o evento customizado disparado pelo componente FILHO  -->
+              <app-upload-file (evento)="onUpload($event)"> </app-upload-file>
+            </section>
+
             <div class="dsc-form-controls-container">
-              <div>
-                <input class="dsc-form-control" type="text" placeholder="Nome">
-              </div>
-              <div>
-                <input class="dsc-form-control" type="text" placeholder="Preço">
-              </div>
-              <div>
-                <input class="dsc-form-control" type="text" placeholder="Imagem">
-              </div>
-              <div>
-                <select class="dsc-form-control dsc-select" required>
-                  <option value="" disabled selected>Categorias</option>
-                  <option value="1">Valor 1</option>
-                  <option value="2">Valor 2</option>
-                </select>
-              </div>
-              <div>
-                <textarea class="dsc-form-control dsc-textarea" placeholder="Descrição"></textarea>
-              </div>
+              <mat-form-field class="full-width">
+                <mat-label>Nome do produto</mat-label>
+                <input matInput [(ngModel)]="produto.nomeProduto" formControlName="nomeProduto" maxlength="50" #nome />
+                <mat-hint align="end">{{ nome.value?.length || 0 }} / 50</mat-hint>
+                <mat-error *ngIf="form.get('nomeProduto')?.invalid">{{
+                  getErrorMessage("nomeProduto")
+                }}</mat-error>
+              </mat-form-field>
+
+              <mat-form-field class="full-width" floatLabel="always">
+                <mat-label>Valor de custo</mat-label>
+                <input matInput class="text-field" placeholder="0" [(ngModel)]="produto.valorCusto" formControlName="valorCusto" type="number" min="0" #custo />
+                <span matTextPrefix>R$&nbsp;</span>
+              </mat-form-field>
+
+              <mat-form-field class="full-width" floatLabel="always">
+                <mat-label>Valor de venda</mat-label>
+                <input matInput class="text-field" placeholder="0" [(ngModel)]="produto.valorVenda" formControlName="valorVenda" type="number" min="0" #preco />
+                <span matTextPrefix>R$&nbsp;</span>
+              </mat-form-field>
+
+              <mat-form-field class="full-width">
+                <mat-label>Peso</mat-label>
+                <input matInput [(ngModel)]="produto.peso" formControlName="peso" type="number"  min="0" #peso />
+              </mat-form-field>
+
+              <mat-form-field class="full-width">
+                <mat-label>Unidade de medida</mat-label>
+                <mat-select [(ngModel)]="produto.tipoPeso" formControlName="tipoPeso">
+                  <mat-option value="g">g</mat-option>
+                  <mat-option value="Kg">Kg</mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <mat-form-field class="full-width">
+                <mat-label>Ativo</mat-label>
+                <mat-select [(ngModel)]="produto.ativo" formControlName="ativo">
+                  <mat-option [value]="true">SIM</mat-option>
+                  <mat-option [value]="false">NÃO</mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <mat-form-field class="full-width">
+                <mat-label>Categoria</mat-label>
+                <mat-select  [(ngModel)]="produto.categoria" formControlName="categoria">
+                  <mat-option value=""></mat-option>
+                  <mat-option *ngFor="let categoria of categorias" [value]="categoria" >
+                    {{categoria}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <mat-form-field class="full-width">
+                <mat-label>Fornecedor</mat-label>
+                <mat-select [(ngModel)]="fornecedor.idFornecedor" formControlName="fornecedor">
+                  <mat-option *ngFor="let fornec of fornecedores" [value]="fornec.idFornecedor" >
+                    {{fornec.nomeFornecedor}}
+                  </mat-option>
+                </mat-select>
+                <mat-error *ngIf="form.get('idFornecedor')?.invalid">{{
+                  getErrorMessage("idFornecedor")
+                }}</mat-error>
+              </mat-form-field>
+
+              <mat-form-field class="full-width">
+                <mat-label class="label">Descrição</mat-label>
+                <br>
+                <textarea matInput [(ngModel)]="produto.descricao" formControlName="descricao"
+                  cdkTextareaAutosize [cdkAutosizeMinRows]="3" [cdkAutosizeMinRows]="5" maxlength="300" #descricao>
+                </textarea>
+                <mat-hint align="end">{{ descricao.value?.length || 0 }} / 300</mat-hint>
+              </mat-form-field>
             </div>
 
             <div class="dsc-product-form-buttons">
-              <button type="reset" class="dsc-btn dsc-btn-white">Cancelar</button>
-              <button type="submit" class="dsc-btn dsc-btn-blue">Salvar</button>
+              <button type="reset" class="dsc-btn dsc-btn-white" (click)="cancelar()">Cancelar</button>
+              <button type="submit" class="dsc-btn dsc-btn-blue" (click)="atualizar()">Salvar</button>
             </div>
           </form>
         </div>

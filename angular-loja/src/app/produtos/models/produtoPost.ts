@@ -4,7 +4,7 @@ export class ProdutoPost {
 
 	nomeProduto: string;
 	descricao: string;
-	ativo?: string;
+	ativo?: boolean;
 	peso?: string;
 	valorCusto?: string;
 	valorVenda?: string;

@@ -19,7 +19,7 @@ public class ProdutoGetDTO {
 	private String codigo;
 	private String descricao;
 	private String dataCadastro;
-	private String ativo;
+	private boolean ativo;
 	private Double peso;
 	private Double valorCusto;
 	private Double valorVenda;

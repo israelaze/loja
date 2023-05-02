@@ -1,15 +1,13 @@
-import { Produto } from 'src/app/produtos/models/produto';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 import { Fornecedor } from 'src/app/fornecedores/models/fornecedor';
 import { FornecedoresService } from 'src/app/fornecedores/services/fornecedores.service';
+import { Produto } from 'src/app/produtos/models/produto';
 import { AlertService } from 'src/app/util/services/alert.service';
-import { ProdutosService } from './../../services/produtos.service';
-import { ProdutoPost } from '../../models/produtoPost';
-import { Router } from '@angular/router';
 import { CategoriasService } from '../../services/categorias.service';
-import { Login } from 'src/app/usuarios/models/login';
+import { ProdutosService } from './../../services/produtos.service';
 
 @Component({
   selector: 'app-produtos-cad',
@@ -26,6 +24,10 @@ export class ProdutosCadComponent implements OnInit {
   fornecedores: Fornecedor[] = [];
   categorias = [];
   foto: File;
+
+  // definindo um padrão incial das opções ATIVO e UNIDADE DE MEDIDA do formulário
+  ativo: boolean = true;
+  tipoPeso: string = 'g';
 
   ngOnInit(): void {
     this.buscarFornecedores();
