@@ -15,8 +15,6 @@ const routes: Routes = [
       {path: 'home', component: HomeComponent},
       { path: 'vendedores-lista', component: VendedoresListComponent },
       { path: 'cadastrar-vendedor', component: VendedoresCadComponent },
-      { path: 'fornecedores-lista', component: FornecedoresListComponent },
-      { path: 'cadastrar-fornecedor', component: FornecedoresCadComponent },
       { path: 'usuarios-lista', component: UsuariosListComponent },
       { path: 'relatorios', component: RelatoriosComponent },
 
@@ -32,6 +30,10 @@ const routes: Routes = [
         path: 'pedidos',
         loadChildren: () => import('../pedidos/pedidos.module').then(m=> m.PedidosModule)
       },
+      {
+        path: 'fornecedores',
+        loadChildren: ()=> import('../fornecedores/fornecedores.module').then(m=> m.FornecedoresModule)
+      }
 
     ]
   }

@@ -48,15 +48,15 @@ public class FornecedorService {
 					throw new BadRequestException("cpf ou cnpj já cadastrado.");
 				} else if (result.getTelefone1().equalsIgnoreCase(result2.getTelefone1())) {
 					throw new BadRequestException("telefone1 já cadastrado.");
-				} else if (result.getTelefone2().equalsIgnoreCase(result2.getTelefone2())) {
+				} else if (result.getTelefone2() != null && result.getTelefone2().equalsIgnoreCase(result2.getTelefone2())) {
 					throw new BadRequestException("telefone2 já cadastrado.");
-				} else if (result.getEmail().equalsIgnoreCase(result2.getEmail())) {
+				} else if (result.getEmail() != null && result.getEmail().equalsIgnoreCase(result2.getEmail())) {
 					throw new BadRequestException("email já cadastrado.");
 				}
 			}
 		}
 
-		// convertendo os camps referente à endereço para um enderecoDTO
+		// convertendo os campos referente à endereço para um enderecoDTO
 		EnderecoDTO enderecoDTO = mapper.map(dto, EnderecoDTO.class);
 
 		// verificando se existem campos NÃO nulos em enderecoDTO
