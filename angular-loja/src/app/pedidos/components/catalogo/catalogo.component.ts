@@ -6,7 +6,6 @@ import { Cliente } from './../../../clientes/models/cliente';
 import { ClientesService } from './../../../clientes/services/clientes.service';
 import { ProdutosService } from './../../../produtos/services/produtos.service';
 import { ItemPedido } from './../../models/itemPedido';
-import { CarrinhoService } from './../../services/carrinho.service';
 
 @Component({
   selector: 'app-catalogo',
@@ -17,7 +16,6 @@ export class CatalogoComponent implements OnInit{
 
   constructor(private produtosService: ProdutosService,
     private snackBar: MatSnackBar,
-    private carrinhoService: CarrinhoService,
     private clientesService: ClientesService,
     private route: ActivatedRoute,
     private router: Router)

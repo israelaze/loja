@@ -23,17 +23,21 @@ public class EnderecoService {
 	private final ModelMapper mapper;
 
 	public Endereco cadastrar(EnderecoDTO dto) {
-
-		// buscando um endereço existente no banco
-		Optional<Endereco> result = endRepository.findByLogradouroAndNumeroAndCepAndComplemento(
-				dto.getLogradouro(), dto.getNumero(), dto.getCep(), dto.getComplemento());
-
-		// caso exista
-		if (result.isPresent()) {
-			Endereco endereco = result.get();
+		
+		if(dto.getLogradouro() != null && dto.getNumero() != null && dto.getCep() != null && dto.getComplemento() != null) {
 			
-			return endereco;
+			// buscando um endereço existente no banco
+			Optional<Endereco> result = endRepository.findByLogradouroAndNumeroAndCepAndComplemento(
+					dto.getLogradouro(), dto.getNumero(), dto.getCep(), dto.getComplemento());
+			
+			// caso exista
+			if (result.isPresent()) {
+				Endereco endereco = result.get();
+				
+				return endereco;
+			}
 		}
+
 
 		// transferindo o dto para o endereco
 		Endereco endereco = mapper.map(dto, Endereco.class);

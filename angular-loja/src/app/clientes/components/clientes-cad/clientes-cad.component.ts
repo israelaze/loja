@@ -6,12 +6,13 @@ import { MatStep, StepperOrientation } from '@angular/material/stepper';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { EnderecoService } from 'src/app/shared/services/endereco.service';
 import { AlertService } from 'src/app/util/services/alert.service';
 import { EstadosService } from 'src/app/util/services/estados.service';
-import { Estados } from '../../../util/models/estados';
 import { ClientesService } from '../../services/clientes.service';
 import { Cliente } from './../../models/cliente';
 import { ClientePost } from './../../models/cliente-post';
+
 
 @Component({
   selector: 'app-clientes-cad',
@@ -25,13 +26,15 @@ export class ClientesCadComponent implements OnInit {
   stepperOrientation: Observable<StepperOrientation>;
 
   clientePost: ClientePost = new ClientePost;
-  estados: Estados[];
+  estados = [];
 
   maxBirthday = new Date();
 
   foto: File;
 
+  // manipulando o MatStep
   @ViewChild('step1') step: MatStep;
+  @ViewChild('stepEndereco') stepEndereco: MatStep;
 
   constructor(
     private _formBuilder: FormBuilder,
@@ -40,8 +43,9 @@ export class ClientesCadComponent implements OnInit {
     private router: Router,
     private estadoService: EstadosService,
     private snackBar: MatSnackBar,
-    private breakpointObserver: BreakpointObserver)
-    { this.stepperOrientation = breakpointObserver
+    private breakpointObserver: BreakpointObserver,
+    private enderecoService: EnderecoService)
+    { this.stepperOrientation = this.breakpointObserver
     .observe('(min-width: 868px)')
     .pipe(map(({matches}) => (matches ? 'horizontal' : 'vertical')));
   }
@@ -52,11 +56,11 @@ export class ClientesCadComponent implements OnInit {
       //torna o campo obrigatório
       [Validators.required,
       //Regex para duas strings, separadas com espaço e com no mínimo 3 caracteres cada. Aceita acentuação e rejeita números.
-      Validators.pattern(/\b[A-Za-zÀ-ú][A-Za-zÀ-ú]+,?\s[A-Za-zÀ-ú][A-Za-zÀ-ú]{2,19}\b/),
+      Validators.pattern(/\b[A-Za-zÀ-ú][A-Za-zÀ-ú]+,?\s[A-Za-zÀ-ú][A-Za-zÀ-ú]{2,19}\b/)
       ]
     ],
     cpf: ['12341233302',
-      [Validators.required,
+      [Validators.required, Validators.minLength(11),
       Validators.pattern('^[0-9]{3}\.?[0-9]{3}\.?[0-9]{3}\-?[0-9]{2}$')
       ]
     ],
@@ -66,7 +70,7 @@ export class ClientesCadComponent implements OnInit {
   contatos  = this._formBuilder.group({
     telefone1: ['26977022',
       [Validators.required,
-      Validators.pattern (/^[0-9]{8,11}$/)
+      Validators.pattern (/^[0-9]{8,11}$/),
      // Validators.pattern (/^\(?\d{2}\)?[\s-]?\d{5}-?\d{4}$/),
 
       ]
@@ -79,15 +83,16 @@ export class ClientesCadComponent implements OnInit {
   });
 
   endereco  = this._formBuilder.group({
-    logradouro: ['São josé', [Validators.pattern(/^([a-zA-Z]{0,1})/)]],
-    numero: [null, [Validators.pattern('^[0-9]{1,6}')]],
+    logradouro: [null, [Validators.required, Validators.pattern(/^([a-zA-Z]{0,1})/)]],
+    numero: [null, [Validators.required, Validators.pattern('^[0-9]{1,6}'),]],
     complemento: [ null, [Validators.pattern(/^([a-zA-Z]{0,1})/)]],
     condominio: [null, [Validators.pattern(/^([a-zA-Z]{0,1})/)]],
     bairro: [null, [Validators.pattern(/^([a-zA-Z]{0,1})/)]],
     municipio: [null, [Validators.pattern(/^([a-zA-Z]{0,1})/)]],
     estado: [null],
     // aceita traço
-    cep: [null, [Validators.pattern(/^(\d{5}|\d{5}\-?\d{3})$/)]]
+    cep: [null, [Validators.pattern(/^(\d{5}|\d{5}\-?\d{3})$/), Validators.minLength(8)]]
+    //cep: ['26574640', [Validators.pattern(/^[0-9]{8}$/)]]
   });
 
   observacoes  = this._formBuilder.group({
@@ -96,13 +101,13 @@ export class ClientesCadComponent implements OnInit {
 
   ngOnInit(): void {
     this.buscarEstados();
-
   }
 
   buscarEstados(): void{
     this.estadoService.buscarEstados().subscribe({
       next: result => {
-        this.estados = result;
+        this.estados = result as any;
+        console.log(this.estados);
       },
       error: e => {
         this.snackBar.open('Erro ao buscar os estados brasileiros.', '', { duration: 5000 });
@@ -134,6 +139,49 @@ export class ClientesCadComponent implements OnInit {
 
       console.log('Arquivo recebido:', this.foto, typeof evento);
     }
+  }
+
+  consultaCEP(){
+
+    const cep = this.endereco.get('cep').value;
+   // console.log(cep);
+
+    if(cep != "" && cep != null){
+      this.enderecoService.buscarEnderecoAPI(cep).subscribe({
+        next: result => {
+          console.log(result);
+
+          if(result.cep != null){
+         //   console.log(this.stepEndereco.stepControl.status);
+            this.populaDadosForm(result);
+
+          }else{
+            this.stepEndereco.stepControl.status =  'INVALID';
+            this.alertService.error('CEP inválido. Tente novamente.');
+          }
+        },
+        error: e => {
+          this.snackBar.open('Erro ao buscar o endereço pelo CEP.', '', { duration: 5000 });
+        }
+      });
+    }
+  }
+
+  populaDadosForm(dados: any) {
+    // this.formulario.setValue({});
+    console.log(dados);
+
+    this.endereco.patchValue({
+
+      logradouro: dados.logradouro,
+      complemento: dados.complemento,
+      bairro: dados.bairro,
+      municipio: dados.municipio,
+      estado: dados.estado
+    });
+
+   // this.formulario.get('nome').setValue('Loiane');
+
   }
 
   cadastrar() {
@@ -182,7 +230,6 @@ export class ClientesCadComponent implements OnInit {
 
   private onSuccess(result: Cliente) {
     this.alertService.success('Cliente ' + result.nome+ ' cadastrado(a) com sucesso');
-    //this.router.navigate(['clientes/cliente-detalhes/'+ result.idCliente]);
   }
 
   private onError(e: any) {
@@ -195,28 +242,37 @@ export class ClientesCadComponent implements OnInit {
     const dados = this.dados.get(fieldName);
     const contatos = this.contatos.get(fieldName);
     const endereco = this.endereco.get(fieldName);
-    const observacoes = this.observacoes.get(fieldName);
 
-    if (dados?.hasError('required') || contatos?.hasError('required')) {
+    if (dados?.hasError('required') || contatos?.hasError('required') || endereco?.hasError('required')) {
       return 'Campo obrigatório';
-    }
 
-    if (dados?.hasError('pattern') || contatos?.hasError('pattern')
-      || endereco?.hasError('pattern')) {
+    }else if (dados?.hasError('minlength') || contatos?.hasError('minlength') || endereco?.hasError('minlength')) {
 
       if(fieldName == 'cpf'){
         console.log(fieldName);
         return 'O cpf deve conter no mínimo 11 caracteres numéricos';
       }
 
-      if(fieldName == 'telefone1'){
+      if(fieldName == 'telefone1' || fieldName == 'telefone2'){
         console.log(fieldName);
         return 'O telefone deve conter entre 8 e 11 caracteres sem espaços e com o DDD';
       }
 
-      if(fieldName == 'telefone2'){
+
+      if(fieldName == 'cep'){
+        console.log(fieldName);
+        return 'Cep deve conter 8 caracteres sem traço.';
+      }
+    }else if (dados?.hasError('pattern') || contatos?.hasError('pattern')|| endereco?.hasError('pattern')) {
+
+      if(fieldName == 'telefone1' || fieldName == 'telefone2'){
         console.log(fieldName);
         return 'O telefone deve conter entre 8 e 11 caracteres sem espaços e com o DDD';
+      }
+
+      if(fieldName == 'cpf'){
+        console.log(fieldName);
+        return 'O cpf deve conter no mínimo 11 caracteres numéricos. Sem letras';
       }
 
       if(fieldName == 'email'){
@@ -231,7 +287,7 @@ export class ClientesCadComponent implements OnInit {
         return 'Não pode conter espaços vazios';
       }
 
-      return 'Informe nome e sobrenome';
+      return 'Informe nome e sobrenome. Não deve conter números';
     }
 
     return 'Campo Inválido';

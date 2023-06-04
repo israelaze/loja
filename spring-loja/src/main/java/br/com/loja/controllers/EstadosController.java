@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.loja.exceptions.ServiceException;
-import br.com.loja.services.CategoriaService;
+import br.com.loja.services.EstadosService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
@@ -17,21 +17,19 @@ import lombok.AllArgsConstructor;
 @CrossOrigin
 @RestController
 @AllArgsConstructor
-@Tag(name = "Categorias")
-@RequestMapping(value = "/api/categorias")
-public class CategoriaController {
+@Tag(name = "Estados")
+@RequestMapping(value = "/api/estados")
+public class EstadosController {
 	
-	private final CategoriaService service;
+	private final EstadosService service;
 	
 	@GetMapping
-	@Operation(summary = "Buscar categorias")
-	public ResponseEntity<List<String>> buscarCategorias(){
+	@Operation(summary = "Buscar estados")
+	public ResponseEntity<List<String>> buscarTodos(){
 		
 		try {
-			
-			List<String> categorias = service.buscarCategorias();
-			
-			return ResponseEntity.ok(categorias);
+			List<String> lista = service.buscarTodos();
+			return ResponseEntity.ok(lista);
 			
 		} catch (ServiceException e) {
 			return ResponseEntity.internalServerError().build();

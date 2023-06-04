@@ -13,6 +13,7 @@ import { AlertService } from 'src/app/util/services/alert.service';
 import { EstadosService } from 'src/app/util/services/estados.service';
 import { Estados } from '../../../util/models/estados';
 import { ClientePut } from './../../models/cliente-put';
+import { EnderecoService } from 'src/app/shared/services/endereco.service';
 
 
 @Component({
@@ -29,7 +30,7 @@ export class ClienteUpdateComponent implements OnInit {
   cliente: Cliente = new Cliente;
   enderecoGet: Endereco = new Endereco;
   clientePut: ClientePut = new ClientePut;
-  estados: Estados[];
+  estados = [];
   maxBirthday = new Date();
   dataNascimento: Date;
 
@@ -41,6 +42,8 @@ export class ClienteUpdateComponent implements OnInit {
 
   // manipulando o MatStep
   @ViewChild('step1') step: MatStep;
+  @ViewChild('stepEndereco') stepEndereco: MatStep;
+
 
   // atributo para guardar o parâmetro recebido na rota
   parametro = this.route.snapshot.paramMap.get('id');
@@ -51,10 +54,11 @@ export class ClienteUpdateComponent implements OnInit {
     private _formBuilder: FormBuilder,
     private router: Router,
     private snackBar: MatSnackBar,
-    private estadosService: EstadosService,
+    private estadoService: EstadosService,
     private route: ActivatedRoute,
     private alertService: AlertService,
-    private breakpointObserver: BreakpointObserver
+    private breakpointObserver: BreakpointObserver,
+    private enderecoService:EnderecoService
   ){
     this.stepperOrientation = this.breakpointObserver
     .observe('(min-width: 868px)')
@@ -88,8 +92,8 @@ export class ClienteUpdateComponent implements OnInit {
   });
 
   endereco  = this._formBuilder.group({
-    logradouro: ['', [Validators.pattern(/^([a-zA-Z]{0,1})/)]],
-    numero: ['', [Validators.pattern('^[0-9]{1,6}')]],
+    logradouro: ['', [Validators.pattern(/^([a-zA-Z]{0,1})/), Validators.required]],
+    numero: ['', [Validators.pattern('^[0-9]{1,6}'), Validators.required]],
     complemento: ['', [Validators.pattern(/^([a-zA-Z]{0,1})/)]],
     condominio: ['', [Validators.pattern(/^([a-zA-Z]{0,1})/)]],
     bairro: ['', [Validators.pattern(/^([a-zA-Z]{0,1})/)]],
@@ -111,6 +115,19 @@ export class ClienteUpdateComponent implements OnInit {
     // busca automática ao iniciar o componente
     this.buscarId(this.cliente.idCliente);
     this.buscarEstados();
+  }
+
+  // BUSCAR ESTADOS
+  buscarEstados(): void{
+    this.estadoService.buscarEstados().subscribe({
+      next: result => {
+        this.estados = result as any;
+        console.log(this.estados);
+      },
+      error: e => {
+        this.snackBar.open('Erro ao buscar os estados brasileiros.', '', { duration: 5000 });
+      }
+    })
   }
 
   // CONVERSOR
@@ -183,6 +200,49 @@ export class ClienteUpdateComponent implements OnInit {
     }
   }
 
+  consultaCEP(){
+
+    const cep = this.endereco.get('cep').value;
+   // console.log(cep);
+
+    if(cep != "" && cep != null){
+      this.enderecoService.buscarEnderecoAPI(cep).subscribe({
+        next: result => {
+          console.log(result);
+
+          if(result.cep != null){
+         //   console.log(this.stepEndereco.stepControl.status);
+            this.populaDadosForm(result);
+
+          }else{
+            this.stepEndereco.stepControl.status =  'INVALID';
+            this.alertService.error('CEP inválido. Tente novamente.');
+          }
+        },
+        error: e => {
+          this.snackBar.open('Erro ao buscar o endereço pelo CEP.', '', { duration: 5000 });
+        }
+      });
+    }
+  }
+
+  populaDadosForm(dados: any) {
+    // this.formulario.setValue({});
+    console.log(dados);
+
+    this.endereco.patchValue({
+
+      logradouro: dados.logradouro,
+      complemento: dados.complemento,
+      bairro: dados.bairro,
+      municipio: dados.municipio,
+      estado: dados.estado
+    });
+
+   // this.formulario.get('nome').setValue('Loiane');
+
+  }
+
   // ATUALIZAR
   atualizar(): void {
 
@@ -201,17 +261,7 @@ export class ClienteUpdateComponent implements OnInit {
     });
   }
 
-  // BUSCAR ESTADOS
-  buscarEstados(): void{
-    this.estadosService.buscarEstados().subscribe({
-      next: result => {
-        this.estados = result;
-      },
-      error: e => {
-        this.snackBar.open('Erro ao buscar os estados brasileiros.', '', { duration: 5000 });
-      }
-    })
-  }
+
 
   formPut(
     value: Partial<{nome: string; cpf: string; dataNascimento: string; }>,

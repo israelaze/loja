@@ -11,6 +11,7 @@ import { EstadosService } from 'src/app/util/services/estados.service';
 import { Fornecedor } from '../../models/fornecedor';
 import { FornecedorPost } from '../../models/fornecedorPost';
 import { FornecedoresService } from '../../services/fornecedores.service';
+import { EnderecoService } from 'src/app/shared/services/endereco.service';
 
 @Component({
   selector: 'app-fornecedores-cad',
@@ -25,10 +26,12 @@ export class FornecedoresCadComponent implements OnInit {
 
   fornecedorPost: FornecedorPost = new FornecedorPost;
   estados: Estados[];
+  cepValido: boolean;
 
   foto: File;
 
   @ViewChild('step1') step: MatStep;
+  @ViewChild('stepEndereco') stepEndereco: MatStep;
 
   constructor(
     private _formBuilder: FormBuilder,
@@ -37,7 +40,8 @@ export class FornecedoresCadComponent implements OnInit {
     private router: Router,
     private estadoService: EstadosService,
     private snackBar: MatSnackBar,
-    private breakpointObserver: BreakpointObserver)
+    private breakpointObserver: BreakpointObserver,
+    private enderecoService: EnderecoService)
     { this.stepperOrientation = breakpointObserver
     .observe('(min-width: 868px)')
     .pipe(map(({matches}) => (matches ? 'horizontal' : 'vertical')));
@@ -52,7 +56,7 @@ export class FornecedoresCadComponent implements OnInit {
       Validators.pattern(/^(([a-zA-Zà-ùÀ-Ù]+)(\ )?){0,7}$/),
       ]
     ],
-    cpfCnpj: ['89.688.029/0001-11',
+    cpfCnpj: ['22222222222',
       [Validators.required,
       Validators.pattern(/^(\d{3})(\d{3})(\d{3})(\d{2}$)$|^(\d{2})(\d{3})(\d{3})([0-1]{4})(\d{2})$/)
       ]
@@ -71,8 +75,8 @@ export class FornecedoresCadComponent implements OnInit {
   });
 
   endereco  = this._formBuilder.group({
-    logradouro: ['São josé', [Validators.pattern(/^([a-zA-Z]{0,1})/)]],
-    numero: [null, [Validators.pattern('^[0-9]{1,6}')]],
+    logradouro: ['São josé', [Validators.required, Validators.pattern(/^([a-zA-Z]{0,1})/)]],
+    numero: [null, [Validators.required, Validators.pattern('^[0-9]{1,6}')]],
     complemento: [ null, [Validators.pattern(/^([a-zA-Z]{0,1})/)]],
     condominio: [null, [Validators.pattern(/^([a-zA-Z]{0,1})/)]],
     bairro: [null, [Validators.pattern(/^([a-zA-Z]{0,1})/)]],
@@ -90,12 +94,57 @@ export class FornecedoresCadComponent implements OnInit {
   buscarEstados(): void{
     this.estadoService.buscarEstados().subscribe({
       next: result => {
-        this.estados = result;
+        this.estados = result as any;
       },
       error: e => {
         this.snackBar.open('Erro ao buscar os estados brasileiros.', '', { duration: 5000 });
       }
     })
+  }
+
+  consultaCEP(){
+
+    const cep = this.endereco.get('cep').value;
+   // console.log(cep);
+
+    if(cep != "" && cep != null){
+      this.enderecoService.buscarEnderecoAPI(cep).subscribe({
+        next: result => {
+          console.log(result);
+
+          if(result.cep != null){
+         //   console.log(this.stepEndereco.stepControl.status);
+            this.cepValido = true;
+            this.populaDadosForm(result);
+
+          }else{
+            this.stepEndereco.stepControl.status =  'INVALID';
+            this.cepValido = false;
+            this.alertService.error('CEP inválido. Tente novamente.');
+          }
+        },
+        error: e => {
+          this.snackBar.open('Erro ao buscar o endereço pelo CEP.', '', { duration: 5000 });
+        }
+      });
+    }
+  }
+
+  populaDadosForm(dados: any) {
+    // this.formulario.setValue({});
+    console.log(dados);
+
+    this.endereco.patchValue({
+
+      logradouro: dados.logradouro,
+      complemento: dados.complemento,
+      bairro: dados.bairro,
+      municipio: dados.municipio,
+      estado: dados.estado
+    });
+
+   // this.formulario.get('nome').setValue('Loiane');
+
   }
 
   cadastrar() {

@@ -1,7 +1,6 @@
 package br.com.loja.dtos.endereco;
 
 import br.com.loja.entities.Endereco;
-import br.com.loja.enums.Estado;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -18,7 +17,7 @@ public class EnderecoDTO {
 	private String condominio;
 	private String bairro;
 	private String municipio;
-	private Estado estado;
+	private String estado;
 	private String cep;
 		
 	// convertendo um endereço em dto via construtor
@@ -30,8 +29,12 @@ public class EnderecoDTO {
 		this.condominio = endereco.getCondominio();
 		this.bairro = endereco.getBairro();
 		this.municipio = endereco.getMunicipio();
-		this.estado = endereco.getEstado();
 		this.cep = endereco.getCep();
+
+		if(endereco.getEstado() != null) {
+			this.estado = endereco.getEstado().name();
+		}
+		
 	}
 
 }

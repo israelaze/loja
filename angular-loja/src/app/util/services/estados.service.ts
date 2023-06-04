@@ -1,15 +1,21 @@
-import { Estados } from '../models/estados';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { environment } from 'src/environments/environment';
+import { Estados } from '../models/estados';
 
 @Injectable({
   providedIn: 'root'
 })
 export class EstadosService {
 
-  constructor(private http: HttpClient) { }
+  // URL API WEB
+  endpoint = environment.baseUrl + 'estados';
 
+  // INJEÇÃO DE DEPENDÊNCIA
+  constructor(private httpClient: HttpClient) { }
+
+  // BUSCAR TODOS
   buscarEstados(){
-    return this.http.get<Estados[]>('assets/dados/estados.json');
+    return this.httpClient.get(this.endpoint);
   }
 }

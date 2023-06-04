@@ -15,23 +15,6 @@ export class CarrinhoService {
   // URL API WEB
   endpoint = environment.baseUrl + 'pedidos';
 
-  // Recebe os itens adicionados ao carrinho
- // itens: ItemPedido[] = [];
-
-  //Adiciona um ítem ao carrinho e salva os ítens na sessão
-  // addItem(item: ItemPedido){
-  //   this.itens.push(item);
-  //   sessionStorage.setItem("carrinhoSession",JSON.stringify(this.itens))
-  //   console.log("Qtde de produtos no carrinho:", this.itens.length);
-  // }
-
-  // removeItem(ItemPedido){
-  //   this.itens.splice(this.itens.indexOf(ItemPedido), 1)
-  //   //salva na sessão
-  //   sessionStorage.setItem("carrinho",JSON.stringify(this.itens))
-  //   console.log("Lista:", this.itens);
-  // }
-
   // BUSCAR CARRINHO
   buscarCarrinho(): ItemPedido[]{
 
