@@ -26,7 +26,6 @@ export class FornecedoresCadComponent implements OnInit {
 
   fornecedorPost: FornecedorPost = new FornecedorPost;
   estados: Estados[];
-  cepValido: boolean;
 
   foto: File;
 
@@ -56,9 +55,10 @@ export class FornecedoresCadComponent implements OnInit {
       Validators.pattern(/^(([a-zA-Zà-ùÀ-Ù]+)(\ )?){0,7}$/),
       ]
     ],
-    cpfCnpj: ['22222222222',
+    cpfCnpj: ['33333333333333',
       [Validators.required,
-      Validators.pattern(/^(\d{3})(\d{3})(\d{3})(\d{2}$)$|^(\d{2})(\d{3})(\d{3})([0-1]{4})(\d{2})$/)
+      Validators.pattern (/^[0-9]{11,14}$/),
+     // Validators.pattern(/^(\d{3})(\d{3})(\d{3})(\d{2}$)$|^(\d{2})(\d{3})(\d{3})([0-1]{4})(\d{2})$/)
       ]
     ],
     telefone1: ['26977022',
@@ -103,6 +103,8 @@ export class FornecedoresCadComponent implements OnInit {
   }
 
   consultaCEP(){
+    console.log(this.stepEndereco.stepControl.status);
+
 
     const cep = this.endereco.get('cep').value;
    // console.log(cep);
@@ -114,12 +116,11 @@ export class FornecedoresCadComponent implements OnInit {
 
           if(result.cep != null){
          //   console.log(this.stepEndereco.stepControl.status);
-            this.cepValido = true;
             this.populaDadosForm(result);
 
           }else{
+            this.populaDadosForm(result);
             this.stepEndereco.stepControl.status =  'INVALID';
-            this.cepValido = false;
             this.alertService.error('CEP inválido. Tente novamente.');
           }
         },
@@ -155,7 +156,8 @@ export class FornecedoresCadComponent implements OnInit {
     this.fornecedorService.cadastrar(this.fornecedorPost).subscribe({
       next: result => {
         this.onSuccess(result);
-        this.router.navigate(['fornecedores/fornecedor-detalhes/'+ result.idFornecedor]);
+        this.router.navigate(['fornecedores/fornecedores-lista']);
+       // this.router.navigate(['fornecedores/fornecedor-detalhes/'+ result.idFornecedor]);
       },
       error: e => {
         this.onError(e)
@@ -191,7 +193,6 @@ export class FornecedoresCadComponent implements OnInit {
   }
 
   getErrorMessage(fieldName: string) {
-    console.log(fieldName);
 
     const dados = this.dados.get(fieldName);
     const endereco = this.endereco.get(fieldName);

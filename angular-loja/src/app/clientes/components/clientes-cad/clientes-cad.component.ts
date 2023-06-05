@@ -156,6 +156,7 @@ export class ClientesCadComponent implements OnInit {
             this.populaDadosForm(result);
 
           }else{
+            this.populaDadosForm(result);
             this.stepEndereco.stepControl.status =  'INVALID';
             this.alertService.error('CEP inválido. Tente novamente.');
           }

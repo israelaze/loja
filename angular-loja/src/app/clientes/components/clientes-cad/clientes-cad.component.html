@@ -119,7 +119,7 @@
             <mat-form-field class="fullWidth" appearance="fill">
               <mat-label>Logradouro:</mat-label>
               <input matInput type="text"
-                formControlName="logradouro" placeholder="Insira nome da rua, avenida, etc..."
+                formControlName="logradouro" (blur)="consultaCEP()" placeholder="Insira nome da rua, avenida, etc..."
                 maxlength="50"
               >
               <mat-error *ngIf="endereco.get('logradouro')?.invalid">{{
@@ -129,9 +129,9 @@
 
             <mat-form-field class="fullWidth" appearance="fill">
               <mat-label>Número:</mat-label>
-              <input matInput type="number" inputmode="numeric"
+              <input matInput type="number" (blur)="consultaCEP()"
                 formControlName ="numero" placeholder="Numero da casa, prédio..."
-                maxlength="5"
+                maxlength="5" 
               >
               <mat-error *ngIf="endereco.get('numero')?.invalid">{{
                 getErrorMessage("numero")
