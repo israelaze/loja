@@ -54,6 +54,7 @@ margin-right: 8px;
     line-height: 24px;
     font-family: 'Roboto', sans-serif;
     letter-spacing: .03125em;
+
   }
   .sidenav{
     width: 8.4rem;
@@ -64,8 +65,16 @@ margin-right: 8px;
   }
 
   .perfil {
-    font-size: 11px;
+    font-size: 13px;
   }
 
+  .mdc-list-item {
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+
+  img{
+    width:95%;
+  }
 }
 

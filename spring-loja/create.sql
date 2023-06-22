@@ -4,7 +4,7 @@ create table fornecedores (id_fornecedor serial not null, cpf_cnpj varchar(20) n
 create table item_pedido (preco float(53), quantidade integer, pedido_id integer not null, produto_id integer not null, primary key (pedido_id, produto_id));
 create table pedidos (id_pedido serial not null, data_entrega date, data_pedido date not null, desconto float(53), numero_pedido varchar(10) not null, situacao varchar(255), total float(53), id_cliente integer not null, id_vendedor integer not null, primary key (id_pedido));
 create table produtos (id_produto serial not null, ativo boolean not null, categoria varchar(255), codigo varchar(15) not null, data_cadastro date, descricao varchar(255), foto oid, margem_lucro float(53), nome_produto varchar(50) not null, peso float(53), tipo_peso varchar(255), valor_custo float(53), valor_venda float(53), id_fornecedor integer not null, primary key (id_produto));
-create table usuarios (id_usuario serial not null, email varchar(50) not null, nome varchar(20) not null, perfil varchar(255) not null, senha varchar(100) not null, sobre_nome varchar(50) not null, primary key (id_usuario));
+create table usuarios (id_usuario serial not null, email varchar(50) not null, nome varchar(20) not null, perfil varchar(255) not null, senha varchar(100) not null, primary key (id_usuario));
 create table vendedores (id_vendedor serial not null, apelido varchar(50), nome varchar(100) not null, primary key (id_vendedor));
 alter table if exists clientes add constraint UK_7wflw78ibh162cmq12ii6ffly unique (cpf);
 alter table if exists fornecedores add constraint UK_cawt78v9v2arp5g3o5xmwxn3c unique (cpf_cnpj);

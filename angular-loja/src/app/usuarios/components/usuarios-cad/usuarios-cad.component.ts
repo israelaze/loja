@@ -21,7 +21,6 @@ export class UsuariosCadComponent implements OnInit {
   registerForm = this.fb.nonNullable.group(
     {
       nome: ['', [Validators.required]],
-      sobrenome: ['', ],
       email: ['', [Validators.required]],
       senha: ['', [Validators.required]],
       confirmSenha: ['', [Validators.required]],
@@ -74,12 +73,8 @@ export class UsuariosCadComponent implements OnInit {
 
   populaDadosForm(): void {
     this.usuarioPost.nome = this.registerForm.value.nome;
-    this.usuarioPost.sobrenome = this.registerForm.value.sobrenome;
     this.usuarioPost.email = this.registerForm.value.email;
     this.usuarioPost.senha = this.registerForm.value.senha;
-
-    console.log(this.usuarioPost);
-
   }
 
   private onSuccess(result: Usuario) {

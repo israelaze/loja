@@ -9,7 +9,6 @@ public class UsuarioGetDTO {
 	
 	private Integer idUsuario;
 	private String nome;
-	private String sobrenome;
 	private String email;
 	private String perfil;
 

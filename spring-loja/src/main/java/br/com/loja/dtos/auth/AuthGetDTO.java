@@ -13,7 +13,6 @@ public class AuthGetDTO {
 	private Integer idUsuario;
 	private String nome;
 	private Perfil perfil;
-//	private String sobreNome;
 //	private String email;
 	private String accessToken;
 	
