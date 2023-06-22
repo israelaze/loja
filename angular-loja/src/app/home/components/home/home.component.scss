@@ -5,17 +5,29 @@
     background-color: rgb(235, 235, 235);
 }
 
- .paragrafo{
+.paragrafo{
 
-   font-size: 12px;
-   font-weight: bold;
+  font-size: 12px;
+  font-weight: bold;
 
- }
+}
 
- img{
+img{
 
-    height: 10rem;
-    width: 13rem;
-    margin: auto;
-    padding-bottom: 30px;
- }
+  height: 10rem;
+  width: 13rem;
+  margin: auto;
+  padding-bottom: 30px;
+}
+
+.bemvindo{
+  margin-left: 23px;
+}
+
+.nome{
+  font-size: 20px;
+  font-style: italic;
+  color: rgba(90, 120, 181, 0.968);
+  font-family: Impact
+
+}

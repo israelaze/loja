@@ -12,7 +12,16 @@ export class NavComponent implements OnInit {
 
   constructor(private router: Router, public dialog: MatDialog) { }
 
-  ngOnInit(): void {}
+  usuario: any;
+
+  ngOnInit(): void {
+    // capturando usuário autenticado na sessão
+    const usuario = JSON.parse(localStorage.getItem('AUTH') as any);
+    this.usuario = usuario;
+
+    console.log(usuario);
+
+  }
 
   openDialog(enterAnimationDuration: string, exitAnimationDuration: string): void {
     this.dialog.open(DialogLogoutComponent, {

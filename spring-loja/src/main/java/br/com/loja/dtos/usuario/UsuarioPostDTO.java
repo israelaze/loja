@@ -9,7 +9,7 @@ public class UsuarioPostDTO {
 	@NotBlank(message = "{nome.not.blank}")
 	private String nome;
 	
-	private String sobreNome;
+	private String sobrenome;
 	
 	@NotBlank(message = "{email.not.blank}")
 //	@Email(message = "{email.email}")

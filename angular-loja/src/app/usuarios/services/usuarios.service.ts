@@ -19,10 +19,10 @@ export class UsuariosService {
    return this.httpClient.get<Usuario[]>(this.endpoint);
  }
 
- // // CADASTRAR
- // cadastrar(usuario: Usuario) {
- //   return this.httpClient.post<Usuario>(this.endpoint, usuario);
- // }
+ // CADASTRAR
+ cadastrar(usuario: Usuario) {
+   return this.httpClient.post<Usuario>(this.endpoint, usuario);
+ }
 
  // // BUSCAR ID
  // buscarId(idUsuario: number) {

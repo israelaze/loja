@@ -1,50 +1,68 @@
-<div class="d-flex w-full h-full">
-  <mat-card class="m-auto" style="max-width: 380px;">
-    <mat-card-header class="m-b-24">
+<div class="container" >
+
+  <mat-card style="max-width: 380px;">
+    <mat-card-header>
       <mat-card-title>
-        {{'register.welcome'}}, <br />
-        {{'register.title'}}
+      Olá, <br />
+      Cadastre-se aqui
       </mat-card-title>
     </mat-card-header>
+    <br>
 
     <mat-card-content>
-      <form class="form-field-full" [formGroup]="registerForm">
-        <mat-form-field appearance="outline">
-          <mat-label>{{'login.username'}}</mat-label>
-          <input matInput formControlName="username" required>
-          <mat-error *ngIf="registerForm.get('username')?.invalid">
-            <span>{{'validations.required'}}</span>
+      <form  [formGroup]="registerForm">
+        <mat-form-field class="fullWidth" appearance="outline">
+          <mat-label>Nome</mat-label>
+          <input matInput formControlName="nome" required>
+          <mat-error *ngIf="registerForm.get('nome')?.invalid">
+            <span>obrigatório</span>
           </mat-error>
         </mat-form-field>
 
-        <mat-form-field appearance="outline">
-          <mat-label>{{'login.password'}}</mat-label>
-          <input matInput type="password" formControlName="password" required>
-          <mat-error *ngIf="registerForm.get('password')?.invalid">
-            <span>{{'validations.required'}}</span>
+        <mat-form-field class="fullWidth" appearance="outline">
+          <mat-label>Sobrenome</mat-label>
+          <input matInput formControlName="sobrenome">
+          <!-- <mat-error *ngIf="registerForm.get('sobrenome')?.invalid">
+            <span>obrigatório</span>
+          </mat-error> -->
+        </mat-form-field>
+
+        <mat-form-field class="fullWidth" appearance="outline">
+          <mat-label>Email</mat-label>
+          <input matInput formControlName="email" required>
+          <mat-error *ngIf="registerForm.get('email')?.invalid">
+            <span>obrigatório</span>
           </mat-error>
         </mat-form-field>
 
-        <mat-form-field appearance="outline">
-          <mat-label>{{'register.confirm_password'}}</mat-label>
-          <input matInput type="password" formControlName="confirmPassword" required>
-          <mat-error *ngIf="registerForm.get('confirmPassword')?.hasError('required')">
-            <span>{{'validations.required'}}</span>
-          </mat-error>
-          <mat-error *ngIf="registerForm.get('confirmPassword')?.hasError('mismatch')"
-                    >
-            <span>{{'validations.inconsistent'}}</span>
+        <mat-form-field class="fullWidth" appearance="outline">
+          <mat-label>Senha</mat-label>
+          <input matInput type="password" formControlName="senha" required>
+          <mat-error *ngIf="registerForm.get('senha')?.invalid">
+            <span>obrigatório</span>
           </mat-error>
         </mat-form-field>
 
-        <mat-checkbox>{{'register.agree'}}</mat-checkbox>
+        <mat-form-field class="fullWidth" appearance="outline">
+          <mat-label>Confirmar senha</mat-label>
+          <input matInput type="password" formControlName="confirmSenha" required>
+          <mat-error *ngIf="registerForm.get('confirmSenha')?.hasError('required')">
+            <span>obrigatório</span>
+          </mat-error>
+          <mat-error *ngIf="registerForm.get('confirmSenha')?.hasError('mismatch')">
+            <span>a senha não é a mesma</span>
+          </mat-error>
+        </mat-form-field>
+        <br>
 
-        <button class="w-full m-y-16" mat-raised-button color="primary">
-          {{'register.register'}}
+        <!-- <mat-checkbox>{{'register.agree'}}</mat-checkbox> -->
+
+        <button [disabled]="!registerForm.valid" mat-raised-button color="primary" (click)="cadastrar()">
+          Cadastrar
         </button>
 
-        <div>{{'register.have_an_account'}}?
-          <a routerLink="login">{{'login.login'}}</a>
+        <div class="font"> Já possui uma conta?
+          <a  class="cor" routerLink="/login">Fazer login</a>
         </div>
       </form>
     </mat-card-content>

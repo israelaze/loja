@@ -18,3 +18,9 @@ const routes: Routes = [
   exports: [RouterModule]
 })
 export class UsuariosRoutingModule { }
+
+
+// {path: '', pathMatch: 'full', redirectTo: 'clientes-lista'},
+
+// { path: 'clientes-lista', component: ClientesListComponent},
+// { path: 'cadastrar-cliente', component: ClientesCadComponent },

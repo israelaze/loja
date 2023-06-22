@@ -40,7 +40,7 @@ public class Usuario implements UserDetails {
 	private String nome;
 
 	@Column(length = 50, nullable = false)
-	private String sobreNome;
+	private String sobrenome;
 
 	@Column(length = 50, nullable = false, unique = true)
 	private String email;

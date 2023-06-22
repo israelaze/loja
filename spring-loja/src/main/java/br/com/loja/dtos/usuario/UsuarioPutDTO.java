@@ -13,7 +13,7 @@ public class UsuarioPutDTO {
 	@NotBlank(message = "{nome.not.blank}")
 	private String nome;
 	
-	private String sobreNome;
+	private String sobrenome;
 	
 	//private String email; NÃO PERMITIDO ATUALIZAR EMAIL DO USUÁRIO
 	

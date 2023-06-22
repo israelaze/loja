@@ -6,56 +6,80 @@
     <!--Início da Listagem do Menu-->
     <img src="assets/imagens/loja.png" alt="Imagem de navegação">
     <mat-nav-list>
-
+      <br>
       <a mat-list-item routerLink="home">
-        <i class="material-icons"  >home</i>
-        Home
+        <span class="t">
+          <i class="material-icons">home</i>
+          Home
+        </span>
       </a>
-      <br />
-      <br />
+      <br>
 
       <a mat-list-item routerLink="usuarios-lista">
-        <i class="material-icons">account_circle</i>
-        Usuários
+        <span class="t">
+          <i class="material-icons">account_circle</i>
+          Usuários
+        </span>
       </a>
 
       <a mat-list-item routerLink="clientes">
-        <i class="material-icons">person</i>
-        Clientes
+        <span class="t">
+          <i class="material-icons">person</i>
+          Clientes
+        </span>
       </a>
 
       <a mat-list-item routerLink="fornecedores">
-        <i class="material-icons">folder_shared</i>
-        Fornecedores
+        <span class="t">
+          <i class="material-icons">folder_shared</i>
+          Fornecedores
+        </span>
       </a>
 
       <a mat-list-item routerLink="vendedores-lista">
-        <i class="material-icons">person</i>
-        Vendedores
+        <span class="t">
+          <i class="material-icons">person</i>
+          Vendedores
+        </span>
       </a>
 
       <a mat-list-item routerLink="produtos">
-        <i class="material-icons">important_devices</i>
-        Produtos
+        <span class="t">
+          <i class="material-icons">important_devices</i>
+          Produtos
+        </span>
       </a>
 
       <a mat-list-item routerLink="pedidos">
-        <i class="material-icons">credit_card</i>
-        Pedidos
+        <span class="t">
+          <i class="material-icons">credit_card</i>
+          Pedidos
+        </span>
       </a>
 
       <a mat-list-item routerLink="relatorios">
-        <i class="material-icons">print</i>
-        Relatórios
+        <span class="t">
+          <i class="material-icons">print</i>
+          Relatórios
+        </span>
       </a>
 
       <br />
       <br />
 
       <a mat-list-item (click)="openDialog('0ms', '0ms')">
-        <i class="material-icons">logout</i>
-        Sair
+        <span class="t">
+          <i class="material-icons">logout</i>
+          Sair
+        </span>
       </a>
+
+      <mat-list-item [ngSwitch]="usuario.perfil">
+        <span class="perfil">{{usuario.nome}}</span>
+        <div class="perfil" *ngSwitchCase="'ADMIN'">{{usuario.perfil}}</div>
+        <div class="perfil" *ngSwitchCase="'USER'">Usuário</div>
+
+      </mat-list-item>
     </mat-nav-list>
 
   </mat-drawer>

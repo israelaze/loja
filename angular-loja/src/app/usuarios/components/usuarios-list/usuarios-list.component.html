@@ -2,6 +2,14 @@
 
   <h1>Controle de Usuários</h1>
 
+  <div *ngIf="">
+    <a mat-button color="warn" routerLink="/clientes/cadastrar-cliente">
+      <mat-icon>add_box</mat-icon>
+      Adicionar novo usuário
+    </a>
+  </div>
+  <br><br>
+
   <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
 
     <!-- Código -->

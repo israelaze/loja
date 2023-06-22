@@ -34,7 +34,7 @@ public class AuthService {
 			// gera um token JWT
 			var jwtToken = jwtService.generateToken(usuario);
 
-			return AuthGetDTO.builder().accessToken(jwtToken).build();
+			return AuthGetDTO.builder().accessToken(jwtToken).nome(usuario.getNome()).idUsuario(usuario.getIdUsuario()).perfil(usuario.getPerfil()).build();
 
 		} catch (BadCredentialsException e) {
 			throw new BadRequestException("Email ou senha inválidos!");

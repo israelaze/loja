@@ -1,0 +1,34 @@
+.font{
+  margin-top: 8px;
+  font-size: 12px;
+}
+.cor{
+  color: blue;
+}
+
+.container {
+  height: 100%;
+ // background: linear-gradient(180deg, rgb(16, 79, 205) 0%, rgb(13, 234, 38) 0%, rgb(36, 211, 217) 100%);
+ // background-image: "assets/imagens/comercio.png";
+  background-image: url("/assets/imagens/comercio.png");
+  min-height: fit-content;
+  //background-size: cover;
+ // background-repeat: no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.form {
+  width: 20rem;
+  margin: auto;
+  margin-top: auto;
+ // background-color: rgb(208, 249, 222);
+  padding: 3rem 1rem;
+  border-radius: 1rem;
+}
+
+.fullWidth{
+  width: 95%;
+}
+

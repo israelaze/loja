@@ -8,7 +8,6 @@ const routes: Routes = [
   {path: '', pathMatch: 'full', redirectTo: 'home'},
 
   {
-
     //guarda (decide se uma rota pode ser ativada)
     canActivate: [AuthGuard],
 

@@ -3,7 +3,7 @@
 }
 
 .sidenav {
-  width: 10.8rem;
+  width: 11.3rem;
   color: white;
   background-image: linear-gradient(-60deg, #206b9adc 0%, #2361cbf3 100%);
 }
@@ -35,5 +35,37 @@ img {
 
 button {
 margin-right: 8px;
+}
+
+.perfil{
+  color: rgb(1, 238, 255);
+  font-family: 'Trebuchet MS';
+  font-style: oblique;
+  font-size: 13px;
+}
+
+@media (max-width: 576px) {
+  i {
+    font-size: 18px;
+  }
+  .t  {
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 24px;
+    font-family: 'Roboto', sans-serif;
+    letter-spacing: .03125em;
+  }
+  .sidenav{
+    width: 8.4rem;
+  }
+
+  .sidenav i {
+    margin-right: 0.1rem;
+  }
+
+  .perfil {
+    font-size: 11px;
+  }
+
 }
 
