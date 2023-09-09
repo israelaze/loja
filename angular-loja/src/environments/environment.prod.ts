@@ -1,4 +1,4 @@
 export const environment = {
-  baseUrl: 'https://lojaspring.up.railway.app/api/',
+  baseUrl: 'https://loja-gpvx.onrender.com/api/',
   production: true
 };
