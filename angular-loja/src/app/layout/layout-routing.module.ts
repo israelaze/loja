@@ -13,10 +13,10 @@ const routes: Routes = [
   {
     path: '', component: NavComponent, children: [
       {path: 'home', component: HomeComponent},
-      { path: 'vendedores-lista', component: VendedoresListComponent },
+      { path: 'vendedores', component: VendedoresListComponent },
       { path: 'cadastrar-vendedor', component: VendedoresCadComponent },
-      { path: 'usuarios-lista', component: UsuariosListComponent },
-      { path: 'relatorios', component: RelatoriosComponent },
+      { path: 'usuarios', component: UsuariosListComponent },
+
 
       {
         path: 'clientes',
@@ -33,7 +33,10 @@ const routes: Routes = [
       {
         path: 'fornecedores',
         loadChildren: ()=> import('../fornecedores/fornecedores.module').then(m=> m.FornecedoresModule)
-      }
+      },
+      { path: 'relatorios',
+       loadChildren:()=> import('../relatorios/relatorios.module').then(m=> m.RelatoriosModule)
+      },
 
     ]
   }

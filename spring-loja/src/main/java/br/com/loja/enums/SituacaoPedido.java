@@ -2,7 +2,7 @@ package br.com.loja.enums;
 
 public enum SituacaoPedido {
 	
-	AGUARDANDO_PAGAMENTO(1),
+	NÃO_PAGO(1),
 	PAGO(2),
 	CANCELADO(3);
 	
