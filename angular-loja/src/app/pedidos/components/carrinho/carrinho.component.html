@@ -110,7 +110,7 @@
             <mat-select formControlName="pagamento">
               <mat-option></mat-option>
               <mat-option value="PAGO">SIM</mat-option>
-              <mat-option value="AGUARDANDO_PAGAMENTO">NÃO</mat-option>
+              <mat-option value="NÃO_PAGO">NÃO</mat-option>
             </mat-select>
             <mat-error *ngIf="form2.get('pagamento')?.invalid">{{
               getErrorMessage("pagamento")
