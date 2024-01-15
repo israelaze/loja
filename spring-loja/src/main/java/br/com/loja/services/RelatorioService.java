@@ -132,7 +132,7 @@ public class RelatorioService {
 			}
 
 		} else {
-			throw new EntityNotFoundException("Dados do filtro incorretos");
+			throw new EntityNotFoundException("Nenhum pedido encontrado");
 		}
 		return lista;
 	}

@@ -2,6 +2,9 @@ package br.com.loja.controllers;
 
 import java.io.IOException;
 
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,30 +32,26 @@ public class RelatoriosController {
 	private final RelatorioService service;
 
 	@Operation(summary = "Gerar ranking de vendas por período")
-	@GetMapping("/gerarRankingVendasPorPeriodo")
-	public void gerarRankingVendasPeriodo(@Valid RelatorioFiltroDTO filtro, HttpServletResponse response) throws IOException {
+	@GetMapping("/gerarRankingVendasPeriodo")
+	public ResponseEntity<byte[]> gerarRankingVendasPeriodo(@Valid RelatorioFiltroDTO filtro, HttpServletResponse response) throws IOException {
 
 		try {
 			
-			// Gerar o relatório a partir dos dados byte[]
-			byte[] relatorioBytes = service.gerarRelatorioPeriodo(filtro);
+			  // Gerar o relatório a partir dos dados byte[]
+            byte[] relatorioBytes = service.gerarRelatorioPeriodo(filtro);
 
-			// Configurar a resposta HTTP para o navegador entender que é um arquivo PDF
-			response.setContentType("application/pdf");
-			response.setHeader("Content-Disposition", "attachment; filename=relatorio.pdf");
+            // Configurar o cabeçalho HTTP para o navegador entender que é um arquivo PDF
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_PDF);
+            headers.setContentDispositionFormData("attachment", "relatorio.pdf");
 
-			// Escrever o relatório na resposta
-			response.getOutputStream().write(relatorioBytes);
-			response.getOutputStream().flush();
-			response.getOutputStream().close();
+            // Retornar uma ResponseEntity com o corpo do relatório e cabeçalhos configurados
+            return ResponseEntity.ok().headers(headers).body(relatorioBytes);
 
 		} catch (ServiceException | JRException | NumberFormatException e) {
 			
 			log.error("Erro:"+ e.getMessage());
-			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-			response.getWriter().write("Erro ao gerar o relatório: " +e.getMessage());
-			response.getWriter().flush();
-			response.getWriter().close();
+			return ResponseEntity.internalServerError().build();
 			
 		}
 	}
