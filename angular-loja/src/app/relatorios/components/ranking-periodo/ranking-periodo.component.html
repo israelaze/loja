@@ -1,0 +1,55 @@
+<div class="container">
+
+<h1>Gerar ranking de vendas por período</h1>
+<br>
+
+<section>
+
+  <h3>Selecionar período </h3>
+  <br>
+  <span class="observacao"><span style="color: red;">*Atenção</span>  - caso não selecione nenhum período, o sistema usará a data do primeiro pedido até a data atual</span>
+
+  <p *ngIf="periodo.hasError('datasInvalidas')" class="erro-mensagem">Período inválido</p>
+
+  <form [formGroup]="periodo">
+
+    <mat-form-field appearance="fill" >
+      <mat-label>Data início</mat-label>
+      <input matInput formControlName="dataInicio" [max]="maxDataInicio"
+        [matDatepicker]="inicio" readonly
+      >
+      <mat-datepicker-toggle matIconSuffix [for]="inicio" ></mat-datepicker-toggle>
+      <mat-datepicker #inicio touchUi disabled="false"> </mat-datepicker>
+    </mat-form-field>
+
+    &nbsp;
+    <mat-form-field appearance="fill" >
+      <mat-label >Data fim</mat-label>
+      <input matInput formControlName="dataFim" [max]="maxDataInicio"
+        [matDatepicker]="fim" readonly
+      >
+      <mat-datepicker-toggle matIconSuffix [for]="fim" ></mat-datepicker-toggle>
+      <mat-datepicker #fim touchUi disabled="false"> </mat-datepicker>
+    </mat-form-field>
+    <br>
+    <button mat-raised-button button style="background-color:rgb(181, 161, 205); width: 50px;" (click)="limparFormulario()">Limpar</button>
+    <br>
+    <a>
+      <button [disabled]="periodo.invalid"  mat-raised-button style="background-color: rgb(37, 200, 124);" (click)="gerar()">Gerar</button>
+    </a>
+  </form>
+</section>
+
+<br><br><br>
+
+<section>
+
+
+</section>
+<div>
+
+    <button mat-raised-button color="primary" (click)="voltar()">Voltar</button>
+
+</div>
+
+</div>
