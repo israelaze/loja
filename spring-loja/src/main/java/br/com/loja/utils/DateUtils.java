@@ -4,6 +4,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class DateUtils {
 	
@@ -59,5 +61,44 @@ public class DateUtils {
 	
 		return diasDiferenca;
 	}
+	
+	public static boolean isFormatoDataBr(String data) {
+
+		boolean isFormatoData = false;
+
+		data = data.trim();
+
+		Pattern pattern = Pattern.compile("^\\d{2}/\\d{2}/\\d{4}");
+		Matcher verifica = pattern.matcher(data);
+
+		if (verifica.matches()) {
+			isFormatoData = true;
+		} else {
+			isFormatoData = false;
+		}
+
+		return isFormatoData;
+
+	}
+	
+	public static boolean isFormatoDataEUA(String data) {
+
+		boolean isFormatoData = false;
+
+		data = data.trim();
+
+		Pattern pattern = Pattern.compile("^\\d{4}/\\d{2}/\\d{2}");
+		Matcher verifica = pattern.matcher(data);
+
+		if (verifica.matches()) {
+			isFormatoData = true;
+		} else {
+			isFormatoData = false;
+		}
+
+		return isFormatoData;
+
+	}
+
 
 }

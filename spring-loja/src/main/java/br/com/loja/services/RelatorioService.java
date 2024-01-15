@@ -13,6 +13,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import br.com.loja.dtos.pedido.PedidoGetDTO;
 import br.com.loja.dtos.relatorios.RankingVendasDTO;
 import br.com.loja.dtos.relatorios.RelatorioFiltroDTO;
 import br.com.loja.entities.Produto;
@@ -37,18 +38,25 @@ public class RelatorioService {
 
 	private final RelatoriosRepository relatoriosRepository;
 	private final ProdutoRepository produtoRepository;
+	private final PedidoService pedidoService;
 
 	public byte[] gerarRelatorioPeriodo(RelatorioFiltroDTO filtro) throws JRException {
-
+	
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		
-		// Adicionando parâmetros
-		Map<String, Object> parametros = new HashMap<>();
-		parametros.put("dataInicio", sdf.format(DateUtils.toDate(filtro.getDataInicio())));
-		parametros.put("dataFim", sdf.format(DateUtils.toDate(filtro.getDataFim())));
+		String dataInicio = filtro.getDataInicio();
+		String dataFim = filtro.getDataFim();
 		
+		if(Validacoes.isEmpty(dataInicio)) {
+			dataInicio = buscarDataPrimeiroPedidoCadastrado();			
+		}
+		
+		if(Validacoes.isEmpty(dataFim)) {
+			dataFim = DateUtils.toString(new Date());
+		}
+	
 		// Buscar o ranking de vendas
-		List<RankingVendasDTO> dados = buscarRankigProdutosPorPeriodo(filtro);
+		List<RankingVendasDTO> dados = buscarRankigProdutosPorPeriodo(dataInicio, dataFim);
 
 		// Preencha o relatório com os dados e os parâmetros fornecidos
 		JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(dados);
@@ -59,6 +67,11 @@ public class RelatorioService {
 		// Compile o JRXML em um objeto JasperReport
 		JasperReport jasperReport = JasperCompileManager.compileReport(jasperStream);
 		
+		// Adicionando parâmetros
+		Map<String, Object> parametros = new HashMap<>();
+		parametros.put("dataInicio", sdf.format(DateUtils.toDate(dataInicio)));
+		parametros.put("dataFim", sdf.format(DateUtils.toDate(dataFim)));
+		
 		// Preencha o relatório com os dados
 		JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parametros, dataSource);
 
@@ -67,10 +80,24 @@ public class RelatorioService {
 	}
 
 	
-	public List<RankingVendasDTO> buscarRankigProdutosPorPeriodo(RelatorioFiltroDTO filtro) {
+	private String buscarDataPrimeiroPedidoCadastrado() {
+		
+		PedidoGetDTO pedido = pedidoService.buscarPrimeiroPedidoCadastrado();
+		
+		if(pedido != null) {
+			String data = pedido.getDataPedido();
+			
+			return data;
+		}
+		
+		throw new EntityNotFoundException("Ainda não existem pedidos cadastrados.");
+	}
 
-		Date inicio = DateUtils.toDate(filtro.getDataInicio());
-		Date fim = DateUtils.toDate(filtro.getDataFim());
+
+	public List<RankingVendasDTO> buscarRankigProdutosPorPeriodo(String dataInicio, String dataFim) {
+
+		Date inicio = DateUtils.toDate(dataInicio);
+		Date fim = DateUtils.toDate(dataFim);
 		
 		List<Object[]> result = relatoriosRepository.buscarRankigProdutosPorPeriodo(inicio, fim);
 		

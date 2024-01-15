@@ -8,12 +8,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.loja.dtos.relatorios.RelatorioFiltroDTO;
+import br.com.loja.exceptions.ServiceException;
 import br.com.loja.services.RelatorioService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import net.sf.jasperreports.engine.JRException;
 
 @Slf4j
 @CrossOrigin
@@ -27,7 +30,7 @@ public class RelatoriosController {
 
 	@Operation(summary = "Gerar ranking de vendas por período")
 	@GetMapping("/gerarRankingVendasPorPeriodo")
-	public void gerarRankingVendasPeriodo(RelatorioFiltroDTO filtro, HttpServletResponse response) throws IOException, NumberFormatException {
+	public void gerarRankingVendasPeriodo(@Valid RelatorioFiltroDTO filtro, HttpServletResponse response) throws IOException {
 
 		try {
 			
@@ -43,7 +46,7 @@ public class RelatoriosController {
 			response.getOutputStream().flush();
 			response.getOutputStream().close();
 
-		} catch (Exception e) {
+		} catch (ServiceException | JRException | NumberFormatException e) {
 			
 			log.error("Erro:"+ e.getMessage());
 			response.setStatus(HttpServletResponse.SC_NOT_FOUND);

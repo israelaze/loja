@@ -178,5 +178,18 @@ public class PedidoService {
 
 		return "Pedido Nº " + result.get().getNumeroPedido() + " cancelado com sucesso.";
 	}
+
+	public PedidoGetDTO buscarPrimeiroPedidoCadastrado() {
+		
+		Pedido result = pedidoRepository.buscarPrimeiroPedidoCadastrado();
+		
+		if(result != null) {
+			PedidoGetDTO pedido = new PedidoGetDTO(result);
+			
+			return pedido;
+		}
+	
+		return null;
+	}
 	
 }
