@@ -108,7 +108,9 @@ public class RelatorioService {
 			for (Object[] dto : result) {
 
 				Integer idProduto = (Integer) dto[0];
-				BigDecimal totalVendidos = (BigDecimal) dto[1];
+				//convertendo um NUMBER para BigDecimal
+				Number totalVendidosNumber = (Number) dto[1];
+			    BigDecimal totalVendidos = new BigDecimal(totalVendidosNumber.doubleValue());
 
 				if (idProduto != null && totalVendidos.compareTo(BigDecimal.ZERO) != 0) {
 
