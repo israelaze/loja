@@ -20,6 +20,6 @@ export class RelatoriosService {
     // Utilize o responseType 'arraybuffer' para obter um Blob diretamente
     // return this.httpClient.get(this.endpoint + '/gerarRankingVendasPeriodo', { params, responseType: 'arraybuffer' })
     //   .pipe(map(response => new Blob([response])));
-    return this.httpClient.get(this.endpoint + '/gerarRankingVendasPeriodo', { params, responseType: 'blob' as 'json' });
+    return this.httpClient.get(this.endpoint + '/gerarRankingVendasPeriodo', { params, responseType: 'blob' });
   }
 }

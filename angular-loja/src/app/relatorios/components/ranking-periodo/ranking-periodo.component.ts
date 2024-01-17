@@ -39,7 +39,7 @@ export class RankingPeriodoComponent {
     console.log(dataFimFormatada);
 
     this.relatoriosService.gerarRankingPorPeriodo(dataInicioFormatada, dataFimFormatada).subscribe({
-      next: result => {
+      next: (result: Blob) => {
         console.log(result);
         const blob = new Blob([result], {type: result.type});
         const url = window.URL.createObjectURL(blob);
@@ -61,28 +61,39 @@ export class RankingPeriodoComponent {
         if (error instanceof HttpErrorResponse) {
           console.error('Erro HTTP:', error);
 
-          // Verificar se o corpo da resposta de erro é um ArrayBuffer
-          if (error.error instanceof ArrayBuffer) {
-            // Converter o ArrayBuffer em uma string (pode precisar ajustar o encoding)
-            const errorString = new TextDecoder('utf-8').decode(error.error);
-            const errorMessage = this.extractErrorMessage(errorString);
-            console.log('Mensagem de erro:', errorMessage);
-            this.alertService.error(errorMessage || 'Erro desconhecido');
+          // Verificar se o corpo da resposta de erro é um Blob
+          if (error.error instanceof Blob) {
+            this.readBlobAsText(error.error).then(errorMessage => {
+              console.log('Mensagem de erro:', errorMessage);
+              this.alertService.error(errorMessage || 'Erro desconhecido');
+            }).catch(blobError => {
+              console.error('Erro ao converter Blob para texto:', blobError);
+              this.alertService.error('Erro ao processar a mensagem de erro');
+            });
           } else {
-            // Se não for um ArrayBuffer, exibir a mensagem de erro diretamente
+            // Se não for um Blob, exibir a mensagem de erro diretamente
             const errorMessage = this.extractErrorMessage(error.error);
             console.log('Mensagem de erro:', errorMessage);
             this.alertService.error(errorMessage || 'Erro desconhecido');
           }
         } else {
-          // Se não for um HttpErrorResponse, ainda podemos tratar como uma mensagem de erro genérica
-          console.error('Erro inesperado:', error);
-          this.alertService.error('Erro inesperado');
+          // Restante do código para tratar o erro
+          // ...
         }
       }
     });
 
   }
+
+  // Função para converter Blob para texto
+private readBlobAsText(blob: Blob): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onloadend = () => resolve(reader.result as string);
+    reader.onerror = reject;
+    reader.readAsText(blob);
+  });
+}
 
   // Extrai a mensagem de erro do JSON
   private extractErrorMessage(errorString: string): string {
