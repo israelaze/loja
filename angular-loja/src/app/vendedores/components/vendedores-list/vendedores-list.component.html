@@ -2,6 +2,15 @@
 
   <h1>Controle de Vendedores</h1>
 
+    <!-- Botão de cadastro -->
+    <div>
+      <a mat-button color="warn" routerLink="/vendedores/cadastrar-vendedor">
+        <mat-icon>add_box</mat-icon>
+        Adicionar novo vendedor
+      </a>
+    </div>
+    <br><br>
+
   <div *ngIf="mensagem != ''; else resultado">
     <h5>{{mensagem}}</h5>
   </div>

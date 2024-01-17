@@ -1,1 +1,35 @@
-<p>vendedores-cad works!</p>
+<br>
+<mat-card>
+  <mat-toolbar color="primary">Novo Vendedor</mat-toolbar>
+  <br>
+
+  <mat-card-content>
+    <form [formGroup]="form" class="full-width">
+
+
+      <mat-form-field class="full-width">
+        <mat-label>Nome</mat-label>
+        <input matInput formControlName="nome" maxlength="50" #nome />
+        <mat-hint align="end">{{ nome.value?.length || 0 }} / 50</mat-hint>
+        <mat-error *ngIf="form.get('nome')?.invalid">{{
+          getErrorMessage("nome")
+        }}</mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="full-width">
+        <mat-label>Apelido</mat-label>
+        <input matInput formControlName="apelido" maxlength="50" #apelido />
+        <mat-hint align="end">{{ apelido.value?.length || 0 }} / 50</mat-hint>
+        <mat-error *ngIf="form.get('apelido')?.invalid">{{
+          getErrorMessage("apelido")
+        }}</mat-error>
+      </mat-form-field>
+    </form>
+  </mat-card-content>
+
+  <mat-card-actions class="actions-center">
+    <button [disabled]="!form.valid" mat-raised-button color="primary" (click)="cadastrar()">
+      Salvar
+    </button>
+  </mat-card-actions>
+</mat-card>
