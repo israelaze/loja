@@ -15,6 +15,7 @@ export class VendedoresListComponent implements OnInit {
   dataSource = new MatTableDataSource<Vendedor>;
   displayedColumns: string[] = ['idVendedor', 'nome', 'apelido'];
   vendedores: Vendedor[] = [];
+  mensagem = '';
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -36,9 +37,15 @@ export class VendedoresListComponent implements OnInit {
     this.vendedorService.buscarTodos()
       .subscribe({
         next: vendedores => {
-          this.vendedores = vendedores;
-          this.dataSource = new MatTableDataSource<Vendedor>(this.vendedores);
-          this.dataSource.paginator = this.paginator;
+
+          if(vendedores.length == 0){
+            this.mensagem = 'Nenhum vendedor cadastrado!';
+          }else{
+
+            this.vendedores = vendedores;
+            this.dataSource = new MatTableDataSource<Vendedor>(this.vendedores);
+            this.dataSource.paginator = this.paginator;
+          }
         },
         error: e => {
           console.log(e.error);

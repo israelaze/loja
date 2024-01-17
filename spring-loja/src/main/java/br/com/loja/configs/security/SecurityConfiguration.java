@@ -29,7 +29,7 @@ public class SecurityConfiguration {
 			"/configuration/ui", "/configuration/security", "/swagger-ui.html", "/webjars/**", "/v3/api-docs/**",
 			"/swagger-ui/**", "/api-docs/**" };
 
-  private static final String[] TESTES = {"/api/clientes/**", "/api/enderecos/**",
+  private static final String[] TESTES = {"/api/usuarios/**", "/api/clientes/**", "/api/enderecos/**",
 			"/api/fornecedores/**", "/api/produtos/**",
 			"/api/pedidos/**", "/api/vendedores/**", "/api/relatorios/**"};
 
@@ -54,7 +54,7 @@ public class SecurityConfiguration {
 
 		
 		// permitir o cadastro de usuário
-		.requestMatchers("/api/usuarios/**").permitAll()
+		.requestMatchers("/api/usuarios/cadastro").permitAll()
 		// permitir autenticação do usuário
 		.requestMatchers("/api/auth/**").permitAll()
 		// permitir a documentação do swagger

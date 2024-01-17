@@ -19,4 +19,8 @@ export class VendedoresService {
    return this.httpClient.get<Vendedor[]>(this.endpoint);
 
   }
+
+  cadastrar(vendedor: Vendedor){
+    return this.httpClient.post<Vendedor>(this.endpoint + '/cadastro', vendedor);
+  }
 }

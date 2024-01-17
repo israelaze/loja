@@ -21,7 +21,7 @@ export class UsuariosService {
 
  // CADASTRAR
  cadastrar(usuario: Usuario) {
-   return this.httpClient.post<Usuario>(this.endpoint, usuario);
+   return this.httpClient.post<Usuario>(this.endpoint + '/cadastro', usuario);
  }
 
  // // BUSCAR ID

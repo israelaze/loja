@@ -34,7 +34,7 @@ public class VendedoresController {
 
 	private final VendedorService service;
 
-	@PostMapping
+	@PostMapping(value = "/cadastro")
 	@Operation(summary = "Cadastrar vendedores")
 	public ResponseEntity<VendedorGetDTO> cadastrar(@Valid @RequestBody VendedorPostDTO dto) {
 
