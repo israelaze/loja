@@ -2,35 +2,45 @@
 
   <h1>Controle de Vendedores</h1>
 
-    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+  <div *ngIf="mensagem != ''; else resultado">
+    <h5>{{mensagem}}</h5>
+  </div>
 
-      <!-- Código -->
-      <ng-container matColumnDef="idVendedor">
-        <th mat-header-cell *matHeaderCellDef> Código </th>
-        <td mat-cell *matCellDef="let element"> {{element.idVendedor}} </td>
-      </ng-container>
+  <section>
 
-      <!-- Nome -->
-      <ng-container matColumnDef="nome">
-        <th mat-header-cell *matHeaderCellDef> Nome </th>
-        <td mat-cell *matCellDef="let element"> {{element.nome}} </td>
-      </ng-container>
+    <ng-template #resultado>
+      <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
 
-      <!-- Apelido -->
-      <ng-container matColumnDef="apelido">
-        <th mat-header-cell *matHeaderCellDef> Apelido </th>
-        <td mat-cell *matCellDef="let element"> {{element.apelido}} </td>
-      </ng-container>
+        <!-- Código -->
+        <ng-container matColumnDef="idVendedor">
+          <th mat-header-cell *matHeaderCellDef> Código </th>
+          <td mat-cell *matCellDef="let element"> {{element.idVendedor}} </td>
+        </ng-container>
 
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        <!-- Nome -->
+        <ng-container matColumnDef="nome">
+          <th mat-header-cell *matHeaderCellDef> Nome </th>
+          <td mat-cell *matCellDef="let element"> {{element.nome}} </td>
+        </ng-container>
 
-    </table>
-    <br>
+        <!-- Apelido -->
+        <ng-container matColumnDef="apelido">
+          <th mat-header-cell *matHeaderCellDef> Apelido </th>
+          <td mat-cell *matCellDef="let element"> {{element.apelido}} </td>
+        </ng-container>
 
-    <mat-paginator
-      [pageSizeOptions]="[5, 10, 20]"
-      showFirstLastButtons
-      aria-label="Select page of periodic elements">
-    </mat-paginator>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+      </table>
+      <br>
+
+      <mat-paginator
+        [pageSizeOptions]="[5, 10, 20]"
+        showFirstLastButtons
+        aria-label="Select page of periodic elements">
+      </mat-paginator>
+    </ng-template>
+  </section>
+
 </div>
