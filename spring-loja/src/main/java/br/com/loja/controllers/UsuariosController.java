@@ -33,7 +33,7 @@ public class UsuariosController {
 
 	private final UsuarioService service;
 
-	@PostMapping
+	@PostMapping(value = "/cadastro")
 	@Operation(summary = "Cadastrar usuário")
 	public ResponseEntity<UsuarioGetDTO> cadastrar(@Valid @RequestBody UsuarioPostDTO dto) {
 
