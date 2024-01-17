@@ -29,9 +29,9 @@ public class SecurityConfiguration {
 			"/configuration/ui", "/configuration/security", "/swagger-ui.html", "/webjars/**", "/v3/api-docs/**",
 			"/swagger-ui/**", "/api-docs/**" };
 
-//  private static final String[] TESTES = {"/api/clientes/**", "/api/enderecos/**",
-//			"/api/fornecedores/**", "/api/produtos/**",
-//			"/api/pedidos/**", "/api/vendedores/**"};
+  private static final String[] TESTES = {"/api/clientes/**", "/api/enderecos/**",
+			"/api/fornecedores/**", "/api/produtos/**",
+			"/api/pedidos/**", "/api/vendedores/**", "/api/relatorios/**"};
 
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -50,7 +50,7 @@ public class SecurityConfiguration {
         
               
         //PERMITIR PROVISORIAMENTE PARA TESTES
-	//	.requestMatchers(TESTES).permitAll()
+    //    .requestMatchers(TESTES).permitAll()
 
 		
 		// permitir o cadastro de usuário
