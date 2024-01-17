@@ -13,6 +13,8 @@ import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 import io.swagger.v3.oas.models.servers.Server;
 
+//http://localhost:8080/swagger-ui/index.html
+
 @Configuration
 public class SwaggerConfiguration {
 	

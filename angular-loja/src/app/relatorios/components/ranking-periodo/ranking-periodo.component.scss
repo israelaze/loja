@@ -1,0 +1,35 @@
+.container {
+  width: 95%;
+  margin: auto;
+}
+
+h1 {
+  width: 100%;
+  text-align: center;
+  margin-bottom: 2rem;
+  //font-weight: bold;
+}
+
+
+
+button {
+  margin-top: 10px;
+}
+
+.observacao {
+  color: #666;
+  font-size: 11px;
+  margin-left: 10px;
+}
+
+.erro-mensagem {
+  color: #666;
+  font-size: 14px;
+  margin-left: 10px;
+  font-weight: 700;
+}
+
+// .min-width {
+//   width: 70%;
+//   min-width: 30px;
+// }

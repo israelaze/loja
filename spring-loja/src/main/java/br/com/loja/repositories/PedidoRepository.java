@@ -19,4 +19,7 @@ public interface PedidoRepository extends JpaRepository<Pedido, Integer>{
 	@Query("from Pedido p join p.cliente c where c.idCliente = :param") //JPQL
 	public List<Pedido> buscarPedidosByCliente(@Param("param") Integer idCliente);
 
+	@Query(nativeQuery = true, value ="select * from pedidos p order by p.data_pedido asc limit 1" )
+	public Pedido buscarPrimeiroPedidoCadastrado();
+
 }

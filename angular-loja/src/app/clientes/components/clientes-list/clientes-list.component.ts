@@ -22,6 +22,7 @@ export class ClientesListComponent implements OnInit, AfterViewInit {
   displayedColumns: string[] = ['nome', 'endereco', 'acoes'];
   clientes: Cliente[] = [];
   cliente: Cliente = new Cliente;
+  mensagem = '';
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -57,10 +58,19 @@ export class ClientesListComponent implements OnInit, AfterViewInit {
   buscarTodos(): void {
     this.clientesService.buscarTodos().subscribe({
       next: clientes => {
-        this.clientes = clientes;
-        this.dataSource = new MatTableDataSource<Cliente>(this.clientes);
-        this.dataSource.sort = this.sort;
-        this.dataSource.paginator = this.paginator;
+
+        if(clientes.length == 0){
+
+          console.log("sem clientes");
+          this.mensagem = 'Nenhum cliente cadastrado!';
+
+        }else{
+
+          this.clientes = clientes;
+          this.dataSource = new MatTableDataSource<Cliente>(this.clientes);
+          this.dataSource.sort = this.sort;
+          this.dataSource.paginator = this.paginator;
+        }
       },
       error: e => {
         console.log(e.error);
