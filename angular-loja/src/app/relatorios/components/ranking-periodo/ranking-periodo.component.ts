@@ -61,8 +61,11 @@ export class RankingPeriodoComponent {
         if (error instanceof HttpErrorResponse) {
           console.error('Erro HTTP:', error);
 
-          // Verificar se o corpo da resposta de erro é um Blob
-          if (error.error instanceof Blob) {
+          if (error.status === 403) {
+            // Handle 403 Forbidden error
+            this.alertService.error('Acesso proibido. Verifique suas permissões.');
+          }  else if (error.error instanceof Blob) {
+            // Verificar se o corpo da resposta de erro é um Blob
             this.readBlobAsText(error.error).then(errorMessage => {
               console.log('Mensagem de erro:', errorMessage);
               this.alertService.error(errorMessage || 'Erro desconhecido');
@@ -77,8 +80,8 @@ export class RankingPeriodoComponent {
             this.alertService.error(errorMessage || 'Erro desconhecido');
           }
         } else {
-          // Restante do código para tratar o erro
-          // ...
+          // Handle other errors
+          this.alertService.error('Erro desconhecido. Tente novamente mais tarde.');
         }
       }
     });
