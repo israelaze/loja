@@ -1,9 +1,9 @@
-import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { RelatoriosService } from '../../services/relatorios.service';
 import { DatePipe } from '@angular/common';
-import { AlertService } from 'src/app/util/services/alert.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { Component } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { AlertService } from 'src/app/util/services/alert.service';
+import { RelatoriosService } from '../../services/relatorios.service';
 
 @Component({
   selector: 'app-ranking-periodo',
@@ -41,9 +41,21 @@ export class RankingPeriodoComponent {
     this.relatoriosService.gerarRankingPorPeriodo(dataInicioFormatada, dataFimFormatada).subscribe({
       next: result => {
         console.log(result);
-        const blob = new Blob([result], {type: 'application/pdf'});
+        const blob = new Blob([result], {type: result.type});
         const url = window.URL.createObjectURL(blob);
-        window.open(url);
+       //window.open(url);
+        //IE
+        if (window.navigator && (window.navigator as any).msSaveOrOpenBlob){
+          (window.navigator as any).msSaveOrOpenBlob(blob, 'relatorio.pdf');
+          return;
+        }
+        //Chrome
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = 'relatorio.pdf';
+        link.click();
+        window.URL.revokeObjectURL(url);
+        link.remove();
       },
       error: (error: HttpErrorResponse) => {
         if (error instanceof HttpErrorResponse) {
