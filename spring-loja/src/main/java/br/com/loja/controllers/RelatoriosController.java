@@ -22,7 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.sf.jasperreports.engine.JRException;
 
 @Slf4j
-@CrossOrigin
+@CrossOrigin(origins = "*")
 @RestController
 @AllArgsConstructor
 @Tag(name = "Relatórios")
