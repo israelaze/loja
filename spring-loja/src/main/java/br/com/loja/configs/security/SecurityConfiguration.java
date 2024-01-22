@@ -75,21 +75,7 @@ public class SecurityConfiguration {
     return http.build();
   }
   
-<<<<<<< HEAD
-//  @Bean
-//  public CorsConfigurationSource corsConfigurationSource() {
-//      CorsConfiguration configuration = new CorsConfiguration();
-//      configuration.setAllowedOrigins(Arrays.asList("https://loja-gpvx.onrender.com"));
-//      configuration.setAllowedOrigins(Arrays.asList("http://localhost:4200"));
-//      configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-//      configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
-//      configuration.setExposedHeaders(Arrays.asList("Authorization"));
-//
-//      UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-//      source.registerCorsConfiguration("/**", configuration);
-//      return source;
-//  }
-=======
+
   @Bean
   public CorsConfigurationSource corsConfigurationSource() {
       CorsConfiguration configuration = new CorsConfiguration();
@@ -102,16 +88,6 @@ public class SecurityConfiguration {
       source.registerCorsConfiguration("/**", configuration);
       return source;
   }
->>>>>>> refs/heads/Teste
   
-//	@Bean
-//	CorsConfigurationSource corsConfigurationSource() {
-//		CorsConfiguration configuration = new CorsConfiguration().applyPermitDefaultValues();
-//		configuration.setAllowedMethods(Arrays.asList("POST", "GET", "PUT", "DELETE", "OPTIONS"));
-//		final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-//		source.registerCorsConfiguration("/**", configuration);
-//		return source;
-//	}
- 
 
 }
