@@ -10,7 +10,7 @@ COPY src/ /app/src/
 
 RUN mvn package -DskipTests
 
-FROM openjdk:17-jdk-slim
+FROM adoptopenjdk:17-jre-hotspot
 
 WORKDIR /app
 
