@@ -2,6 +2,7 @@ package br.com.loja.controllers;
 
 import java.io.IOException;
 
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -33,7 +34,7 @@ public class RelatoriosController {
 
 	@Operation(summary = "Gerar ranking de vendas por período")
 	@GetMapping("/gerarRankingVendasPeriodo")
-	public ResponseEntity<byte[]> gerarRankingVendasPeriodo(@Valid RelatorioFiltroDTO filtro, HttpServletResponse response) throws IOException {
+	public ResponseEntity<ByteArrayResource> gerarRankingVendasPeriodo(@Valid RelatorioFiltroDTO filtro, HttpServletResponse response) throws IOException {
 
 		try {
 			
@@ -44,9 +45,10 @@ public class RelatoriosController {
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_PDF);
             headers.setContentDispositionFormData("attachment", "relatorio.pdf");
+            headers.setContentLength(Long.valueOf(relatorioBytes.length));
 
             // Retornar uma ResponseEntity com o corpo do relatório e cabeçalhos configurados
-            return ResponseEntity.ok().headers(headers).body(relatorioBytes);
+            return ResponseEntity.ok().headers(headers).body(new ByteArrayResource(relatorioBytes));
 
 		} catch (ServiceException | JRException | NumberFormatException e) {
 			
