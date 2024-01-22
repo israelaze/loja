@@ -54,7 +54,7 @@ public class SecurityConfiguration {
         
               
         //PERMITIR PROVISORIAMENTE PARA TESTES
-    //    .requestMatchers(TESTES).permitAll()
+        .requestMatchers(TESTES).permitAll()
 
 		
 		// permitir o cadastro de usuário
