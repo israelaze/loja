@@ -4,6 +4,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { AlertService } from 'src/app/util/services/alert.service';
 import { RelatoriosService } from '../../services/relatorios.service';
+import { Filtro } from './../../models/filtro';
 
 @Component({
   selector: 'app-ranking-periodo',
@@ -38,10 +39,15 @@ export class RankingPeriodoComponent {
     console.log(dataInicioFormatada);
     console.log(dataFimFormatada);
 
-    this.relatoriosService.gerarRankingPorPeriodo(dataInicioFormatada, dataFimFormatada).subscribe({
+
+    const filtro: Filtro = new Filtro();
+    filtro.dataInicio = dataInicioFormatada;
+    filtro.dataFim = dataFimFormatada;
+
+    this.relatoriosService.gerarRankingPorPeriodo(filtro).subscribe({
       next: (result: Blob) => {
         console.log(result);
-        const blob = new Blob([result], {type: result.type});
+        const blob = new Blob([result], {type: 'application/pdf'});
         const url = window.URL.createObjectURL(blob);
        //window.open(url);
         //IE
@@ -50,12 +56,14 @@ export class RankingPeriodoComponent {
           return;
         }
         //Chrome
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = 'relatorio.pdf';
-        link.click();
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'relatorio.pdf';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a)
         window.URL.revokeObjectURL(url);
-        link.remove();
+        a.remove();
       },
       error: (error: HttpErrorResponse) => {
         if (error instanceof HttpErrorResponse) {
