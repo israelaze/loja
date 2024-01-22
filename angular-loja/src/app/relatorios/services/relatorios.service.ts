@@ -17,11 +17,16 @@ export class RelatoriosService {
     //   .set('dataInicio', dataInicio)
     //   .set('dataFim', dataFim);
 
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-    });
+    // const headers = new HttpHeaders({
+    //   'Content-Type': 'application/json',
+    // });
 
-    return this.httpClient.get(this.endpoint + '/gerarRankingVendasPeriodo',
-      { params: filtro, headers: headers, responseType: 'blob' as 'json' });
+
+    const formData: FormData = new FormData();
+    formData.append('filtro', JSON.stringify(filtro));
+
+
+    return this.httpClient.post(this.endpoint + '/gerarRankingVendasPeriodo', formData,
+      { responseType: 'blob' as 'json' });
   }
 }
