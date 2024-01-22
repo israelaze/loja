@@ -53,7 +53,7 @@ public class SecurityConfiguration {
         
               
         //PERMITIR PROVISORIAMENTE PARA TESTES
-        .requestMatchers(TESTES).permitAll()
+       .requestMatchers(TESTES).permitAll()
 
 		
 		// permitir o cadastro de usuário
@@ -75,6 +75,7 @@ public class SecurityConfiguration {
     return http.build();
   }
   
+<<<<<<< HEAD
 //  @Bean
 //  public CorsConfigurationSource corsConfigurationSource() {
 //      CorsConfiguration configuration = new CorsConfiguration();
@@ -88,6 +89,20 @@ public class SecurityConfiguration {
 //      source.registerCorsConfiguration("/**", configuration);
 //      return source;
 //  }
+=======
+  @Bean
+  public CorsConfigurationSource corsConfigurationSource() {
+      CorsConfiguration configuration = new CorsConfiguration();
+      configuration.setAllowedOrigins(Arrays.asList("http://localhost:4200")); // Adicione os domínios permitidos
+      configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+      configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
+      configuration.setExposedHeaders(Arrays.asList("Authorization"));
+
+      UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+      source.registerCorsConfiguration("/**", configuration);
+      return source;
+  }
+>>>>>>> refs/heads/Teste
   
 //	@Bean
 //	CorsConfigurationSource corsConfigurationSource() {
