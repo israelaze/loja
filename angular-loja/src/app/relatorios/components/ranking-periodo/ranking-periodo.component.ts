@@ -49,7 +49,7 @@ export class RankingPeriodoComponent {
         console.log(result);
         const blob = new Blob([result], {type: 'application/pdf'});
         const url = window.URL.createObjectURL(blob);
-       //window.open(url);
+        window.open(url, '_blank');
         //IE
         if (window.navigator && (window.navigator as any).msSaveOrOpenBlob){
           (window.navigator as any).msSaveOrOpenBlob(blob, 'relatorio.pdf');
