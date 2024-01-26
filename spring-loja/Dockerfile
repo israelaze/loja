@@ -8,7 +8,8 @@ WORKDIR /app
 COPY pom.xml .
 COPY src/ src/
 
-RUN mvn package -DskipTests \
+RUN apk add --no-cache libfreetype6 \
+    && mvn package -DskipTests \
     && rm -rf target/generated-sources \
     && rm -rf target/surefire-reports \
     && rm -rf target/test-classes
