@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
@@ -13,20 +13,18 @@ export class RelatoriosService {
   endpoint = environment.baseUrl + 'relatorios';
 
   gerarRankingPorPeriodo(filtro: any): Observable<any> {
-    // const params = new HttpParams()
-    //   .set('dataInicio', dataInicio)
-    //   .set('dataFim', dataFim);
+    const params = new HttpParams().set('filtro', JSON.stringify(filtro));
 
-    // const headers = new HttpHeaders({
-    //   'Content-Type': 'application/json',
-    // });
+    const headers = new HttpHeaders({
+      //'Content-Type': 'application/json',
+    //  'Accept': 'application/json'
+    });
 
+    return this.httpClient.get<string>(this.endpoint + '/gerarRankingVendasPeriodo',
+      {
+        params: params,
+        responseType: 'text' as 'json'
 
-    const formData: FormData = new FormData();
-    formData.append('filtro', JSON.stringify(filtro));
-
-
-    return this.httpClient.post(this.endpoint + '/gerarRankingVendasPeriodo', formData,
-      { responseType: 'blob' as 'json' });
+      });
   }
 }

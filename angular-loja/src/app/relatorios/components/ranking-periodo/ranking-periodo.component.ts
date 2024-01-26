@@ -21,14 +21,14 @@ export class RankingPeriodoComponent {
     private relatoriosService: RelatoriosService,
     private datePipe: DatePipe,
     private alertService: AlertService,
-  ){}
+  ) { }
 
 
   periodo = this.formBuilder.group({
 
     dataInicio: [null],
     dataFim: [null]
-  },{validator: this.validarDatas});
+  }, { validator: this.validarDatas });
 
   gerar(): void {
     const { dataInicio, dataFim } = this.periodo.value;
@@ -45,25 +45,47 @@ export class RankingPeriodoComponent {
     filtro.dataFim = dataFimFormatada;
 
     this.relatoriosService.gerarRankingPorPeriodo(filtro).subscribe({
-      next: (result: Blob) => {
+      next: (result: any) => {
         console.log(result);
-        const blob = new Blob([result], {type: 'application/pdf'});
-        const url = window.URL.createObjectURL(blob);
-        window.open(url, '_blank');
+
+        const base64WithoutPrefix = result.split(',')[1];
+        const binaryString = window.atob(base64WithoutPrefix);
+
+        const bytes = new Uint8Array(binaryString.length);
+    for (let i = 0; i < binaryString.length; i++) {
+      bytes[i] = binaryString.charCodeAt(i);
+    }
+
+    const blob = new Blob([bytes], { type: 'application/pdf' });
+    const url = window.URL.createObjectURL(blob);
+
+    window.open(url, '_blank');
+
+      //  window.open(url, '_blank');
+
+        // const contentDisposition = result.headers.get("content-disposition");
+        // const filename = this.parseFilenameFromContentDisposition(contentDisposition) + '.pdf';
+        // this.createAndDownloadBlobFile(result.body, {}, filename);
+
+
+        // const blob = new Blob([result], { type: 'application/pdf' });
+        // const url = window.URL.createObjectURL(blob);
+
+    //    window.open(url, '_blank');
         //IE
-        if (window.navigator && (window.navigator as any).msSaveOrOpenBlob){
-          (window.navigator as any).msSaveOrOpenBlob(blob, 'relatorio.pdf');
-          return;
-        }
-        //Chrome
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'relatorio.pdf';
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a)
-        window.URL.revokeObjectURL(url);
-        a.remove();
+        // if (window.navigator && (window.navigator as any).msSaveOrOpenBlob) {
+        //   (window.navigator as any).msSaveOrOpenBlob(blob, 'relatorio.pdf');
+        //   return;
+        // }
+        // //Chrome
+        // const a = document.createElement('a');
+        // a.href = url;
+        // a.download = 'relatorio.pdf';
+        // document.body.appendChild(a);
+        // a.click();
+        // document.body.removeChild(a)
+        // window.URL.revokeObjectURL(url);
+      // a.remove();
       },
       error: (error: HttpErrorResponse) => {
         if (error instanceof HttpErrorResponse) {
@@ -72,7 +94,7 @@ export class RankingPeriodoComponent {
           if (error.status === 403) {
             // Handle 403 Forbidden error
             this.alertService.error('Acesso proibido. Verifique suas permissões.');
-          }  else if (error.error instanceof Blob) {
+          } else if (error.error instanceof Blob) {
             // Verificar se o corpo da resposta de erro é um Blob
             this.readBlobAsText(error.error).then(errorMessage => {
               console.log('Mensagem de erro:', errorMessage);
@@ -96,32 +118,62 @@ export class RankingPeriodoComponent {
 
   }
 
-  // Função para converter Blob para texto
-private readBlobAsText(blob: Blob): Promise<string> {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onloadend = () => resolve(reader.result as string);
-    reader.onerror = reject;
-    reader.readAsText(blob);
-  });
+  private parseFilenameFromContentDisposition(contentDisposition) {
+    if (!contentDisposition) return null;
+
+    return contentDisposition
+        .split(";")[1]
+        .split("filename")[1]
+        .split("=")[1]
+        .trim();
 }
+
+//Esse método faz o download automático no navegador.
+private createAndDownloadBlobFile(body, options, filename) {
+  var blob = new Blob([body], options);
+  if (window.navigator && (window.navigator as any).msSaveOrOpenBlob) {
+    (window.navigator as any).msSaveOrOpenBlob(blob, filename);
+  } else {
+      var link = document.createElement("a");
+      // Browsers that support HTML5 download attribute
+      if (link.download !== undefined) {
+          var url = URL.createObjectURL(blob);
+          link.setAttribute("href", url);
+          link.setAttribute("download", filename);
+          link.style.visibility = "hidden";
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+      }
+  }
+}
+
+  // Função para converter Blob para texto
+  private readBlobAsText(blob: Blob): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onloadend = () => resolve(reader.result as string);
+      reader.onerror = reject;
+      reader.readAsText(blob);
+    });
+  }
 
   // Extrai a mensagem de erro do JSON
   private extractErrorMessage(errorString: string): string {
-  try {
-    const errorObject = JSON.parse(errorString);
-    return errorObject?.message || 'Erro desconhecido';
-  } catch (e) {
-    console.error('Erro ao analisar a mensagem de erro:', e);
-    return 'Erro ao processar a mensagem de erro';
+    try {
+      const errorObject = JSON.parse(errorString);
+      return errorObject?.message || 'Erro desconhecido';
+    } catch (e) {
+      console.error('Erro ao analisar a mensagem de erro:', e);
+      return 'Erro ao processar a mensagem de erro';
+    }
   }
-}
 
   validarDatas(group: FormGroup): { [key: string]: boolean } | null {
     const { dataInicio, dataFim } = group.value;
 
     if (dataInicio && dataFim && new Date(dataFim) < new Date(dataInicio)) {
-      group.setErrors({'datasInvalidas': true});
+      group.setErrors({ 'datasInvalidas': true });
       return { 'datasInvalidas': true };
     }
 
@@ -132,12 +184,12 @@ private readBlobAsText(blob: Blob): Promise<string> {
     this.alertService.error(e.error.message);
   }
 
-  limparFormulario(){
+  limparFormulario() {
     this.periodo.reset();
   }
 
   // Botão voltar à página anterior
-  voltar(){
+  voltar() {
     history.go(-1);
   }
 }

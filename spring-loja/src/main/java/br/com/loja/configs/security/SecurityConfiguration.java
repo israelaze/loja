@@ -16,6 +16,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 
 import lombok.RequiredArgsConstructor;
 
@@ -76,27 +77,39 @@ public class SecurityConfiguration {
     return http.build();
   }
   
-  @Bean
-  public CorsConfigurationSource corsConfigurationSource() {
-      CorsConfiguration configuration = new CorsConfiguration();
-      configuration.setAllowedOrigins(Arrays.asList("*")); // Adicione os domínios permitidos
-      configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-      configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
-      configuration.setExposedHeaders(Arrays.asList("content-disposition"));
-
-      UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-      source.registerCorsConfiguration("/**", configuration);
-      return source;
-  }
+//  @Bean
+//  public CorsConfigurationSource corsConfigurationSource() {
+//      CorsConfiguration configuration = new CorsConfiguration();
+//      configuration.setAllowedOrigins(Arrays.asList("*")); // Adicione os domínios permitidos
+//      configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+//      configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
+//      configuration.setExposedHeaders(Arrays.asList("content-disposition"));
+//
+//      UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+//      source.registerCorsConfiguration("/**", configuration);
+//      return source;
+//  }
   
-//	@Bean
-//	CorsConfigurationSource corsConfigurationSource() {
-//		CorsConfiguration configuration = new CorsConfiguration().applyPermitDefaultValues();
-//		configuration.setAllowedMethods(Arrays.asList("POST", "GET", "PUT", "DELETE", "OPTIONS"));
-//		final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-//		source.registerCorsConfiguration("/**", configuration);
-//		return source;
-//	}
+	@Bean
+	CorsConfigurationSource corsConfigurationSource() {
+		CorsConfiguration configuration = new CorsConfiguration().applyPermitDefaultValues();
+		configuration.setAllowedMethods(Arrays.asList("POST", "GET", "PUT", "DELETE", "OPTIONS"));
+		final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+		source.registerCorsConfiguration("/**", configuration);
+		return source;
+	}
+  
+//  @Bean
+//  public CorsFilter corsFilter() {
+//      UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+//      CorsConfiguration config = new CorsConfiguration();
+//      config.addAllowedOrigin("*"); // Adicione a origem do seu Angular
+//      config.addAllowedHeader("*");
+//      config.addAllowedMethod("*");
+//      config.setExposedHeaders(Arrays.asList("content-disposition"));
+//      source.registerCorsConfiguration("/**", config);
+//      return new CorsFilter(source);
+//  }
  
 
 }
