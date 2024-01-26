@@ -8,7 +8,7 @@ WORKDIR /app
 COPY pom.xml .
 COPY src/ src/
 
-RUN apk add --no-cache libfreetype6 \
+RUN apt-get update && apt-get install -y libfreetype6 \
     && mvn package -DskipTests \
     && rm -rf target/generated-sources \
     && rm -rf target/surefire-reports \
