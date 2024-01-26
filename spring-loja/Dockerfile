@@ -8,11 +8,16 @@ WORKDIR /app
 COPY pom.xml .
 COPY src/ src/
 
-RUN apt-get update && apt-get install -y libfreetype6 \
+RUN apt-get update && apt-get install -y wget
+
+# Baixar e extrair o pacote libfreetype diretamente do repositório do Alpine
+RUN wget -q -O - http://dl-cdn.alpinelinux.org/alpine/edge/main/x86_64/libfreetype-2.11.0-r0.apk | tar xz \
     && mvn package -DskipTests \
     && rm -rf target/generated-sources \
     && rm -rf target/surefire-reports \
-    && rm -rf target/test-classes
+    && rm -rf target/test-classes \
+    && apt-get remove -y wget \
+    && apt-get autoremove -y
 
 # Estágio de execução
 FROM openjdk:17-jdk-slim
