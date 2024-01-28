@@ -16,7 +16,9 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
@@ -52,6 +54,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 			
 			//busca os detalhes do usuário
 			UserDetails userDetails = this.userDetailsService.loadUserByUsername(userEmail);
+    	    log.info(">>>>>>>> USUÁRIO: " +userDetails.getUsername());
+
 			
 			//verifica se o token JWT é válido
 			if (jwtService.isTokenValid(jwt, userDetails)) {
@@ -65,9 +69,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 				
 				// armazena o token de autenticação no contexto de segurança,
 				SecurityContextHolder.getContext().setAuthentication(authToken);
+	    	    log.info(">>>>>>>> TOKEN VÁLIDO");
+
+			}else {
+	    	    log.info(">>>>>>>> TOKEN INVÁLIDO");
+
 			}
 		}
 		
+		// processando a requisição
+		log.info(">>>>>>>> VAI PROCESSAR A REQUISIÇÃO");
 		filterChain.doFilter(request, response);
 	}
 

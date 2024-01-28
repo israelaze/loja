@@ -35,7 +35,7 @@ public class SecurityConfiguration {
 
   private static final String[] TESTES = {"/api/usuarios/**", "/api/clientes/**", "/api/enderecos/**",
 			"/api/fornecedores/**", "/api/produtos/**",
-			"/api/pedidos/**", "/api/vendedores/**", "/api/relatorios/**"};
+			"/api/pedidos/**", "/api/vendedores/**", "/api/relatorios/gerarRankingVendasPeriodo/**"};
 
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {

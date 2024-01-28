@@ -52,16 +52,16 @@ export class RankingPeriodoComponent {
         const binaryString = window.atob(base64WithoutPrefix);
 
         const bytes = new Uint8Array(binaryString.length);
-    for (let i = 0; i < binaryString.length; i++) {
-      bytes[i] = binaryString.charCodeAt(i);
-    }
+        for (let i = 0; i < binaryString.length; i++) {
+          bytes[i] = binaryString.charCodeAt(i);
+        }
 
-    const blob = new Blob([bytes], { type: 'application/pdf' });
-    const url = window.URL.createObjectURL(blob);
+        const blob = new Blob([bytes], { type: 'application/pdf' });
+        const url = window.URL.createObjectURL(blob);
 
-    window.open(url, '_blank');
+        window.open(url, '_blank');
 
-      //  window.open(url, '_blank');
+       //  window.open(url, '_blank');
 
         // const contentDisposition = result.headers.get("content-disposition");
         // const filename = this.parseFilenameFromContentDisposition(contentDisposition) + '.pdf';
@@ -71,7 +71,7 @@ export class RankingPeriodoComponent {
         // const blob = new Blob([result], { type: 'application/pdf' });
         // const url = window.URL.createObjectURL(blob);
 
-    //    window.open(url, '_blank');
+       //    window.open(url, '_blank');
         //IE
         // if (window.navigator && (window.navigator as any).msSaveOrOpenBlob) {
         //   (window.navigator as any).msSaveOrOpenBlob(blob, 'relatorio.pdf');
@@ -85,7 +85,7 @@ export class RankingPeriodoComponent {
         // a.click();
         // document.body.removeChild(a)
         // window.URL.revokeObjectURL(url);
-      // a.remove();
+       // a.remove();
       },
       error: (error: HttpErrorResponse) => {
         if (error instanceof HttpErrorResponse) {

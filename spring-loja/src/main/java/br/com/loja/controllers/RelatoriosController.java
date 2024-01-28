@@ -18,7 +18,6 @@ import br.com.loja.exceptions.ServiceException;
 import br.com.loja.services.RelatorioService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -37,7 +36,7 @@ public class RelatoriosController {
 
 
 	@Operation(summary = "Gerar ranking de vendas por período")
-	@GetMapping(value="/gerarRankingVendasPeriodo", produces = "application/text")
+	@GetMapping(value="/gerarRankingVendasPeriodo")
 	public ResponseEntity<String> gerarRankingVendasPeriodo(@Valid @RequestParam String  filtro) throws IOException {
 
 		try {
@@ -58,6 +57,7 @@ public class RelatoriosController {
 //            headers.setExpires(0L);
        //     headers.setAccept(Collections.singletonList(MediaType.APPLICATION_PDF));
 
+    	    log.info(">>>>>>>> VAI CONVERTER O PDF EM UMA STRING BASE64");
             String base64Pdf = "data:application/pdf;base64," + Base64.encodeBase64String(relatorioBytes);
             
             return new ResponseEntity<String>(base64Pdf, HttpStatus.OK);
