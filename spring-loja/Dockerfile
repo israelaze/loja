@@ -26,6 +26,12 @@ FROM openjdk:17-jdk-slim
 
 WORKDIR /app
 
+# Configurar variável de ambiente
+ENV LD_LIBRARY_PATH /usr/local/openjdk-17/lib/:$LD_LIBRARY_PATH
+
+# Instalação da biblioteca libfreetype
+RUN apt-get update && apt-get install -y libfreetype6
+
 COPY --from=build /app/target/*.jar /app/app.jar
 EXPOSE 8080
 
