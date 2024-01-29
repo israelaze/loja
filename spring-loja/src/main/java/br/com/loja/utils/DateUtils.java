@@ -36,6 +36,8 @@ public class DateUtils {
 		}
 		
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		sdf.setTimeZone(TimeZone.getTimeZone("America/Sao_Paulo"));
+
 		return sdf.format(data);
 	}
 
@@ -48,6 +50,8 @@ public class DateUtils {
 		}
 		
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		sdf.setTimeZone(TimeZone.getTimeZone("America/Sao_Paulo"));
+
 		return sdf.format(data);
 	}
 	
