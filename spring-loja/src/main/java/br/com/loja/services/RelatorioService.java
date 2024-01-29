@@ -68,6 +68,11 @@ public class RelatorioService {
 		// Carregue o arquivo JRXML
 		InputStream jasperStream = getClass().getResourceAsStream("/relatorios/Blank_A4.jrxml");
 
+		// Verifica se o jasperStream foi carregado corretamente
+	    if (jasperStream == null) {
+	        throw new JRException("Falha ao carregar o arquivo JRXML.");
+	    }
+
 	    log.info(">>>>>>>> VAI COMPILAR");
 		// Compile o JRXML em um objeto JasperReport
 		JasperReport jasperReport = JasperCompileManager.compileReport(jasperStream);
@@ -76,6 +81,8 @@ public class RelatorioService {
 		Map<String, Object> parametros = new HashMap<>();
 		parametros.put("dataInicio", sdf.format(DateUtils.toDate(dataInicio)));
 		parametros.put("dataFim", sdf.format(DateUtils.toDate(dataFim)));
+        parametros.put("caminhoImagem", "relatorios/imagens/relatorio.png");
+
 		
 	    log.info(">>>>>>>> VAI PREENCHER OS RELATÓRIOS COM OS DADOS FORNECIDOS");
 		// Preencha o relatório com os dados
