@@ -49,6 +49,18 @@ public class DateUtils {
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		return sdf.format(data);
 	}
+	
+	// converte uma data do tipo Date numa String padrão BR com Hora
+		public static String toStringPtBRHora(Date data) {
+
+			// caso seja vazio
+			if (data == null) {
+				return null;
+			}
+			
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+			return sdf.format(data);
+		}
 		
 	public static long calculaDiferencaEmDiasEntreDatas(Calendar dataMaior, Calendar dataMenor) {
 	

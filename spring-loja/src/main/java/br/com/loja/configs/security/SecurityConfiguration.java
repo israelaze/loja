@@ -16,7 +16,6 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.filter.CorsFilter;
 
 import lombok.RequiredArgsConstructor;
 
@@ -25,71 +24,49 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class SecurityConfiguration {
 
-  private final JwtAuthenticationFilter jwtAuthFilter;
-  private final AuthenticationProvider authenticationProvider;
-  private final Environment env;
+	private final JwtAuthenticationFilter jwtAuthFilter;
+	private final AuthenticationProvider authenticationProvider;
+	private final Environment env;
 
-  private static final String[] SWAGGER = { "/v2/api-docs", "/swagger-resources", "/swagger-resources/**",
+	private static final String[] SWAGGER = { "/v2/api-docs", "/swagger-resources", "/swagger-resources/**",
 			"/configuration/ui", "/configuration/security", "/swagger-ui.html", "/webjars/**", "/v3/api-docs/**",
 			"/swagger-ui/**", "/api-docs/**" };
 
-  private static final String[] TESTES = {"/api/usuarios/**", "/api/clientes/**", "/api/enderecos/**",
-			"/api/fornecedores/**", "/api/produtos/**",
-			"/api/pedidos/**", "/api/vendedores/**", "/api/relatorios/gerarRankingVendasPeriodo/**"};
+	private static final String[] TESTES = { "/api/usuarios/**", "/api/clientes/**", "/api/enderecos/**",
+			"/api/fornecedores/**", "/api/produtos/**", "/api/pedidos/**", "/api/vendedores/**",
+			"/api/relatorios/gerarRankingVendasPeriodo/**" };
 
-  @Bean
-  public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-	  
-	  if (Arrays.asList(env.getActiveProfiles()).contains("test")) {
+	@Bean
+	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+
+		if (Arrays.asList(env.getActiveProfiles()).contains("test")) {
 			http.headers().frameOptions().disable();
 		}
-	  
-    http
-    	.cors().and()
-        .csrf()
-        .disable()
-        .authorizeHttpRequests(auth -> auth
-        // permitir o acesso ao console do banco de dados h2
-        .requestMatchers(AntPathRequestMatcher.antMatcher("/h2-console/**")).permitAll()
-     //   .requestMatchers("/**").permitAll()
-        
-              
-        //PERMITIR PROVISORIAMENTE PARA TESTES
-       .requestMatchers(TESTES).permitAll()
 
-		
-		// permitir o cadastro de usuário
-		.requestMatchers("/api/usuarios/cadastro").permitAll()
-		// permitir autenticação do usuário
-		.requestMatchers("/api/auth/**").permitAll()
-		// permitir a documentação do swagger
-		.requestMatchers(SWAGGER).permitAll()
-		// permitir o envio de parâmetros adicionais no protocolo HTTP como por ex: Header, Patch, et..
-		.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-		.anyRequest().authenticated()
-        .and())
-        .sessionManagement()
-        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-        .and()
-        .authenticationProvider(authenticationProvider)
-        .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+		http.cors().and().csrf().disable().authorizeHttpRequests(auth -> auth
+				// permitir o acesso ao console do banco de dados h2
+				.requestMatchers(AntPathRequestMatcher.antMatcher("/h2-console/**")).permitAll()
+				// .requestMatchers("/**").permitAll()
 
-    return http.build();
-  }
-  
-//  @Bean
-//  public CorsConfigurationSource corsConfigurationSource() {
-//      CorsConfiguration configuration = new CorsConfiguration();
-//      configuration.setAllowedOrigins(Arrays.asList("*")); // Adicione os domínios permitidos
-//      configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-//      configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
-//      configuration.setExposedHeaders(Arrays.asList("content-disposition"));
-//
-//      UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-//      source.registerCorsConfiguration("/**", configuration);
-//      return source;
-//  }
-  
+				// PERMITIR PROVISORIAMENTE PARA TESTES
+		//		.requestMatchers(TESTES).permitAll()
+
+				// permitir o cadastro de usuário
+				.requestMatchers("/api/usuarios/cadastro").permitAll()
+				// permitir autenticação do usuário
+				.requestMatchers("/api/auth/**").permitAll()
+				// permitir a documentação do swagger
+				.requestMatchers(SWAGGER).permitAll()
+				// permitir o envio de parâmetros adicionais no protocolo HTTP como por ex:
+				// Header, Patch, et..
+				.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll().anyRequest().authenticated().and())
+				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+				.authenticationProvider(authenticationProvider)
+				.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+
+		return http.build();
+	}
+
 	@Bean
 	CorsConfigurationSource corsConfigurationSource() {
 		CorsConfiguration configuration = new CorsConfiguration().applyPermitDefaultValues();
@@ -98,18 +75,5 @@ public class SecurityConfiguration {
 		source.registerCorsConfiguration("/**", configuration);
 		return source;
 	}
-  
-//  @Bean
-//  public CorsFilter corsFilter() {
-//      UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-//      CorsConfiguration config = new CorsConfiguration();
-//      config.addAllowedOrigin("*"); // Adicione a origem do seu Angular
-//      config.addAllowedHeader("*");
-//      config.addAllowedMethod("*");
-//      config.setExposedHeaders(Arrays.asList("content-disposition"));
-//      source.registerCorsConfiguration("/**", config);
-//      return new CorsFilter(source);
-//  }
- 
 
 }
