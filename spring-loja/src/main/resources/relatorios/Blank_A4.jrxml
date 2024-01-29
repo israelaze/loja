@@ -47,10 +47,10 @@
 	<pageHeader>
 		<band height="39" splitType="Stretch">
 			<staticText>
-				<reportElement x="0" y="10" width="188" height="20" uuid="7b8f1db4-ca1b-46df-aa50-fa3af5aac25e">
+				<reportElement x="0" y="10" width="242" height="20" uuid="7b8f1db4-ca1b-46df-aa50-fa3af5aac25e">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
-				<textElement>
+				<textElement textAlignment="Justified">
 					<font size="12"/>
 				</textElement>
 				<text><![CDATA[Ranking de vendas por período:]]></text>
@@ -59,7 +59,7 @@
 				<reportElement x="0" y="36" width="553" height="1" uuid="9065f6c5-304f-4768-867b-2b34ea65f4aa"/>
 			</line>
 			<textField>
-				<reportElement x="190" y="13" width="60" height="12" uuid="d762f19b-d513-4bff-b331-fe16179d49fc">
+				<reportElement x="251" y="13" width="60" height="12" uuid="d762f19b-d513-4bff-b331-fe16179d49fc">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
@@ -69,7 +69,7 @@
 				<textFieldExpression><![CDATA[$P{dataInicio}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="250" y="13" width="10" height="12" uuid="a5aadfb7-e52b-45ec-9749-67e1e41cfdb9">
+				<reportElement x="311" y="13" width="10" height="12" uuid="a5aadfb7-e52b-45ec-9749-67e1e41cfdb9">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 					<property name="com.jaspersoft.studio.unit.x" value="px"/>
@@ -80,7 +80,7 @@
 				<textFieldExpression><![CDATA["a"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="269" y="13" width="50" height="12" uuid="4590ccef-4958-4d3f-839a-82883ad5337e">
+				<reportElement x="330" y="13" width="50" height="12" uuid="4590ccef-4958-4d3f-839a-82883ad5337e">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement verticalAlignment="Top">
@@ -123,7 +123,7 @@
 				<text><![CDATA[Categoria]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="484" y="15" width="66" height="20" uuid="030e3d57-7e75-47ac-acaf-c9ab85355801">
+				<reportElement x="484" y="15" width="78" height="20" uuid="030e3d57-7e75-47ac-acaf-c9ab85355801">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
 				<textElement>
