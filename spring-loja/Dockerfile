@@ -20,8 +20,7 @@ COPY src ./src
 
 RUN mvn clean package -DskipTests
 
-FROM adoptopenjdk:17-jdk-hotspot-alpine
-
+FROM eclipse-temurin:17-jdk-alpine
 WORKDIR /app
 
 # Configurar variável de ambiente
