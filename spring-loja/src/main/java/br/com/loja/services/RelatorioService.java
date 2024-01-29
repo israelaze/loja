@@ -66,7 +66,7 @@ public class RelatorioService {
 
 	    log.info(">>>>>>>> VAI CARREGAR O ARQUIVO JRXML");
 		// Carregue o arquivo JRXML
-		InputStream jasperStream = getClass().getResourceAsStream("/relatorios/Blank_A4.jrxml");
+		InputStream jasperStream = getClass().getResourceAsStream("/relatorios/relatorioPeriodo.jrxml");
 
 		// Verifica se o jasperStream foi carregado corretamente
 	    if (jasperStream == null) {
