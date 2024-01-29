@@ -20,7 +20,7 @@ COPY src ./src
 
 RUN mvn clean package -DskipTests
 
-FROM adoptopenjdk:17-jdk-openj9-alpine
+FROM adoptopenjdk:17-jdk-hotspot-alpine
 
 WORKDIR /app
 
