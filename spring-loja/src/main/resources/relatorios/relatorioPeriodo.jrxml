@@ -25,7 +25,7 @@
 	<title>
 		<band height="45" splitType="Stretch">
 			<staticText>
-				<reportElement x="56" y="2" width="272" height="35" uuid="fd06f614-fb75-4fbd-aed8-816ca5ac1a8d"/>
+				<reportElement x="56" y="2" width="258" height="35" uuid="fd06f614-fb75-4fbd-aed8-816ca5ac1a8d"/>
 				<textElement>
 					<font size="22"/>
 				</textElement>
@@ -35,7 +35,7 @@
 				<reportElement x="0" y="38" width="553" height="1" uuid="74c3b4a9-91f8-4a8c-9975-f44531b6d82e"/>
 			</line>
 			<textField pattern="dd/MM/yyyy HH:mm">
-				<reportElement x="460" y="20" width="93" height="15" uuid="387a5a8c-f32a-4918-bd56-e1808bbaf15d"/>
+				<reportElement x="440" y="20" width="113" height="15" uuid="387a5a8c-f32a-4918-bd56-e1808bbaf15d"/>
 				<textFieldExpression><![CDATA[$P{dataHoje}]]></textFieldExpression>
 			</textField>
 			<image>
