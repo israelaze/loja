@@ -47,16 +47,6 @@ public class RelatoriosController {
 			// Gerar o relatório a partir dos dados byte[]
             byte[] relatorioBytes = service.gerarRelatorioPeriodo(dto);
 
-            // Configurar o cabeçalho HTTP para o navegador entender que é um arquivo PDF
-          //  HttpHeaders headers = new HttpHeaders();
-         //   headers.setContentType(MediaType.APPLICATION_PDF);
-       //     headers.setContentDisposition(ContentDisposition.builder("attachment").filename("relatorio.pdf").build());
-//            headers.setContentLength(relatorioBytes.length);
-//            headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
-//            headers.setPragma("public");
-//            headers.setExpires(0L);
-       //     headers.setAccept(Collections.singletonList(MediaType.APPLICATION_PDF));
-
     	    log.info(">>>>>>>> VAI CONVERTER O PDF EM UMA STRING BASE64");
             String base64Pdf = "data:application/pdf;base64," + Base64.encodeBase64String(relatorioBytes);
             
