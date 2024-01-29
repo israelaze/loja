@@ -81,7 +81,7 @@ public class RelatorioService {
 		Map<String, Object> parametros = new HashMap<>();
 		parametros.put("dataInicio", sdf.format(DateUtils.toDate(dataInicio)));
 		parametros.put("dataFim", sdf.format(DateUtils.toDate(dataFim)));
-		parametros.put("dataHoje", DateUtils.toStringPtBRHora(new Date()));
+		parametros.put("dataHoje", DateUtils.toStringPtBRHora(new Date()).toString());
         parametros.put("caminhoImagem", "relatorios/imagens/relatorio.png");
 
 		
