@@ -59,41 +59,23 @@ public class RelatorioService {
 	
 		// Buscar o ranking de vendas
 		List<RankingVendasDTO> dados = buscarRankigProdutosPorPeriodo(dataInicio, dataFim);
-
-	    log.info(">>>>>>>> VAI CRIAR A FONTE DE DADOS");
-		// Criando uma fonte de dados
-		JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(dados);
-
-	    log.info(">>>>>>>> VAI CARREGAR O ARQUIVO JRXML");
-		// Carregue o arquivo JRXML
-		InputStream jasperStream = getClass().getResourceAsStream("/relatorios/relatorioPeriodo.jrxml");
-
-		// Verifica se o jasperStream foi carregado corretamente
-	    if (jasperStream == null) {
-	        throw new JRException("Falha ao carregar o arquivo JRXML.");
-	    }
-
-	    log.info(">>>>>>>> VAI COMPILAR");
-		// Compile o JRXML em um objeto JasperReport
-		JasperReport jasperReport = JasperCompileManager.compileReport(jasperStream);
 		
+		log.info(">>>>>>>> VAI CRIAR A FONTE DE DADOS");
+		JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(dados);
+				
 		// Adicionando parâmetros
 		Map<String, Object> parametros = new HashMap<>();
 		parametros.put("dataInicio", sdf.format(DateUtils.toDate(dataInicio)));
 		parametros.put("dataFim", sdf.format(DateUtils.toDate(dataFim)));
 		parametros.put("dataHoje", DateUtils.toStringPtBRHora(new Date()).toString());
         parametros.put("caminhoImagem", "relatorios/imagens/relatorio.png");
-
 		
-	    log.info(">>>>>>>> VAI PREENCHER OS RELATÓRIOS COM OS DADOS FORNECIDOS");
-		// Preencha o relatório com os dados
-		JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parametros, dataSource);
+		String caminhoArquivo = "/relatorios/relatorioPeriodo.jrxml";
 
-	    log.info(">>>>>>>> VAI EXPORTAR O PDF");
-		// Exporte o relatório preenchido para PDF
-		return JasperExportManager.exportReportToPdf(jasperPrint);
+		byte[] pdf = gerarRelatorioPDF(dataSource, caminhoArquivo, parametros);
+		
+		return pdf;
 	}
-
 	
 	private String buscarDataPrimeiroPedidoCadastrado() {
 		
@@ -107,9 +89,8 @@ public class RelatorioService {
 		
 		throw new EntityNotFoundException("Ainda não existem pedidos cadastrados.");
 	}
-
-
-	public List<RankingVendasDTO> buscarRankigProdutosPorPeriodo(String dataInicio, String dataFim) {
+	
+	private List<RankingVendasDTO> buscarRankigProdutosPorPeriodo(String dataInicio, String dataFim) {
 
 		Date inicio = DateUtils.toDate(dataInicio);
 		Date fim = DateUtils.toDate(dataFim);
@@ -154,6 +135,28 @@ public class RelatorioService {
 			throw new EntityNotFoundException("Não há pedidos no período informado.");
 		}
 		return lista;
+	}
+	
+	private byte[] gerarRelatorioPDF(JRBeanCollectionDataSource dataSource, String path, Map<String, Object> parametros) throws JRException{
+		
+	    log.info(">>>>>>>> VAI CARREGAR O ARQUIVO JRXML");
+		InputStream jasperStream = getClass().getResourceAsStream(path);
+
+	    log.info(">>>>>>>> VAI COMPILAR");
+		// Compile o JRXML em um objeto JasperReport
+		JasperReport jasperReport = JasperCompileManager.compileReport(jasperStream);
+		
+	    log.info(">>>>>>>> VAI PREENCHER OS RELATÓRIOS COM OS DADOS FORNECIDOS");
+		JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parametros, dataSource);
+
+	    log.info(">>>>>>>> VAI EXPORTAR O PDF");
+		return JasperExportManager.exportReportToPdf(jasperPrint);
+	}
+	
+	
+	public byte[] gerarRelatorioClientesMaisPedidos(RelatorioFiltroDTO filtro ) {
+		
+		return null;
 	}
 
 }
