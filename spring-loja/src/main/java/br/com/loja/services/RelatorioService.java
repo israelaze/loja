@@ -9,15 +9,21 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import br.com.loja.dtos.cliente.ClienteGetDTO;
 import br.com.loja.dtos.pedido.PedidoGetDTO;
-import br.com.loja.dtos.relatorios.RankingVendasDTO;
 import br.com.loja.dtos.relatorios.RelatorioFiltroDTO;
+import br.com.loja.dtos.relatorios.RelatorioGetDTO;
+import br.com.loja.entities.Cliente;
 import br.com.loja.entities.Produto;
+import br.com.loja.enums.TipoRelatorio;
 import br.com.loja.exceptions.EntityNotFoundException;
+import br.com.loja.repositories.ClienteRepository;
 import br.com.loja.repositories.ProdutoRepository;
 import br.com.loja.repositories.RelatoriosRepository;
 import br.com.loja.utils.DateUtils;
@@ -40,6 +46,7 @@ public class RelatorioService {
 
 	private final RelatoriosRepository relatoriosRepository;
 	private final ProdutoRepository produtoRepository;
+	private final ClienteRepository clienteRepository;
 	private final PedidoService pedidoService;
 
 	public byte[] gerarRelatorioPeriodo(RelatorioFiltroDTO filtro) throws JRException {
@@ -56,25 +63,38 @@ public class RelatorioService {
 		if(Validacoes.isEmpty(dataFim)) {
 			dataFim = DateUtils.toString(new Date());
 		}
-	
-		// Buscar o ranking de vendas
-		List<RankingVendasDTO> dados = buscarRankigProdutosPorPeriodo(dataInicio, dataFim);
 		
-		log.info(">>>>>>>> VAI CRIAR A FONTE DE DADOS");
-		JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(dados);
-				
 		// Adicionando parâmetros
 		Map<String, Object> parametros = new HashMap<>();
 		parametros.put("dataInicio", sdf.format(DateUtils.toDate(dataInicio)));
 		parametros.put("dataFim", sdf.format(DateUtils.toDate(dataFim)));
 		parametros.put("dataHoje", DateUtils.toStringPtBRHora(new Date()).toString());
         parametros.put("caminhoImagem", "relatorios/imagens/relatorio.png");
+	
+		List<RelatorioGetDTO> dados = null;
+		String caminhoArquivoTemplate = null;
 		
-		String caminhoArquivo = "/relatorios/relatorioPeriodo.jrxml";
-
-		byte[] pdf = gerarRelatorioPDF(dataSource, caminhoArquivo, parametros);
+		if(filtro.getTipoRelatorio().equals("PRODUTO")) {
+			dados = buscarRankigProdutosPorPeriodo(dataInicio, dataFim);
+			caminhoArquivoTemplate = "/relatorios/relatorioRankingProdutoPeriodo.jrxml";
+			
+		}else if(filtro.getTipoRelatorio().equals("CLIENTE")) {
+			dados = buscarRankingClientesPorPeriodo(dataInicio, dataFim);
+			caminhoArquivoTemplate = "/relatorios/relatorioRankingClientePeriodo.jrxml";
+		}
+				
+		byte[] pdf = gerarRelatorioPDF(dados, caminhoArquivoTemplate, parametros);
 		
 		return pdf;
+	}
+	
+	public List<String> buscarTiposRelatorio() {
+		// Consultando todos os tipos de relatório
+		List<String> tipos = Stream.of(TipoRelatorio.values())
+				.map(TipoRelatorio::name)
+				.collect(Collectors.toList());
+		
+		return tipos;
 	}
 	
 	private String buscarDataPrimeiroPedidoCadastrado() {
@@ -90,22 +110,23 @@ public class RelatorioService {
 		throw new EntityNotFoundException("Ainda não existem pedidos cadastrados.");
 	}
 	
-	private List<RankingVendasDTO> buscarRankigProdutosPorPeriodo(String dataInicio, String dataFim) {
+	private List<RelatorioGetDTO> buscarRankigProdutosPorPeriodo(String dataInicio, String dataFim) {
 
 		Date inicio = DateUtils.toDate(dataInicio);
 		Date fim = DateUtils.toDate(dataFim);
 		
 		List<Object[]> result = relatoriosRepository.buscarRankigProdutosPorPeriodo(inicio, fim);
 		
-		List<RankingVendasDTO> lista = new ArrayList<RankingVendasDTO>();
+		List<RelatorioGetDTO> lista = new ArrayList<RelatorioGetDTO>();
 
 		if (!Validacoes.isEmpty(result)) {
 
 			for (Object[] dto : result) {
 
 				Integer idProduto = (Integer) dto[0];
-				//convertendo um NUMBER para BigDecimal
 				Number totalVendidosNumber = (Number) dto[1];
+				
+				//convertendo um NUMBER para BigDecimal
 			    BigDecimal totalVendidos = new BigDecimal(totalVendidosNumber.doubleValue());
 
 				if (idProduto != null && totalVendidos.compareTo(BigDecimal.ZERO) != 0) {
@@ -115,7 +136,7 @@ public class RelatorioService {
 					// Verifica se o Optional contém um valor antes de acessá-lo
 					produto.ifPresent(p -> {
 
-						RankingVendasDTO item = new RankingVendasDTO();
+						RelatorioGetDTO item = new RelatorioGetDTO();
 					
 						item.setCodigoProduto(p.getCodigo());
 						item.setNomeProduto(p.getNomeProduto());
@@ -137,10 +158,57 @@ public class RelatorioService {
 		return lista;
 	}
 	
-	private byte[] gerarRelatorioPDF(JRBeanCollectionDataSource dataSource, String path, Map<String, Object> parametros) throws JRException{
+	private List<RelatorioGetDTO> buscarRankingClientesPorPeriodo(String dataInicio, String dataFim) {
+		
+		Date inicio = DateUtils.toDate(dataInicio);
+		Date fim = DateUtils.toDate(dataFim);
+		
+		//List<Object[]> result = relatoriosRepository.buscarRankingClientesPorPeriodo(inicio, fim);
+		List<Object[]> result = relatoriosRepository.buscarRankingClientesPorPeriodo(inicio, fim);
+		
+		List<RelatorioGetDTO> lista = new ArrayList<RelatorioGetDTO>();
+
+		if (!Validacoes.isEmpty(result)) {
+
+			for (Object[] dto : result) {
+
+				Integer idCliente = (Integer) dto[0];
+				Number totalPedidosNumber = (Number) dto[1];
+				
+				//convertendo um NUMBER para BigDecimal
+			    BigDecimal totalPedidos = new BigDecimal(totalPedidosNumber.doubleValue());
+
+				if (idCliente != null && totalPedidos.compareTo(BigDecimal.ZERO) != 0) {
+
+					Optional<Cliente> cliente = clienteRepository.findById(idCliente);
+
+					// Verifica se o Optional contém um valor antes de acessá-lo
+					cliente.ifPresent(p -> {
+
+						RelatorioGetDTO item = new RelatorioGetDTO();
+			
+						item.setCliente(new ClienteGetDTO(cliente.get()));
+						item.setTotalPedidos(totalPedidos);
+						lista.add(item);
+					});
+				}
+			}
+
+		} else {
+    	    log.info(">>>>>>> NÃO É POSSÍVEL GERAR O RELATÓRIO POR FALTA DE PEDIDOS NO PERÍODO INFORMADO");
+
+			throw new EntityNotFoundException("Não há pedidos no período informado.");
+		}
+		return lista;
+	}
+
+	private byte[] gerarRelatorioPDF(List<RelatorioGetDTO> dados, String caminhoArquivoTemplate, Map<String, Object> parametros) throws JRException{
+		
+		log.info(">>>>>>>> VAI CRIAR A FONTE DE DADOS");
+		JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(dados);
 		
 	    log.info(">>>>>>>> VAI CARREGAR O ARQUIVO JRXML");
-		InputStream jasperStream = getClass().getResourceAsStream(path);
+		InputStream jasperStream = getClass().getResourceAsStream(caminhoArquivoTemplate);
 
 	    log.info(">>>>>>>> VAI COMPILAR");
 		// Compile o JRXML em um objeto JasperReport
@@ -152,11 +220,8 @@ public class RelatorioService {
 	    log.info(">>>>>>>> VAI EXPORTAR O PDF");
 		return JasperExportManager.exportReportToPdf(jasperPrint);
 	}
+
 	
 	
-	public byte[] gerarRelatorioClientesMaisPedidos(RelatorioFiltroDTO filtro ) {
-		
-		return null;
-	}
 
 }

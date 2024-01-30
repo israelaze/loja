@@ -27,4 +27,9 @@ export class RelatoriosService {
 
       });
   }
+
+   //BUSCAR TIPOS DE RELATÓRIO
+   buscarTiposRelatorio(){
+    return this.httpClient.get(this.endpoint + '/tiposRelatorio');
+  }
 }

@@ -1,6 +1,7 @@
 package br.com.loja.controllers;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.http.HttpStatus;
@@ -57,6 +58,21 @@ public class RelatoriosController {
 		    log.error("Error: {}", e.getMessage(), e);
 			return ResponseEntity.internalServerError().build();
 			
+		}
+	}
+	
+	@GetMapping(value = "/tiposRelatorio")
+	@Operation(summary = "Buscar tipos de relatório")
+	public ResponseEntity<List<String>> buscarTiposRelatorio(){
+		
+		try {
+			
+			List<String> tipos = service.buscarTiposRelatorio();
+			
+			return ResponseEntity.ok(tipos);
+			
+		} catch (ServiceException e) {
+			return ResponseEntity.internalServerError().build();
 		}
 	}
 

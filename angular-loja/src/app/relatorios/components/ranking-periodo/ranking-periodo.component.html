@@ -13,6 +13,18 @@
 
   <form [formGroup]="periodo">
 
+    <br>
+    <mat-form-field class="fullWidth" appearance="fill">
+      <mat-label>Tipo:</mat-label>
+      <mat-select formControlName="tipoRelatorio">
+        <mat-option value="">Selecione um tipo</mat-option>
+        <mat-option *ngFor="let tipo of tipos" [value]="tipo">
+          {{ tipo}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <br>
     <mat-form-field appearance="fill" >
       <mat-label>Data início</mat-label>
       <input matInput formControlName="dataInicio" [max]="maxDataInicio"

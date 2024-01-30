@@ -6,9 +6,9 @@ import lombok.Setter;
 @Getter
 @Setter
 public class RelatorioFiltroDTO {
-
 	
 	private String dataInicio;   
 	private String dataFim;
+	private String tipoRelatorio;
 
 }
